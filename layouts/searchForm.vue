@@ -10,8 +10,7 @@
                 </div>
             </div>
             <span class="input-group-btn">
-              <button type="submit" name="fulltext" value="검색" class="btn btn-secondary" @click="onClickSearch"><span class="fa fa-search"></span></button>
-              <button type="submit" name="fulltext" value="보기" class="btn btn-secondary" @click="onClickMove"><span class="fa fa-arrow-right"></span></button>
+              <button type="submit" name="fulltext" value="검색" class="btn btn-secondary search-submit" aria-label="검색" @click="onClickSearch"><span class="fa fa-search"></span></button>
             </span>
         </div>
     </form>
@@ -75,7 +74,7 @@ export default {
     },
     watch: {
         $route() {
-            if (this.$store.state.localConfig["liberty.reset_search_on_move"] !== false) this.reset();
+            if ((this.$store.state.localConfig["nova.reset_search_on_move"] ?? this.$store.state.localConfig["liberty.reset_search_on_move"]) !== false) this.reset();
         }
     }
 }

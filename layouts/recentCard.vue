@@ -1,22 +1,16 @@
 <template>
-    <div :class="$style['live-recent-content']">
-        <ul :class="$style['live-recent-list']" id="live-recent-list">
-            <template v-if="recent.length === 0">
-                <li><span :class="$style['recent-item']">&nbsp;</span></li>
-                <li><span :class="$style['recent-item']">&nbsp;</span></li>
-                <li><span :class="$style['recent-item']">&nbsp;</span></li>
-                <li><span :class="$style['recent-item']">&nbsp;</span></li>
-                <li><span :class="$style['recent-item']">&nbsp;</span></li>
-                <li><span :class="$style['recent-item']">&nbsp;</span></li>
-                <li><span :class="$style['recent-item']">&nbsp;</span></li>
-                <li><span :class="$style['recent-item']">&nbsp;</span></li>
-                <li><span :class="$style['recent-item']">&nbsp;</span></li>
-                <li><span :class="$style['recent-item']">&nbsp;</span></li>
+    <div class="live-recent-content" :class="$style['live-recent-content']">
+        <ul class="live-recent-list" :class="$style['live-recent-list']" id="live-recent-list">
+            <template v-if="items.length === 0">
+                <li v-for="i in limit" :key="i"><span class="recent-item" :class="$style['recent-item']">&nbsp;</span></li>
             </template>
             <template v-else>
-                <template v-for="(r,i) in recent" :key="i">
+                <template v-for="(r,i) in items" :key="itemKey(r, i)">
                     <li v-if="i < limit">
-                        <nuxt-link :class="[$style['recent-item'], { [$style.removed]: r.status === 'delete' }]" :key="r.document" :to="doc_action_link(r.document, 'w')">
+                        <nuxt-link v-if="source === 'discuss'" class="recent-item" :class="$style['recent-item']" :to="discussLink(r)">
+                            [<local-date :date="discussDate(r)" :format="getDateType(discussDate(r))" />] {{ discussTitle(r) }}
+                        </nuxt-link>
+                        <nuxt-link v-else class="recent-item" :class="[$style['recent-item'], { [$style.removed]: r.status === 'delete', 'removed': r.status === 'delete' }]" :to="doc_action_link(r.document, 'w')">
                             [<local-date :date="r.date" :format="getDateType(r.date)" />] {{ r.document }}
                         </nuxt-link>
                     </li>
@@ -25,7 +19,6 @@
         </ul>
     </div>
 </template>
-
 <style module scoped>
 .live-recent-content {
     background-color: #fff;
@@ -83,12 +76,35 @@ export default {
         limit: {
             type: Number,
             default: 15
+        },
+        source: {
+            type: String,
+            default: 'document'
+        }
+    },
+    computed: {
+        items() {
+            return this.source === 'discuss' ? this.discuss : this.recent;
         }
     },
     methods: {
         getDateType(date) {
             const now = Math.floor((new Date()).getTime() / 1000);
             return (now - 86400) > date ? 'Y/m/d' : 'H:i:s';
+        },
+        itemKey(item, index) {
+            return item.url || item.document || index;
+        },
+        discussTitle(item) {
+            return item.topic || item.title || item.document || item.url;
+        },
+        discussDate(item) {
+            return item.lastUpdatedAt || item.date || item.createdAt;
+        },
+        discussLink(item) {
+            if (item.topic) return '/thread/' + item.url;
+            if (item.url) return '/edit_request/' + item.url;
+            return '/RecentDiscuss';
         }
     }
 }
