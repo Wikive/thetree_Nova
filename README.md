@@ -67,9 +67,10 @@ nova.admin_convenience = true
 
 ## 라이선스
 
-Nova v2는 Liberty Skin과 thetree-skin-liberty의 구조를 기반으로 제작되었습니다. 기반 프로젝트에서 유래한 코드와 자산은 각 원 프로젝트의 라이선스와 고지를 따릅니다.
+Nova v2는 Liberty Skin, theseed-skin-liberty, thetree-skin-liberty의 구조를 기반으로 제작되었습니다. 기반 프로젝트에서 유래한 코드와 자산은 각 원 프로젝트의 라이선스와 고지를 따릅니다.
 
 Liberty Skin은 GPL 3.0 라이선스로 배포됩니다. Liberty 원본 및 그 파생 부분을 수정하여 배포하는 경우, GPL 3.0 조건에 따라 수정한 소스 코드도 같은 라이선스 조건으로 공개해야 합니다. Nova v2를 수정해 배포하는 경우에도 Liberty 계열 코드에서 비롯된 부분과 그 변경 사항에 대한 GPL 3.0 의무를 준수해야 합니다.
 
 - [Liberty Skin](https://github.com/librewiki/liberty-skin)
+- [theseed-skin-liberty](https://github.com/namu-theseed/theseed-skin-liberty)
 - [thetree-skin-liberty](https://github.com/wjdgustn/thetree-skin-liberty)

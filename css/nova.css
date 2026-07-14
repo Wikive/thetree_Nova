@@ -81,6 +81,14 @@ body :where(b, strong),
     font-weight: 600 !important;
 }
 .Nova * { box-sizing: border-box; }
+.Nova a {
+    color: var(--wiki-link);
+    text-decoration: none;
+}
+.Nova a:hover {
+    color: var(--wiki-link-hover);
+    text-decoration: underline;
+}
 .Nova button,
 .Nova input { font: inherit; }
 .Nova .nova-icon {
@@ -254,26 +262,24 @@ body :where(b, strong),
 .Nova .dropdown-panel {
     position: relative;
     z-index: 340;
-    transform-origin: 50% 0;
-    will-change: opacity, transform, clip-path;
+    transform-origin: 50% -8px;
+    will-change: opacity, transform;
 }
 .Nova .nova-dropdown-enter-active {
-    transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), clip-path 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .Nova .nova-dropdown-leave-active {
-    transition: opacity 0.12s ease, transform 0.12s ease, clip-path 0.12s ease;
+    transition: opacity 0.11s ease-out, transform 0.11s ease-out;
 }
 .Nova .nova-dropdown-enter,
 .Nova .nova-dropdown-leave-to {
     opacity: 0;
-    transform: translateY(-8px) scaleY(0.94);
-    clip-path: inset(0 0 16px 0 round 12px);
+    transform: translate3d(0, -6px, 0) scale(0.985);
 }
 .Nova .nova-dropdown-enter-to,
 .Nova .nova-dropdown-leave {
     opacity: 1;
-    transform: translateY(0) scaleY(1);
-    clip-path: inset(0 0 0 0 round 12px);
+    transform: translate3d(0, 0, 0) scale(1);
 }
 .Nova .dropdown.is-open .chevron {
     transform: rotate(180deg);
@@ -289,20 +295,93 @@ body :where(b, strong),
     .Nova .nova-dropdown-leave {
         opacity: 1;
         transform: none;
-        clip-path: none;
     }
 }
 .Nova .feature-dropdown {
     min-width: 250px;
 }
+.Nova .feature-switch {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    margin: 0 0 8px;
+    padding: 3px;
+    border: 1px solid color-mix(in srgb, var(--brand) 14%, var(--border));
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--brand) 5%, var(--surface));
+}
+.Nova .feature-switch button {
+    min-width: 0;
+    min-height: 32px;
+    padding: 6px 10px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    transition: background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+.Nova .feature-switch button.active {
+    background: var(--surface);
+    color: var(--brand-dark);
+    box-shadow: 0 1px 4px rgba(31, 41, 55, 0.08);
+}
+.Nova .feature-switch button:active {
+    transform: scale(0.98);
+}
+.Nova .feature-pane {
+    min-width: 0;
+}
+.Nova .feature-pane-forward-enter-active,
+.Nova .feature-pane-forward-leave-active,
+.Nova .feature-pane-back-enter-active,
+.Nova .feature-pane-back-leave-active {
+    transition: opacity 0.14s ease, transform 0.14s ease;
+}
+.Nova .feature-pane-forward-enter,
+.Nova .feature-pane-back-leave-to {
+    opacity: 0;
+    transform: translateX(10px);
+}
+.Nova .feature-pane-forward-leave-to,
+.Nova .feature-pane-back-enter {
+    opacity: 0;
+    transform: translateX(-10px);
+}
+.Nova .feature-pane-forward-enter-to,
+.Nova .feature-pane-forward-leave,
+.Nova .feature-pane-back-enter-to,
+.Nova .feature-pane-back-leave {
+    opacity: 1;
+    transform: translateX(0);
+}
+@media (prefers-reduced-motion: reduce) {
+    .Nova .feature-switch button,
+    .Nova .feature-pane-forward-enter-active,
+    .Nova .feature-pane-forward-leave-active,
+    .Nova .feature-pane-back-enter-active,
+    .Nova .feature-pane-back-leave-active {
+        transition: none;
+    }
+    .Nova .feature-pane-forward-enter,
+    .Nova .feature-pane-forward-leave-to,
+    .Nova .feature-pane-back-enter,
+    .Nova .feature-pane-back-leave-to,
+    .Nova .feature-pane-forward-enter-to,
+    .Nova .feature-pane-forward-leave,
+    .Nova .feature-pane-back-enter-to,
+    .Nova .feature-pane-back-leave {
+        opacity: 1;
+        transform: none;
+    }
+}
 .Nova .feature-dropdown .dropdown-item {
     min-height: 38px;
 }
-.Nova .feature-dropdown .dropdown-item.admin-feature:first-of-type {
-    color: var(--brand-dark);
-}
 .Nova .feature-dropdown .dropdown-item.admin-feature {
-    font-weight: 650;
+    font-weight: 500;
 }
 .Nova .dropdown-item {
     display: flex;
@@ -346,6 +425,15 @@ body :where(b, strong),
     min-width: 0;
     max-width: 220px;
 }
+.Nova .user-menu-header .user-menu-title {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+.Nova .user-menu-header .user-menu-title strong,
+.Nova .user-menu-header .user-menu-title .muted {
+    display: inline;
+}
 .Nova .user-menu-header strong,
 .Nova .user-menu-header .muted {
     display: block;
@@ -378,6 +466,7 @@ body :where(b, strong),
     width: 18px;
     height: 18px;
 }
+.Nova .notification-label { display: none; }
 .Nova .notification-badge {
     position: absolute;
     top: 4px;
@@ -2052,23 +2141,20 @@ body.theseed-dark-mode .Nova ::selection {
         display: flex;
         width: 100%;
         height: auto;
+        flex-direction: column;
         align-items: stretch;
         gap: 8px;
     }
+    .Nova .navbar-menu .account-actions .notification-dropdown,
     .Nova .navbar-menu .account-actions .user-dropdown {
-        order: 1;
-        flex: 1 1 auto;
+        flex: none;
+        width: 100%;
         min-width: 0;
     }
-    .Nova .navbar-menu .account-actions .notification-dropdown {
-        order: 2;
-        flex: 0 0 58px;
-    }
+    .Nova .navbar-menu .account-actions .notification-dropdown { order: 1; }
+    .Nova .navbar-menu .account-actions .user-dropdown { order: 2; }
     .Nova .navbar-menu .account-actions .dropdown-panel {
-        position: absolute;
-        top: calc(100% + 8px);
-        right: 0;
-        left: 0;
+        position: static;
         z-index: 20;
     }
     .Nova .navbar-menu .navbar-item {
@@ -2088,13 +2174,15 @@ body.theseed-dark-mode .Nova ::selection {
         color: var(--brand-dark);
     }
     .Nova .navbar-menu .notification-toggle {
-        width: 58px;
-        min-height: 72px;
-        justify-content: center;
-        padding: 0;
+        width: 100%;
+        min-height: 58px;
+        justify-content: flex-start;
+        padding: 11px 14px;
+        gap: 12px;
         border: 1px solid color-mix(in srgb, var(--brand) 16%, var(--border));
         border-radius: 12px;
         background: color-mix(in srgb, var(--brand) 7%, var(--surface));
+        overflow: hidden;
     }
     .Nova .navbar-menu .notification-toggle::after {
         display: none;
@@ -2103,22 +2191,35 @@ body.theseed-dark-mode .Nova ::selection {
     .Nova .navbar-menu .notification-toggle > .nova-icon {
         width: 20px;
         height: 20px;
+        flex: 0 0 20px;
+    }
+    .Nova .navbar-menu .notification-label {
+        display: block;
+        min-width: 0;
+        flex: 1 1 auto;
+        overflow: hidden;
+        color: var(--text);
+        font-size: 15px;
+        font-weight: 650;
+        line-height: 1.5;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .Nova .navbar-menu .notification-badge {
-        position: absolute;
-        top: 11px;
-        right: 10px;
-        margin-left: 0;
+        position: static;
+        flex: 0 0 auto;
+        margin-left: auto;
         border-color: var(--surface);
     }
     .Nova .navbar-menu .notification-menu {
         width: 100%;
         max-width: none;
-        margin: 0;
+        margin: 6px 0 0;
     }
     .Nova .navbar-menu .avatar-toggle {
-        min-height: 72px;
-        padding: 12px 14px;
+        min-height: 58px;
+        padding: 11px 14px;
         border: 1px solid color-mix(in srgb, var(--brand) 16%, var(--border));
         border-radius: 12px;
         background: color-mix(in srgb, var(--brand) 7%, var(--surface));
@@ -2126,21 +2227,23 @@ body.theseed-dark-mode .Nova ::selection {
         overflow: hidden;
     }
     .Nova .navbar-menu .avatar-toggle .avatar {
-        width: 46px;
-        height: 46px;
-        flex-basis: 46px;
+        width: 36px;
+        height: 36px;
+        flex: 0 0 36px;
     }
     .Nova .navbar-menu .avatar-summary {
         display: flex;
         flex: 1 1 auto;
         min-width: 0;
         max-width: 100%;
-        flex-direction: column;
-        gap: 3px;
+        flex-direction: row;
+        align-items: baseline;
+        gap: 6px;
         text-align: left;
         line-height: 1.5;
     }
     .Nova .navbar-menu .avatar-summary strong {
+        min-width: 0;
         color: var(--text);
         font-size: 15px;
         font-weight: 650 !important;
@@ -2149,6 +2252,8 @@ body.theseed-dark-mode .Nova ::selection {
         white-space: nowrap;
     }
     .Nova .navbar-menu .avatar-summary span {
+        flex: 0 0 auto;
+        max-width: 42%;
         color: var(--text-muted);
         font-size: 12.5px;
         font-weight: 500;

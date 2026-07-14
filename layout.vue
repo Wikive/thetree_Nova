@@ -39,30 +39,37 @@
                                 </button>
                             </template>
                             <div class="dropdown-menu feature-dropdown" role="menu">
-                                <nuxt-link to="/Upload" class="dropdown-item"><nova-icon name="upload" />파일 올리기</nuxt-link>
-                                <div class="dropdown-divider"></div>
-                                <nuxt-link to="/NeededPages" class="dropdown-item"><nova-icon name="document" />작성이 필요한 문서</nuxt-link>
-                                <nuxt-link to="/OrphanedPages" class="dropdown-item"><nova-icon name="shuffle" />고립된 문서</nuxt-link>
-                                <nuxt-link to="/OrphanedCategories" class="dropdown-item"><nova-icon name="lock" />고립된 분류</nuxt-link>
-                                <nuxt-link to="/UncategorizedPages" class="dropdown-item"><nova-icon name="alert" />분류가 없는 문서</nuxt-link>
-                                <nuxt-link to="/OldPages" class="dropdown-item"><nova-icon name="hourglass" />편집된 지 오래된 문서</nuxt-link>
-                                <nuxt-link to="/ShortestPages" class="dropdown-item"><nova-icon name="sortAsc" />내용이 짧은 문서</nuxt-link>
-                                <nuxt-link to="/LongestPages" class="dropdown-item"><nova-icon name="sortDesc" />내용이 긴 문서</nuxt-link>
-                                <div class="dropdown-divider"></div>
-                                <nuxt-link to="/BlockHistory" class="dropdown-item"><nova-icon name="scissors" />차단 내역</nuxt-link>
-                                <nuxt-link to="/RandomPage" class="dropdown-item"><nova-icon name="shuffle" />RandomPage</nuxt-link>
-                                <nuxt-link to="/License" class="dropdown-item"><nova-icon name="copyright" />라이선스</nuxt-link>
-                                <template v-if="showAdminMenu">
-                                    <div class="dropdown-divider"></div>
-                                    <nuxt-link to="/admin/grant" class="dropdown-item admin-feature"><nova-icon name="shield" />권한</nuxt-link>
-                                    <nuxt-link to="/admin/manage_account" class="dropdown-item admin-feature"><nova-icon name="users" />계정 관리</nuxt-link>
-                                    <nuxt-link to="/admin/login_history" class="dropdown-item admin-feature"><nova-icon name="history" />로그인 기록 조회</nuxt-link>
-                                    <nuxt-link to="/aclgroup" class="dropdown-item admin-feature"><nova-icon name="users" />ACL Group</nuxt-link>
-                                    <nuxt-link to="/admin/batch_revert" class="dropdown-item admin-feature"><nova-icon name="undo" />일괄 되돌리기</nuxt-link>
-                                    <nuxt-link to="/admin/audit_log" class="dropdown-item admin-feature"><nova-icon name="document" />감사 로그</nuxt-link>
-                                    <nuxt-link to="/admin/config" class="dropdown-item admin-feature"><nova-icon name="gear" />설정</nuxt-link>
-                                    <nuxt-link to="/admin/developer" class="dropdown-item admin-feature"><nova-icon name="terminal" />개발자 설정</nuxt-link>
-                                </template>
+                                <div v-if="showAdminMenu" class="feature-switch" role="tablist" aria-label="기능 분류">
+                                    <button type="button" :class="{ active: featurePanel === 'special' }" @click.stop.prevent="featurePanel = 'special'">특수 기능</button>
+                                    <button type="button" :class="{ active: featurePanel === 'admin' }" @click.stop.prevent="featurePanel = 'admin'">관리 도구</button>
+                                </div>
+                                <transition :name="featurePanel === 'admin' ? 'feature-pane-forward' : 'feature-pane-back'" mode="out-in">
+                                    <div v-if="featurePanel === 'special' || !showAdminMenu" key="special" class="feature-pane">
+                                        <nuxt-link to="/Upload" class="dropdown-item"><nova-icon name="upload" />파일 올리기</nuxt-link>
+                                        <div class="dropdown-divider"></div>
+                                        <nuxt-link to="/NeededPages" class="dropdown-item"><nova-icon name="document" />작성이 필요한 문서</nuxt-link>
+                                        <nuxt-link to="/OrphanedPages" class="dropdown-item"><nova-icon name="shuffle" />고립된 문서</nuxt-link>
+                                        <nuxt-link to="/OrphanedCategories" class="dropdown-item"><nova-icon name="lock" />고립된 분류</nuxt-link>
+                                        <nuxt-link to="/UncategorizedPages" class="dropdown-item"><nova-icon name="alert" />분류가 없는 문서</nuxt-link>
+                                        <nuxt-link to="/OldPages" class="dropdown-item"><nova-icon name="hourglass" />편집된 지 오래된 문서</nuxt-link>
+                                        <nuxt-link to="/ShortestPages" class="dropdown-item"><nova-icon name="sortAsc" />내용이 짧은 문서</nuxt-link>
+                                        <nuxt-link to="/LongestPages" class="dropdown-item"><nova-icon name="sortDesc" />내용이 긴 문서</nuxt-link>
+                                        <div class="dropdown-divider"></div>
+                                        <nuxt-link to="/BlockHistory" class="dropdown-item"><nova-icon name="scissors" />차단 내역</nuxt-link>
+                                        <nuxt-link to="/RandomPage" class="dropdown-item"><nova-icon name="shuffle" />RandomPage</nuxt-link>
+                                        <nuxt-link to="/License" class="dropdown-item"><nova-icon name="copyright" />라이선스</nuxt-link>
+                                    </div>
+                                    <div v-else key="admin" class="feature-pane">
+                                        <nuxt-link to="/admin/grant" class="dropdown-item admin-feature"><nova-icon name="shield" />권한</nuxt-link>
+                                        <nuxt-link to="/admin/manage_account" class="dropdown-item admin-feature"><nova-icon name="users" />계정 관리</nuxt-link>
+                                        <nuxt-link to="/admin/login_history" class="dropdown-item admin-feature"><nova-icon name="history" />로그인 기록 조회</nuxt-link>
+                                        <nuxt-link to="/aclgroup" class="dropdown-item admin-feature"><nova-icon name="users" />ACL Group</nuxt-link>
+                                        <nuxt-link to="/admin/batch_revert" class="dropdown-item admin-feature"><nova-icon name="undo" />일괄 되돌리기</nuxt-link>
+                                        <nuxt-link to="/admin/audit_log" class="dropdown-item admin-feature"><nova-icon name="document" />감사 로그</nuxt-link>
+                                        <nuxt-link to="/admin/config" class="dropdown-item admin-feature"><nova-icon name="gear" />설정</nuxt-link>
+                                        <nuxt-link to="/admin/developer" class="dropdown-item admin-feature"><nova-icon name="terminal" />개발자 설정</nuxt-link>
+                                    </div>
+                                </transition>
                             </div>
                         </dropdown>
                     </div>
@@ -74,6 +81,7 @@
                             <template #toggle>
                                 <button class="navbar-item notification-toggle" type="button" aria-label="알림">
                                     <nova-icon name="bell" />
+                                    <span class="notification-label">알림</span>
                                     <span v-if="notificationCount" class="notification-badge">{{ notificationCount }}</span>
                                 </button>
                             </template>
@@ -115,7 +123,7 @@
                                 <div class="dropdown-header user-menu-header">
                                     <img v-if="$store.state.session.gravatar_url" class="dropdown-avatar" :src="$store.state.session.gravatar_url" alt="">
                                     <span v-else class="dropdown-avatar"><nova-icon name="user" /></span>
-                                    <span><strong>{{ accountName }}</strong><br><span class="muted">{{ accountDescription }}</span></span>
+                                    <span class="user-menu-title"><strong>{{ accountName }}</strong><span class="muted">{{ accountDescription }}</span></span>
                                 </div>
                                 <div class="dropdown-divider"></div>
                                 <a href="#" class="dropdown-item" @click.prevent="openSettingModal"><nova-icon name="sliders" />설정</a>
@@ -217,6 +225,7 @@
                         <h3>기반</h3>
                         <ul>
                             <li><a href="https://github.com/librewiki/liberty-skin" target="_blank" rel="noopener noreferrer">Liberty Skin</a></li>
+                            <li><a href="https://github.com/namu-theseed/theseed-skin-liberty" target="_blank" rel="noopener noreferrer">theseed-skin-liberty</a> - the seed용 Liberty 구현</li>
                             <li><a href="https://github.com/wjdgustn/thetree-skin-liberty" target="_blank" rel="noopener noreferrer">thetree-skin-liberty</a> - the seed/the tree용 Liberty 구현</li>
                         </ul>
                         <h3>라이선스</h3>
@@ -356,6 +365,7 @@ export default {
             documentToolsVisible: false,
             documentTabsStuck: false,
             mobileSidebarOpen: false,
+            featurePanel: 'special',
             stickyScrollRaf: null
         };
     },
@@ -364,6 +374,7 @@ export default {
             this.isShowACLMessage = false;
             this.mobileMenuOpen = false;
             this.mobileSidebarOpen = false;
+            this.featurePanel = 'special';
             this.documentTabsStuck = false;
             this.$nextTick(this.updateDocumentTabsStuck);
         }
