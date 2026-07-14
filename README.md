@@ -33,21 +33,17 @@ nova.admin_convenience = true
 ### 기본
 
 - `skin.nova.brand_color`: 스킨의 메인 컬러입니다. 상단바, 문서 제목 카드, 강조색, 다크모드 파생색이 이 값을 기준으로 계산됩니다.
-- `skin.nova.footer_html`: 푸터에 추가로 넣을 HTML입니다. 값이 없으면 `skin.liberty.footer_html`, `wiki.footer_text` 순서로 fallback합니다.
+- `skin.nova.footer_html`: 푸터에 추가로 넣을 HTML입니다. 값이 없으면 `wiki.footer_text`를 사용합니다.
 
 ### 로고
 
 - `skin.nova.navbar_logo_text`: 상단 로고 텍스트입니다.
-- `skin.nova.navbar_logo_image`: 상단 로고 이미지 URL입니다. 값이 없으면 `skin.liberty.navbar_logo_image`, `wiki.logo_url` 순서로 fallback합니다.
-- `skin.nova.navbar_logo_minimum_width`: 로고 이미지 최소 너비입니다.
-- `skin.nova.navbar_logo_width`: 로고 이미지 너비입니다.
-- `skin.nova.navbar_logo_size`: 로고 이미지 배경 크기입니다.
-- `skin.nova.navbar_logo_padding`: 로고 영역 안쪽 여백입니다.
-- `skin.nova.navbar_logo_margin`: 로고 영역 바깥 여백입니다.
+- `skin.nova.navbar_logo_image`: 상단 로고 이미지 URL입니다. Nova 전용 설정만 읽으며, 값이 없으면 텍스트 로고를 표시합니다.
+- `skin.nova.navbar_logo_width`: 로고 박스 너비입니다. 세로 크기는 스킨이 고정하고 이미지는 중앙에 `contain`으로 맞춥니다.
 
 ### 사용자 설정
 
-- `nova.sidebar`: 사이드바 표시 방식입니다. 기존 Liberty 값과 같은 흐름으로 사용합니다.
+- `nova.sidebar`: 사이드바 표시 방식입니다. `hide`로 설정하면 사이드바를 숨깁니다.
 - `nova.fixed_navbar`: 상단바를 고정합니다.
 - `nova.reset_search_on_move`: 검색 바로가기 후 검색창을 비웁니다. 기본값은 `true`입니다.
 - `nova.admin_convenience`: 관리 편의 도구를 켭니다. 기본값은 `true`입니다.
@@ -56,7 +52,7 @@ nova.admin_convenience = true
 
 공식 색상 설정은 `skin.nova.brand_color` 하나만 권장합니다. 배경, 표면, 테두리, 보조 텍스트, 다크모드 색상은 스킨 CSS에서 자동으로 파생합니다.
 
-기존 호환을 위해 `skin.nova.brand_color_1`과 `skin.liberty.brand_color_1`은 fallback으로 읽습니다. 예전 Nova의 세부 색상 키들은 더 이상 문서화하지 않습니다.
+`skin.nova.brand_color`만 공식 색상 키로 읽습니다. Liberty 설정은 fallback으로 사용하지 않습니다.
 
 ## 구조
 

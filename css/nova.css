@@ -25,11 +25,11 @@ button { cursor: pointer; }
 
 /* Nova skin frame. The wiki document body itself is left to the wiki CSS. */
 .Nova {
-    --brand: var(--liberty-brand-color, #006cf0);
-    --brand-dark: var(--liberty-brand-dark-color, color-mix(in srgb, var(--brand) 76%, #002b52));
+    --brand: var(--nova-brand-color, #006cf0);
+    --brand-dark: var(--nova-brand-dark-color, color-mix(in srgb, var(--brand) 76%, #002b52));
     --brand-deep: color-mix(in srgb, var(--brand) 66%, #001d3d);
     --brand-soft: color-mix(in srgb, var(--brand) 12%, #fff);
-    --brand-tint: var(--liberty-brand-bright-color, color-mix(in srgb, var(--brand) 10%, #fff));
+    --brand-tint: var(--nova-brand-bright-color, color-mix(in srgb, var(--brand) 10%, #fff));
     --ink: var(--brand);
     --ink-soft: var(--brand-dark);
     --accent: var(--nova-accent-color, color-mix(in srgb, var(--brand) 82%, #00a6a6));
@@ -63,10 +63,11 @@ button { cursor: pointer; }
     --nav-height: 60px;
     --page-gutter: 48px;
     --doc-frame-max: 1440px;
-    --doc-frame-pad: 48px;
+    --doc-frame-pad: 36px;
     min-height: 100vh;
     background: var(--bg);
     color: var(--text);
+    line-height: 1.5;
     font-family: "Pretendard";
     -webkit-font-smoothing: antialiased;
 }
@@ -80,19 +81,8 @@ body :where(b, strong),
     font-weight: 600 !important;
 }
 .Nova * { box-sizing: border-box; }
-.Nova a { color: #0275d8; text-decoration: none; }
-.Nova a:hover { color: #014c8c; text-decoration: underline; }
 .Nova button,
 .Nova input { font: inherit; }
-.Nova .btn {
-    appearance: none;
-    border: 1px solid transparent;
-    font: inherit;
-    text-decoration: none;
-}
-.Nova .btn:hover,
-.Nova .btn:focus { text-decoration: none; }
-.Nova .btn-secondary { color: inherit; }
 .Nova .nova-icon {
     width: 1em;
     height: 1em;
@@ -174,13 +164,12 @@ body :where(b, strong),
 }
 .Nova .brand-logo-image {
     display: block;
-    width: var(--liberty-navbar-logo-width, 6.6rem);
-    min-width: var(--liberty-navbar-logo-minimum-width, 5rem);
-    height: 1.8rem;
-    background-image: var(--liberty-navbar-logo-image, none);
+    width: var(--nova-navbar-logo-width, 8.5rem);
+    height: 32px;
+    background-image: var(--nova-navbar-logo-image, none);
     background-repeat: no-repeat;
-    background-position: left center;
-    background-size: auto var(--liberty-navbar-logo-size, 1.9rem);
+    background-position: center center;
+    background-size: contain;
 }
 .Nova .navbar-brand.has-logo .brand-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .Nova .brand-text { white-space: nowrap; }
@@ -214,6 +203,12 @@ body :where(b, strong),
 .Nova .navbar-end {
     gap: 12px;
 }
+.Nova .account-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 100%;
+}
 .Nova .navbar-item {
     display: flex;
     align-items: center;
@@ -226,7 +221,7 @@ body :where(b, strong),
     color: rgba(255, 255, 255, 0.92);
     font-size: 14.5px;
     font-weight: 650;
-    line-height: 1.2;
+    line-height: 1.5;
     white-space: nowrap;
     cursor: pointer;
     transition: background 0.15s, color 0.15s;
@@ -259,19 +254,43 @@ body :where(b, strong),
 .Nova .dropdown-panel {
     position: relative;
     z-index: 340;
-    transform-origin: top center;
+    transform-origin: 50% 0;
+    will-change: opacity, transform, clip-path;
 }
-.Nova .nova-dropdown-enter-active,
+.Nova .nova-dropdown-enter-active {
+    transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), clip-path 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
 .Nova .nova-dropdown-leave-active {
-    transition: opacity 0.16s ease, transform 0.16s ease;
+    transition: opacity 0.12s ease, transform 0.12s ease, clip-path 0.12s ease;
 }
 .Nova .nova-dropdown-enter,
 .Nova .nova-dropdown-leave-to {
     opacity: 0;
-    transform: translateY(-6px) scale(0.98);
+    transform: translateY(-8px) scaleY(0.94);
+    clip-path: inset(0 0 16px 0 round 12px);
+}
+.Nova .nova-dropdown-enter-to,
+.Nova .nova-dropdown-leave {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+    clip-path: inset(0 0 0 0 round 12px);
 }
 .Nova .dropdown.is-open .chevron {
     transform: rotate(180deg);
+}
+@media (prefers-reduced-motion: reduce) {
+    .Nova .nova-dropdown-enter-active,
+    .Nova .nova-dropdown-leave-active {
+        transition: none;
+    }
+    .Nova .nova-dropdown-enter,
+    .Nova .nova-dropdown-leave-to,
+    .Nova .nova-dropdown-enter-to,
+    .Nova .nova-dropdown-leave {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+    }
 }
 .Nova .feature-dropdown {
     min-width: 250px;
@@ -301,6 +320,13 @@ body :where(b, strong),
     cursor: pointer;
 }
 .Nova .dropdown-item .nova-icon { width: 16px; height: 16px; color: var(--text-muted); }
+.Nova .dropdown-item span,
+.Nova .dropdown-item strong {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .Nova .dropdown-item:hover {
     background: color-mix(in srgb, var(--brand) 10%, var(--surface));
     color: var(--brand-dark);
@@ -315,6 +341,17 @@ body :where(b, strong),
     align-items: center;
     gap: 10px;
     min-width: 230px;
+}
+.Nova .user-menu-header > span {
+    min-width: 0;
+    max-width: 220px;
+}
+.Nova .user-menu-header strong,
+.Nova .user-menu-header .muted {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .Nova .dropdown-avatar {
     width: 34px;
@@ -461,6 +498,8 @@ body :where(b, strong),
 .Nova .avatar {
     width: 36px;
     height: 36px;
+    flex: 0 0 36px;
+    aspect-ratio: 1;
     border-radius: 50%;
     border: 0;
     background: linear-gradient(135deg, var(--accent), #e0b563);
@@ -715,6 +754,17 @@ body :where(b, strong),
 .Nova .document-tabs:not(.is-stuck) .document-tabs-title {
     display: none;
 }
+.Nova .document-tabs:not(.is-stuck) .content-tools {
+    margin-left: auto;
+}
+@media (min-width: 1024px) {
+    .Nova .document-tabs.is-stuck .document-tabs-title {
+        margin-right: auto;
+    }
+    .Nova .document-tabs.is-stuck .content-tools {
+        margin-left: 0;
+    }
+}
 .Nova .document-tabs-title {
     flex: 0 0 min(320px, 28vw);
     min-width: 180px;
@@ -728,7 +778,7 @@ body :where(b, strong),
     gap: 9px;
     font-size: 13px;
     font-weight: 600;
-    line-height: 1.2;
+    line-height: 1.5;
     overflow: hidden;
     text-decoration: none;
 }
@@ -747,6 +797,7 @@ body :where(b, strong),
 .Nova .document-tabs .content-tools {
     width: max-content;
     min-width: 0;
+    margin-left: auto;
     float: none;
     padding: 0;
 }
@@ -774,7 +825,7 @@ body :where(b, strong),
     gap: 8px;
     font-size: 12.8px;
     font-weight: 600;
-    line-height: 1.2;
+    line-height: 1.5;
     white-space: nowrap;
     box-shadow: none;
     transition: color 0.15s, background 0.15s, transform 0.15s;
@@ -810,6 +861,12 @@ body :where(b, strong),
 }
 .Nova .document-tabs .content-tools .dropdown-menu { top: calc(100% + 8px); }
 .Nova .document-tabs .content-tools .btn-danger { color: #b9414a; }
+.Nova .document-tabs .content-tools .btn-danger,
+.Nova .document-tabs .content-tools .btn-danger:hover,
+.Nova .document-tabs .content-tools .btn-danger:focus,
+.Nova .document-tabs .content-tools .btn-danger:active {
+    border-right-color: var(--border);
+}
 .Nova .document-tabs .content-tools .btn-discuss-progress { color: var(--brand-dark); background: color-mix(in srgb, var(--brand) 10%, var(--surface)); }
 .Nova .document-tabs .content-tools .star-count {
     margin-left: 2px;
@@ -897,8 +954,8 @@ body :where(b, strong),
 .Nova .notification.is-warning { border-left: 1px solid #eddcb3; }
 .Nova .layout-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 292px;
-    column-gap: 24px;
+    grid-template-columns: minmax(0, 1fr) 260px;
+    column-gap: 20px;
     row-gap: 0;
     align-items: start;
     width: calc(100% - (var(--page-gutter) * 2));
@@ -917,6 +974,12 @@ body :where(b, strong),
     min-width: 0;
     padding-bottom: 0;
 }
+.Nova .liberty-content-main :where(.list-table, .list-table .table-row, .list-table .table-item) {
+    word-break: keep-all;
+}
+.Nova .liberty-content-main .list-table :where(.table-item:first-child a, .history-log) {
+    overflow-wrap: anywhere;
+}
 .Nova .wiki-article {
     padding: 0;
     border: 0;
@@ -924,6 +987,7 @@ body :where(b, strong),
     background: var(--article-background-color, transparent);
     box-shadow: none;
     color: var(--wiki-text);
+    line-height: 1.5;
 }
 .Nova .wiki-article a:not(.not-exist):not(.wiki-link-external):not(.wiki-link-whitelisted) {
     color: var(--wiki-link);
@@ -1122,7 +1186,7 @@ body :where(b, strong),
 .Nova .sidebar-column {
     position: relative;
     min-height: 100%;
-    padding-left: 22px;
+    padding-left: 18px;
     border-left: 1px solid var(--border);
 }
 .Nova .sidebar-sticky { position: sticky; top: 18px; }
@@ -1180,7 +1244,7 @@ body :where(b, strong),
     max-height: none;
     overflow-y: visible;
     margin: 0 !important;
-    padding: 8px !important;
+    padding: 4px 0 0 24px !important;
     background: transparent !important;
 }
 .Nova .live-recent-content li {
@@ -1192,11 +1256,11 @@ body :where(b, strong),
 .Nova .live-recent-content a,
 .Nova .live-recent-content span.recent-item {
     display: block;
-    padding: 11px 12px;
+    padding: 10px 0;
     border-radius: var(--radius-sm);
     color: var(--text) !important;
     font-size: 14px;
-    line-height: 1.4;
+    line-height: 1.5;
 }
 .Nova .live-recent-content a.recent-item {
     display: flex;
@@ -1243,7 +1307,7 @@ body :where(b, strong),
     color: var(--text-muted);
     font-size: 13.5px;
     font-weight: 650;
-    line-height: 1.35;
+    line-height: 1.5;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -1320,11 +1384,11 @@ body.theseed-dark-mode .Nova {
     color-scheme: dark;
 }
 body.theseed-dark-mode .Nova {
-    --brand: var(--liberty-brand-color, #4aa3ff);
-    --brand-dark: var(--liberty-brand-dark-color, color-mix(in srgb, var(--brand) 68%, #e8f3ff));
+    --brand: var(--nova-brand-color, #4aa3ff);
+    --brand-dark: var(--nova-brand-dark-color, color-mix(in srgb, var(--brand) 68%, #e8f3ff));
     --brand-deep: color-mix(in srgb, var(--brand) 56%, #ffffff);
     --brand-soft: color-mix(in srgb, var(--brand) 14%, #101620);
-    --brand-tint: var(--liberty-brand-bright-color, color-mix(in srgb, var(--brand) 12%, #151b24));
+    --brand-tint: var(--nova-brand-bright-color, color-mix(in srgb, var(--brand) 12%, #151b24));
     --ink: #e6edf3;
     --ink-soft: #bdc8d4;
     --accent: var(--nova-accent-color, color-mix(in srgb, var(--brand) 64%, #73d5c8));
@@ -1356,8 +1420,6 @@ body.theseed-dark-mode .Nova {
     background: var(--bg);
     color: var(--text);
 }
-body.theseed-dark-mode .Nova a { color: #6eb6ff; }
-body.theseed-dark-mode .Nova a:hover { color: #9dccff; }
 body.theseed-dark-mode .Nova .navbar {
     background: linear-gradient(90deg, color-mix(in srgb, var(--brand) 68%, #111827) 0%, color-mix(in srgb, var(--brand) 52%, #121923) 52%, color-mix(in srgb, var(--brand) 34%, #0d1117) 100%);
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.07), 0 10px 28px rgba(0, 0, 0, 0.26);
@@ -1599,11 +1661,11 @@ body.theseed-dark-mode .Nova ::selection {
     color-scheme: dark;
 }
 .Nova.nova-dark {
-    --brand: var(--liberty-brand-color, #4aa3ff);
-    --brand-dark: var(--liberty-brand-dark-color, color-mix(in srgb, var(--brand) 68%, #e8f3ff));
+    --brand: var(--nova-brand-color, #4aa3ff);
+    --brand-dark: var(--nova-brand-dark-color, color-mix(in srgb, var(--brand) 68%, #e8f3ff));
     --brand-deep: color-mix(in srgb, var(--brand) 56%, #ffffff);
     --brand-soft: color-mix(in srgb, var(--brand) 14%, #101620);
-    --brand-tint: var(--liberty-brand-bright-color, color-mix(in srgb, var(--brand) 12%, #151b24));
+    --brand-tint: var(--nova-brand-bright-color, color-mix(in srgb, var(--brand) 12%, #151b24));
     --ink: #e6edf3;
     --ink-soft: #bdc8d4;
     --accent: var(--nova-accent-color, color-mix(in srgb, var(--brand) 64%, #73d5c8));
@@ -1635,8 +1697,6 @@ body.theseed-dark-mode .Nova ::selection {
     background: var(--bg);
     color: var(--text);
 }
-.Nova.nova-dark a { color: #6eb6ff; }
-.Nova.nova-dark a:hover { color: #9dccff; }
 .Nova.nova-dark .navbar {
     background: linear-gradient(90deg, color-mix(in srgb, var(--brand) 68%, #111827) 0%, color-mix(in srgb, var(--brand) 52%, #121923) 52%, color-mix(in srgb, var(--brand) 34%, #0d1117) 100%);
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.07), 0 10px 28px rgba(0, 0, 0, 0.26);
@@ -1876,14 +1936,14 @@ body.theseed-dark-mode .Nova ::selection {
 @media (min-width: 1024px) and (max-width: 1180px) {
     .Nova {
         --page-gutter: 24px;
-        --doc-frame-pad: 32px;
+        --doc-frame-pad: 28px;
     }
     .Nova .layout-grid {
-        grid-template-columns: minmax(0, 1fr) 248px;
-        column-gap: 20px;
+        grid-template-columns: minmax(0, 1fr) 228px;
+        column-gap: 16px;
     }
     .Nova .sidebar-column {
-        padding-left: 18px;
+        padding-left: 14px;
     }
     .Nova .document-tabs-title {
         flex-basis: 220px;
@@ -1987,6 +2047,30 @@ body.theseed-dark-mode .Nova ::selection {
     }
     .Nova .navbar-end > #searchform,
     .Nova .navbar-end > .form-inline { display: none; }
+    .Nova .navbar-menu .account-actions {
+        position: relative;
+        display: flex;
+        width: 100%;
+        height: auto;
+        align-items: stretch;
+        gap: 8px;
+    }
+    .Nova .navbar-menu .account-actions .user-dropdown {
+        order: 1;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+    .Nova .navbar-menu .account-actions .notification-dropdown {
+        order: 2;
+        flex: 0 0 58px;
+    }
+    .Nova .navbar-menu .account-actions .dropdown-panel {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        left: 0;
+        z-index: 20;
+    }
     .Nova .navbar-menu .navbar-item {
         width: 100%;
         min-height: 44px;
@@ -2004,25 +2088,33 @@ body.theseed-dark-mode .Nova ::selection {
         color: var(--brand-dark);
     }
     .Nova .navbar-menu .notification-toggle {
-        width: 100%;
-        min-height: 44px;
-        justify-content: flex-start;
-        padding: 10px 12px;
+        width: 58px;
+        min-height: 72px;
+        justify-content: center;
+        padding: 0;
+        border: 1px solid color-mix(in srgb, var(--brand) 16%, var(--border));
+        border-radius: 12px;
+        background: color-mix(in srgb, var(--brand) 7%, var(--surface));
     }
     .Nova .navbar-menu .notification-toggle::after {
-        content: "알림";
-        color: var(--text);
-        font-size: 15px;
-        font-weight: 600;
+        display: none;
+        content: none;
+    }
+    .Nova .navbar-menu .notification-toggle > .nova-icon {
+        width: 20px;
+        height: 20px;
     }
     .Nova .navbar-menu .notification-badge {
-        position: static;
-        margin-left: auto;
+        position: absolute;
+        top: 11px;
+        right: 10px;
+        margin-left: 0;
         border-color: var(--surface);
     }
     .Nova .navbar-menu .notification-menu {
         width: 100%;
         max-width: none;
+        margin: 0;
     }
     .Nova .navbar-menu .avatar-toggle {
         min-height: 72px;
@@ -2031,14 +2123,22 @@ body.theseed-dark-mode .Nova ::selection {
         border-radius: 12px;
         background: color-mix(in srgb, var(--brand) 7%, var(--surface));
         gap: 12px;
+        overflow: hidden;
+    }
+    .Nova .navbar-menu .avatar-toggle .avatar {
+        width: 46px;
+        height: 46px;
+        flex-basis: 46px;
     }
     .Nova .navbar-menu .avatar-summary {
         display: flex;
+        flex: 1 1 auto;
         min-width: 0;
+        max-width: 100%;
         flex-direction: column;
         gap: 3px;
         text-align: left;
-        line-height: 1.25;
+        line-height: 1.5;
     }
     .Nova .navbar-menu .avatar-summary strong {
         color: var(--text);
@@ -2055,6 +2155,12 @@ body.theseed-dark-mode .Nova ::selection {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+    .Nova .navbar-menu .user-dropdown .user-menu-header,
+    .Nova .navbar-menu .user-dropdown .user-menu-header + .dropdown-divider,
+    .Nova .navbar-menu .login-dropdown-menu .user-menu-header,
+    .Nova .navbar-menu .login-dropdown-menu .user-menu-header + .dropdown-divider {
+        display: none !important;
     }
     .Nova .navbar-menu .chevron { margin-left: auto; color: var(--text-muted); }
     .Nova .navbar-menu .dropdown-menu {
@@ -2169,14 +2275,23 @@ body.theseed-dark-mode .Nova ::selection {
     }
     .Nova .mobile-side-panel .live-recent {
         padding: 0;
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        background: var(--surface);
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
     }
-    .Nova .mobile-side-panel .live-recent-header { padding: 12px 14px; border-bottom: 1px solid var(--border); }
-    .Nova .mobile-side-panel .live-recent-footer { padding: 8px 14px 12px; }
-    .Nova .mobile-side-panel .live-recent + .live-recent { padding-top: 0; border-top: 1px solid var(--border); }
-    .Nova .mobile-side-panel .live-recent + .live-recent { margin-top: 12px; }
+    .Nova .mobile-side-panel .live-recent-header {
+        padding: 0 0 10px;
+        border-bottom: 0;
+    }
+    .Nova .mobile-side-panel .live-recent-footer {
+        padding: 8px 0 0;
+    }
+    .Nova .mobile-side-panel .live-recent + .live-recent {
+        margin-top: 18px;
+        padding-top: 18px;
+        border-top: 1px solid var(--border);
+    }
 }
 
 @media (max-width: 860px) {
@@ -2195,7 +2310,7 @@ body.theseed-dark-mode .Nova ::selection {
 }
 
 @media (max-width: 640px) {
-    .Nova { --page-gutter: 10px; --doc-frame-pad: 22px; }
+    .Nova { --page-gutter: 10px; --doc-frame-pad: 14px; }
     .Nova .container { padding-right: var(--page-gutter); padding-left: var(--page-gutter); }
     .Nova .hero-inner { padding-right: var(--doc-frame-pad); padding-left: var(--doc-frame-pad); }
     .Nova .navbar-inner { padding-right: 8px; padding-left: 8px; }

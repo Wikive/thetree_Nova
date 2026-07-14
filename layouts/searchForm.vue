@@ -69,7 +69,7 @@ export default {
     },
     watch: {
         $route() {
-            if ((this.$store.state.localConfig["nova.reset_search_on_move"] ?? this.$store.state.localConfig["liberty.reset_search_on_move"]) !== false) this.reset();
+            if ((this.$store.state.localConfig["nova.reset_search_on_move"] ?? true) !== false) this.reset();
         }
     }
 }

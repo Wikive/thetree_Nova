@@ -63,7 +63,7 @@
 .content-tools .tools-btn.btn-danger:focus,
 .content-tools .tools-btn.btn-danger:active {
     background-color: color-mix(in srgb, #d9534f 16%, var(--surface, #fff));
-    border-color: color-mix(in srgb, #d9534f 45%, var(--border, #d8e1ec));
+    border-color: var(--border, #d8e1ec);
     color: #d9534f;
 }
 
@@ -248,7 +248,7 @@ export default {
                                 to: this.contribution_link(this.data.user.uuid),
                                 title: "기여 목록"
                             });
-                            if (this.$store.state.session.quick_block && (this.$store.state.localConfig['nova.admin_convenience'] ?? this.$store.state.localConfig['liberty.admin_convenience']) !== false) {
+                            if (this.$store.state.session.quick_block && (this.$store.state.localConfig['nova.admin_convenience'] ?? true) !== false) {
                                 this.menu.push({
                                     class: 'admin',
                                     onclick: () => this.openQuickACLGroup({
@@ -436,7 +436,7 @@ export default {
                         class: this.data.account.type === 1 ? '' : 'disabled',
                         title: "사용자 문서"
                     });
-                    if (this.$store.state.session.quick_block && (this.$store.state.localConfig['nova.admin_convenience'] ?? this.$store.state.localConfig['liberty.admin_convenience']) !== false) {
+                    if (this.$store.state.session.quick_block && (this.$store.state.localConfig['nova.admin_convenience'] ?? true) !== false) {
                         if (this.data.account.type !== -1) this.menu.push({
                             class: 'admin',
                             onclick: () => this.openQuickACLGroup({

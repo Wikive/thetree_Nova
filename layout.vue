@@ -63,17 +63,14 @@
                                     <nuxt-link to="/admin/config" class="dropdown-item admin-feature"><nova-icon name="gear" />설정</nuxt-link>
                                     <nuxt-link to="/admin/developer" class="dropdown-item admin-feature"><nova-icon name="terminal" />개발자 설정</nuxt-link>
                                 </template>
-                                <template v-if="$store.state.session.menus.length">
-                                    <div class="dropdown-divider"></div>
-                                    <nuxt-link v-for="m in $store.state.session.menus" :key="m.l" :to="m.l" class="dropdown-item">{{ m.t }}</nuxt-link>
-                                </template>
                             </div>
                         </dropdown>
                     </div>
 
                     <div class="navbar-end">
                         <search-form />
-                        <dropdown v-if="$store.state.session.account.type === 1" class="notification-dropdown">
+                        <div class="account-actions">
+                            <dropdown class="notification-dropdown">
                             <template #toggle>
                                 <button class="navbar-item notification-toggle" type="button" aria-label="알림">
                                     <nova-icon name="bell" />
@@ -84,8 +81,8 @@
                                 <div class="notification-menu-header">
                                     <strong>최근 알림</strong>
                                     <div class="notification-actions">
-                                        <a v-if="notificationCount" href="#" @click.prevent="markAllNotificationsRead">모두 읽음</a>
-                                        <nuxt-link to="/member/notifications">전체 보기</nuxt-link>
+                                        <a v-if="isLoggedIn && notificationCount" href="#" @click.prevent="markAllNotificationsRead">모두 읽음</a>
+                                        <nuxt-link v-if="isLoggedIn" to="/member/notifications">전체 보기</nuxt-link>
                                     </div>
                                 </div>
                                 <div v-if="notificationCount" class="notification-list">
@@ -103,7 +100,7 @@
                                 </div>
                             </div>
                         </dropdown>
-                        <dropdown class="user-dropdown">
+                            <dropdown class="user-dropdown">
                             <template #toggle>
                                 <button class="navbar-item avatar-toggle" type="button" aria-label="사용자 메뉴">
                                     <img v-if="$store.state.session.gravatar_url" class="avatar profile-img" :src="$store.state.session.gravatar_url" alt="">
@@ -140,7 +137,8 @@
                                 <nuxt-link v-if="$store.state.session.account.type === 1" :to="{path:'/member/logout',query:{redirect:$route.fullPath}}" class="dropdown-item"><nova-icon name="logout" />로그아웃</nuxt-link>
                                 <nuxt-link v-else :to="{path:'/member/login',query:{redirect:$route.fullPath}}" class="dropdown-item"><nova-icon name="login" />로그인</nuxt-link>
                             </div>
-                        </dropdown>
+                            </dropdown>
+                        </div>
                     </div>
                 </nav>
             </div>
@@ -153,13 +151,12 @@
                 </div>
                 <h1 class="hero-title" v-if="$store.state.page.data.document && $store.state.page.viewName !== 'error'">
                     <nuxt-link :to="doc_action_link($store.state.page.data.document, 'w')"><span v-if="$store.state.page.data.document.forceShowNamespace !== false" class="namespace">{{$store.state.page.data.document.namespace}}:</span>{{$store.state.page.data.document.title}}</nuxt-link>
-                    <small v-if="pageStateSuffix" class="doc-state-chip">{{ pageStateSuffix }}</small>
+                    <small v-if="normalizedPageStateSuffix" class="doc-state-chip">{{ normalizedPageStateSuffix }}</small>
                 </h1>
                 <h1 class="hero-title" v-else>{{ $store.state.page.title }}</h1>
                 <div class="doc-meta" v-if="documentMetaItems.length || $store.state.page.data.date">
                     <span v-if="$store.state.page.data.date" class="doc-meta-chip updated-chip">
                         <nova-icon name="clock" />
-                        <span class="meta-label">최근 변경</span>
                         <strong><local-date :date="$store.state.page.data.date" /></strong>
                     </span>
                     <template v-for="(item, index) in documentMetaItems" :key="item + index">
@@ -207,7 +204,7 @@
 
         <div class="container layout-grid" :class="{ 'hide-sidebar': sidebarMode === 'hide' || sidebarMode === 'footer' }">
             <main class="content-column">
-                <div class="liberty-content-main wiki-article">
+                <div class="liberty-content-main" :class="{ 'wiki-article': $store.state.page.viewName === 'wiki' }">
                     <alert v-if="$store.state.page.viewName === 'notfound' && $store.state.page.data.document.namespace === '문서'" style="line-height: 2.1rem;">
                         '{{ $store.state.page.title }}'을(를) 검색하시겠습니까?
                         <div class="float-right"><seed-link-button :to="'/Search?q='+ $store.state.page.title">검색</seed-link-button></div>
@@ -273,7 +270,7 @@
                     <li v-if="$store.state.page.data.rev" class="footer-info-lastmod">이 리비전은 <local-date :date="$store.state.page.data.date" />에 편집되었습니다.</li>
                     <li v-else class="footer-info-lastmod">이 문서는 <local-date :date="$store.state.page.data.date" />에 마지막으로 편집되었습니다.</li>
                 </ul>
-                <ul class="footer-places footer-links" @click="onDynamicContentClick($event)" v-html="$store.state.config['skin.nova.footer_html'] || $store.state.config['skin.liberty.footer_html'] || $store.state.config['wiki.footer_text']" />
+                <ul class="footer-places footer-links" @click="onDynamicContentClick($event)" v-html="$store.state.config['skin.nova.footer_html'] || $store.state.config['wiki.footer_text']" />
                 <div class="footer-powered">
                     <p class="footer-credit"><a href="https://github.com/Wikive/thetree_Nova" target="_blank" rel="noopener noreferrer">Nova Skin</a> runs on <a href="https://github.com/wjdgustn/thetree" target="_blank" rel="noopener noreferrer">the tree</a>.</p>
                 </div>
@@ -387,27 +384,30 @@ export default {
             const body = data.body || {};
             switch (this.$store.state.page.viewName) {
                 case 'edit_edit_request':
-                case 'edit_request': return '(편집 요청)';
+                case 'edit_request': return '편집 요청';
                 case 'edit':
-                    if (body.section) return `(r${body.baserev} 문단 편집)`;
-                    if (body.baserev === '0') return '(새 문서 생성)';
-                    return body.baserev ? `(r${body.baserev} 편집)` : '(편집)';
-                case 'history': return '(역사)';
-                case 'backlink': return '(역링크)';
-                case 'move': return '(이동)';
-                case 'delete': return '(삭제)';
-                case 'acl': return '(ACL)';
-                case 'thread': return '(토론)';
-                case 'thread_list': return '(토론 목록)';
-                case 'thread_list_close': return '(닫힌 토론)';
-                case 'edit_request_close': return '(닫힌 편집 요청)';
-                case 'diff': return '(비교)';
-                case 'revert': return data.rev ? `(r${data.rev}로 되돌리기)` : '(되돌리기)';
-                case 'raw': return data.rev ? `(r${data.rev} RAW)` : '(RAW)';
-                case 'blame': return data.rev ? `(r${data.rev} Blame)` : '(Blame)';
-                case 'wiki': return data.rev ? `(r${data.rev} 판)` : '';
+                    if (body.section) return `r${body.baserev} 문단 편집`;
+                    if (body.baserev === '0') return '새 문서 생성';
+                    return body.baserev ? `r${body.baserev} 편집` : '편집';
+                case 'history': return '역사';
+                case 'backlink': return '역링크';
+                case 'move': return '이동';
+                case 'delete': return '삭제';
+                case 'acl': return 'ACL';
+                case 'thread': return '토론';
+                case 'thread_list': return '토론 목록';
+                case 'thread_list_close': return '닫힌 토론';
+                case 'edit_request_close': return '닫힌 편집 요청';
+                case 'diff': return '비교';
+                case 'revert': return data.rev ? `r${data.rev}로 되돌리기` : '되돌리기';
+                case 'raw': return data.rev ? `r${data.rev} RAW` : 'RAW';
+                case 'blame': return data.rev ? `r${data.rev} Blame` : 'Blame';
+                case 'wiki': return data.rev ? `r${data.rev} 판` : '';
                 default: return '';
             }
+        },
+        normalizedPageStateSuffix() {
+            return String(this.pageStateSuffix || '').replace(/^\((.*)\)$/, '$1');
         },
         accountName() {
             return this.$store.state.session.account.name || '익명 사용자';
@@ -416,7 +416,7 @@ export default {
             return (this.accountName || '익').charAt(0);
         },
         accountDescription() {
-            return this.$store.state.session.account.type === 1 ? 'Member' : '로그인 후 더 많은 기능을 이용하세요';
+            return this.$store.state.session.account.type === 1 ? 'Member' : '로그인이 필요합니다';
         },
         documentKindLabel() {
             const page = this.$store.state.page;
@@ -448,9 +448,7 @@ export default {
             return crumbs;
         },
         documentMetaItems() {
-            const items = [];
-            if (this.documentRevisionLabel) items.push(this.documentRevisionLabel);
-            return items;
+            return [];
         },
         documentRevisionLabel() {
             const data = this.$store.state.page.data;
@@ -463,37 +461,29 @@ export default {
             return !!(session.quick_block || (session.menus || []).some(m => /^\/(admin|aclgroup)(\/|$)/.test(m.l)));
         },
         brand_color() {
-            return this.configValue(['skin.nova.brand_color', 'skin.nova.brand_color_1', 'skin.liberty.brand_color_1'], '#006cf0');
+            return this.configValue(['skin.nova.brand_color'], '#006cf0');
         },
         sidebarMode() {
-            return this.$store.state.localConfig['nova.sidebar'] ?? this.$store.state.localConfig['liberty.sidebar'];
+            return this.$store.state.localConfig['nova.sidebar'];
         },
         fixedNavbar() {
-            return this.$store.state.localConfig['nova.fixed_navbar'] ?? this.$store.state.localConfig['liberty.fixed_navbar'];
+            return this.$store.state.localConfig['nova.fixed_navbar'];
         },
         navbarLogoText() {
-            return this.$store.state.config['skin.nova.navbar_logo_text'] ?? this.$store.state.config['skin.liberty.navbar_logo_text'] ?? 'Nova';
+            return this.$store.state.config['skin.nova.navbar_logo_text'] ?? 'Nova';
         },
         navbarLogoImage() {
-            return this.$store.state.config['skin.nova.navbar_logo_image'] || this.$store.state.config['skin.liberty.navbar_logo_image'] || this.$store.state.config['wiki.logo_url'];
+            return this.$store.state.config['skin.nova.navbar_logo_image'];
         },
         skinConfig() {
             return {
-                '--liberty-brand-color': this.brand_color,
-                '--liberty-brand-dark-color': this.selectByTheme('color-mix(in srgb, var(--liberty-brand-color) 76%, #002b52)', 'color-mix(in srgb, var(--liberty-brand-color) 72%, #d9ecff)'),
-                '--liberty-brand-bright-color': this.selectByTheme('color-mix(in srgb, var(--liberty-brand-color) 10%, #fff)', 'color-mix(in srgb, var(--liberty-brand-color) 36%, #fff)'),
-                '--nova-accent-color': this.selectByTheme('color-mix(in srgb, var(--liberty-brand-color) 82%, #00a6a6)', 'color-mix(in srgb, var(--liberty-brand-color) 62%, #fff)'),
-                '--nova-warm-color': this.selectByTheme('color-mix(in srgb, var(--liberty-brand-color) 82%, #00a6a6)', 'color-mix(in srgb, var(--liberty-brand-color) 62%, #fff)'),
-                '--liberty-navbar-logo-image': this.cssUrl(this.navbarLogoImage),
-                '--liberty-navbar-logo-minimum-width': this.configValue(['skin.nova.navbar_logo_minimum_width', 'skin.liberty.navbar_logo_minimum_width']),
-                '--liberty-navbar-logo-width': this.configValue(['skin.nova.navbar_logo_width', 'skin.liberty.navbar_logo_width']),
-                '--liberty-navbar-logo-size': this.configValue(['skin.nova.navbar_logo_size', 'skin.liberty.navbar_logo_size']),
-                '--liberty-navbar-logo-padding': this.configValue(['skin.nova.navbar_logo_padding', 'skin.liberty.navbar_logo_padding']),
-                '--liberty-navbar-logo-margin': this.configValue(['skin.nova.navbar_logo_margin', 'skin.liberty.navbar_logo_margin']),
-                '--brand-color-1': 'var(--liberty-brand-color)',
-                '--brand-color-2': 'var(--liberty-brand-color)',
-                '--brand-bright-color-1': 'var(--liberty-brand-bright-color)',
-                '--brand-bright-color-2': 'var(--liberty-brand-bright-color)',
+                '--nova-brand-color': this.brand_color,
+                '--nova-brand-dark-color': this.selectByTheme('color-mix(in srgb, var(--nova-brand-color) 76%, #002b52)', 'color-mix(in srgb, var(--nova-brand-color) 72%, #d9ecff)'),
+                '--nova-brand-bright-color': this.selectByTheme('color-mix(in srgb, var(--nova-brand-color) 10%, #fff)', 'color-mix(in srgb, var(--nova-brand-color) 36%, #fff)'),
+                '--nova-accent-color': this.selectByTheme('color-mix(in srgb, var(--nova-brand-color) 82%, #00a6a6)', 'color-mix(in srgb, var(--nova-brand-color) 62%, #fff)'),
+                '--nova-warm-color': this.selectByTheme('color-mix(in srgb, var(--nova-brand-color) 82%, #00a6a6)', 'color-mix(in srgb, var(--nova-brand-color) 62%, #fff)'),
+                '--nova-navbar-logo-image': this.cssUrl(this.navbarLogoImage),
+                '--nova-navbar-logo-width': this.configValue(['skin.nova.navbar_logo_width'], '8.5rem'),
                 '--text-color': this.selectByTheme('#1f2937', '#e6edf3'),
                 '--article-background-color': 'transparent',
                 '--nova-bg-color': this.selectByTheme('#f8fafc', '#0d1117'),
@@ -508,6 +498,9 @@ export default {
         },
         showUserDiscussNotice() {
             return this.$store.state.session.user_document_discuss && this.$store.state.localConfig['wiki.hide_user_document_discuss'] !== this.$store.state.session.user_document_discuss;
+        },
+        isLoggedIn() {
+            return this.$store.state.session.account.type === 1;
         },
         notificationCount() {
             const notifications = this.$store.state.session.notifications;
@@ -603,7 +596,7 @@ export default {
             return '새 알림이 있습니다.';
         },
         async markAllNotificationsRead() {
-            if (!this.notificationCount) return;
+            if (!this.isLoggedIn || !this.notificationCount) return;
             await this.internalRequestAndProcess('/member/notifications/read', { method: 'POST' });
         },
         onStickyScroll() {
