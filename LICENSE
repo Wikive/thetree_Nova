@@ -1,4 +1,6 @@
-Nova Skin License Notice
+Nova Skin v2 License Notice
+
+Version: v2
 
 Nova Skin is a the tree skin based on the Liberty skin structure and implementation.
 
@@ -8,4 +10,6 @@ Original projects:
 - Liberty Skin: https://github.com/librewiki/liberty-skin
 - thetree-skin-liberty: https://github.com/wjdgustn/thetree-skin-liberty
 
-Portions derived from those projects remain subject to their original licenses and notices. Nova-specific changes are provided as part of this skin package.
+Liberty Skin is distributed under the GPL 3.0 license. Portions derived from Liberty Skin and related projects remain subject to their original licenses and notices. If modified Liberty-derived portions are distributed, the corresponding modified source code must be made available under the same GPL 3.0 terms. Anyone distributing a modified Nova Skin v2 should comply with the GPL 3.0 obligations for the Liberty-derived portions and related changes.
+
+Nova-specific changes are provided as part of this skin package.

@@ -8,10 +8,12 @@
                 <template v-for="(r,i) in items" :key="itemKey(r, i)">
                     <li v-if="i < limit">
                         <nuxt-link v-if="source === 'discuss'" class="recent-item" :class="$style['recent-item']" :to="discussLink(r)">
-                            [<local-date :date="discussDate(r)" :format="getDateType(discussDate(r))" />] {{ discussTitle(r) }}
+                            <span class="recent-title" :class="$style['recent-title']">{{ discussTitle(r) }}</span>
+                            <span class="recent-time" :class="$style['recent-time']">{{ relativeTime(discussDate(r)) }}</span>
                         </nuxt-link>
                         <nuxt-link v-else class="recent-item" :class="[$style['recent-item'], { [$style.removed]: r.status === 'delete', 'removed': r.status === 'delete' }]" :to="doc_action_link(r.document, 'w')">
-                            [<local-date :date="r.date" :format="getDateType(r.date)" />] {{ r.document }}
+                            <span class="recent-title" :class="$style['recent-title']">{{ r.document }}</span>
+                            <span class="recent-time" :class="$style['recent-time']">{{ relativeTime(r.date) }}</span>
                         </nuxt-link>
                     </li>
                 </template>
@@ -21,8 +23,8 @@
 </template>
 <style module scoped>
 .live-recent-content {
-    background-color: #fff;
-    border: 1px solid #e1e8ed;
+    background-color: var(--surface, #fff);
+    border: 1px solid var(--border, #d8e1ec);
     border-top: 0;
 }
 
@@ -33,12 +35,8 @@
 }
 
 .live-recent-content .live-recent-list li {
-    border-bottom: 1px solid #e1e8ed;
-    padding: 0.2rem 0.6rem;
-}
-
-:global(.theseed-dark-mode) .live-recent-content .live-recent-list li {
-    border-color: #777;
+    border-bottom: 1px solid var(--border, #d8e1ec);
+    padding: 0.35rem 0.65rem;
 }
 
 .live-recent-content .live-recent-list li:last-child {
@@ -46,17 +44,33 @@
 }
 
 .live-recent-content .live-recent-list .recent-item {
-    font-size: 0.80rem;
-    color: #373a3c;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--text, #1f2937);
 }
 
-:global(.theseed-dark-mode) .live-recent-content .live-recent-list .recent-item {
-	color: #ddd;
+.live-recent-content .live-recent-list .recent-title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 650;
+}
+
+.live-recent-content .live-recent-list .recent-time {
+    flex: none;
+    color: var(--text-muted, #5f6b7a);
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 .live-recent-content .live-recent-list .recent-item .new {
-    font-size: 0.80rem;
-    color: #b73333;
+    font-size: 0.82rem;
+    color: #d14b55;
 }
 
 .live-recent-content .live-recent-list .recent-item.removed {
@@ -88,9 +102,17 @@ export default {
         }
     },
     methods: {
-        getDateType(date) {
+        relativeTime(date) {
+            const timestamp = Number(date) || 0;
+            if (!timestamp) return '';
             const now = Math.floor((new Date()).getTime() / 1000);
-            return (now - 86400) > date ? 'Y/m/d' : 'H:i:s';
+            const diff = Math.max(0, now - timestamp);
+            if (diff < 60) return '방금 전';
+            if (diff < 3600) return Math.floor(diff / 60) + '분 전';
+            if (diff < 86400) return Math.floor(diff / 3600) + '시간 전';
+            if (diff < 2592000) return Math.floor(diff / 86400) + '일 전';
+            if (diff < 31536000) return Math.floor(diff / 2592000) + '개월 전';
+            return Math.floor(diff / 31536000) + '년 전';
         },
         itemKey(item, index) {
             return item.url || item.document || index;

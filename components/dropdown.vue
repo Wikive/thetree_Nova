@@ -1,7 +1,9 @@
 <template>
-    <div ref="dropdown" class="dropdown">
+    <div ref="dropdown" class="dropdown" :class="{ 'is-open': show }">
         <div @click="toggle"><slot name="toggle"></slot></div>
-        <div v-if="show" @click="hide" :class="{ 'open': show }"><slot></slot></div>
+        <transition name="nova-dropdown">
+            <div v-if="show" @click="hide" class="dropdown-panel" :class="{ 'open': show }"><slot></slot></div>
+        </transition>
     </div>
 </template>
 

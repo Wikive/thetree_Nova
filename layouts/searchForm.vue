@@ -1,6 +1,7 @@
 <template>
     <form id="searchform" class="form-inline" @submit.prevent>
         <div class="input-group">
+            <button type="button" name="random" value="랜덤" class="btn btn-secondary search-action search-random" aria-label="랜덤 문서" title="랜덤 문서" @click="onClickRandom"><nova-icon name="shuffle" /></button>
             <div class="input-search">
                 <input type="search" name="q" placeholder="검색" accesskey="f" class="form-control" id="searchInput" autocomplete="off" v-on:input="searchText = $event.target.value" v-model="searchTextModel" @blur="blur" @focus="focus" @input="inputChange" @keydown.enter="keyEnter" @keydown.tab="keyEnter" @keydown.up="keyUp" @keydown.down="keyDown">
                 <div v-if="show" class="v-autocomplete-list">
@@ -10,7 +11,8 @@
                 </div>
             </div>
             <span class="input-group-btn">
-              <button type="submit" name="fulltext" value="검색" class="btn btn-secondary search-submit" aria-label="검색" @click="onClickSearch"><span class="fa fa-search"></span></button>
+              <button type="submit" name="fulltext" value="검색" class="btn btn-secondary search-action search-submit" aria-label="검색" title="검색" @click="onClickSearch"><nova-icon name="search" /></button>
+              <button type="button" name="go" value="바로가기" class="btn btn-secondary search-action search-move" aria-label="바로가기" @click="onClickMove"><nova-icon name="arrowRight" /></button>
             </span>
         </div>
     </form>
@@ -20,9 +22,10 @@
 .v-autocomplete-list {
     position: absolute;
     z-index: 3;
-    border: 1px solid #CCC;
-    background-color: #fff;
     width: 10.8rem;
+    border: 1px solid var(--border, #d8e1ec);
+    background-color: var(--surface, #fff);
+    box-shadow: var(--shadow, 0 12px 32px rgba(31, 41, 55, 0.08));
 }
 
 @media (max-width: 1023px) {
@@ -31,36 +34,25 @@
     }
 }
 
-.theseed-dark-mode .v-autocomplete-list {
-    background-color: #2d2f34;
-    border: 1px solid #383b40;
-}
-
 .v-autocomplete-list-item {
     cursor: pointer;
-    color: #373a3c;
+    color: var(--text, #1f2937);
     padding: 0.5rem;
     word-break: break-all;
 }
 
-.theseed-dark-mode .v-autocomplete-list-item {
-    color: #ddd;
-}
-
 .v-autocomplete-list-item.v-autocomplete-item-active {
-    background-color: #f3f6fa;
-}
-
-.theseed-dark-mode .v-autocomplete-list-item.v-autocomplete-item-active {
-    background-color: #383b40;
+    background-color: color-mix(in srgb, var(--brand, #006cf0) 12%, var(--surface, #fff));
 }
 </style>
 
 <script>
 import AutocompleteMixin from '~/mixins/autocomplete';
 import Common from '~/mixins/common';
+import NovaIcon from '../components/NovaIcon';
 
 export default {
+    components: { NovaIcon },
     mixins: [AutocompleteMixin],
     methods: {
         onClickSearch() {
@@ -70,6 +62,9 @@ export default {
         onClickMove() {
             if (!this.searchText) return;
             this.$router.push(Common.methods.doc_action_link(this.searchText, 'w'));
+        },
+        onClickRandom() {
+            this.$router.push('/RandomPage');
         }
     },
     watch: {

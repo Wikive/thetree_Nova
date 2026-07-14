@@ -1,98 +1,176 @@
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+@import "./font/Pretendard.css";
 
-/* Nova skin design layer. The wiki document body itself is left to the wiki CSS. */
+html {
+    box-sizing: border-box;
+    font-family: "Pretendard";
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+*,
+*::before,
+*::after { box-sizing: inherit; }
+body {
+    margin: 0;
+    font-family: "Pretendard";
+    background-color: var(--nova-bg-color, #f8fafc);
+}
+button,
+input,
+textarea,
+select { font: inherit; }
+button { cursor: pointer; }
+[hidden] { display: none !important; }
+.clearfix::after { display: table; clear: both; content: ""; }
+.float-right { float: right; }
+
+/* Nova skin frame. The wiki document body itself is left to the wiki CSS. */
 .Nova {
-    --brand: var(--liberty-brand-color, #7c3aed);
-    --brand-dark: var(--liberty-brand-dark-color, #4f46e5);
-    --brand-bright: var(--liberty-brand-bright-color, #22d3ee);
-    --accent: var(--nova-warm-color, #f97316);
-    --accent-2: #10b981;
-    --bg: var(--nova-bg-color, #f6f7fb);
+    --brand: var(--liberty-brand-color, #006cf0);
+    --brand-dark: var(--liberty-brand-dark-color, color-mix(in srgb, var(--brand) 76%, #002b52));
+    --brand-deep: color-mix(in srgb, var(--brand) 66%, #001d3d);
+    --brand-soft: color-mix(in srgb, var(--brand) 12%, #fff);
+    --brand-tint: var(--liberty-brand-bright-color, color-mix(in srgb, var(--brand) 10%, #fff));
+    --ink: var(--brand);
+    --ink-soft: var(--brand-dark);
+    --accent: var(--nova-accent-color, color-mix(in srgb, var(--brand) 82%, #00a6a6));
+    --accent-tint: color-mix(in srgb, var(--accent) 12%, #fff);
+    --bg: var(--nova-bg-color, #f8fafc);
     --surface: var(--nova-surface-color, #fff);
-    --surface-2: var(--nova-surface-soft-color, #fbfcff);
-    --border: var(--nova-border-color, #e3e7ef);
-    --text: var(--text-color, #30343b);
-    --text-muted: var(--nova-muted-color, #6b7280);
-    --shadow: 0 1px 2px rgba(32, 42, 68, 0.06), 0 10px 28px rgba(32, 42, 68, 0.08);
-    --glow: 0 14px 40px rgba(124, 58, 237, 0.20);
-    --radius: 8px;
-    --radius-sm: 6px;
-    --nav-height: 54px;
+    --surface-2: var(--nova-surface-soft-color, #f8fbff);
+    --border: var(--nova-border-color, #d8e1ec);
+    --text: var(--text-color, #212529);
+    --text-muted: var(--nova-muted-color, #666);
+    --wiki-page-bg: #fff;
+    --wiki-text: #212529;
+    --wiki-comment: #008000;
+    --wiki-table-bg: #f5f5f5;
+    --wiki-table-border: #ddd;
+    --wiki-link: #0275d8;
+    --wiki-link-hover: #0263b8;
+    --wiki-link-missing: #f00;
+    --wiki-link-external: #090;
+    --wiki-link-muted: #808080;
+    --wiki-rule: #ccc;
+    --wiki-quote-line: #71bc6d;
+    --wiki-quote-bg: #eee;
+    --wiki-quote-border: #ccc;
+    --wiki-redirect-bg: #aacdec;
+    --wiki-redirect-text: #0b3574;
+    --wiki-namespace-bg: #d4f0e3;
+    --shadow: 0 1px 2px rgba(37, 99, 235, 0.04), 0 12px 32px rgba(31, 41, 55, 0.08);
+    --radius: 10px;
+    --radius-sm: 7px;
+    --nav-height: 60px;
+    --page-gutter: 48px;
+    --doc-frame-max: 1440px;
+    --doc-frame-pad: 48px;
     min-height: 100vh;
-    background-color: var(--bg);
-    background-image:
-        radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--brand) 13%, transparent), transparent 28rem),
-        radial-gradient(circle at 88% 6rem, color-mix(in srgb, var(--brand-bright) 14%, transparent), transparent 24rem);
+    background: var(--bg);
     color: var(--text);
-    font-family: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    font-family: "Pretendard";
+    -webkit-font-smoothing: antialiased;
 }
 
-body {
-    background-color: var(--nova-bg-color, #f6f7fb);
+body,
+body :where(.modal, .modal-content, .modal-dialog, .setting, .setting-item, .setting-modal, .modal b, .modal strong, .modal em, .modal i, .setting b, .setting strong, .setting em, .setting i) {
+    font-family: "Pretendard";
+}
+body :where(b, strong),
+.Nova :where(b, strong) {
+    font-weight: 600 !important;
 }
 .Nova * { box-sizing: border-box; }
-.Nova a { color: var(--brand-dark); text-decoration: none; }
-.Nova a:hover { text-decoration: underline; }
+.Nova a { color: #0275d8; text-decoration: none; }
+.Nova a:hover { color: #014c8c; text-decoration: underline; }
 .Nova button,
 .Nova input { font: inherit; }
+.Nova .btn {
+    appearance: none;
+    border: 1px solid transparent;
+    font: inherit;
+    text-decoration: none;
+}
+.Nova .btn:hover,
+.Nova .btn:focus { text-decoration: none; }
+.Nova .btn-secondary { color: inherit; }
+.Nova .nova-icon {
+    width: 1em;
+    height: 1em;
+    flex: none;
+    display: inline-block;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    vertical-align: -0.15em;
+}
+
+.Nova :where(button, input, textarea, select, option, optgroup, b, strong, em, i, .dropdown-menu, .modal, .modal-content, .setting, .wiki-article, .wiki-article h1, .wiki-article h2, .wiki-article h3, .wiki-article h4, .wiki-article h5, .wiki-article h6, .wiki-article p, .wiki-article li, .wiki-article td, .wiki-article th, .wiki-article strong, .wiki-article b, .wiki-article em, .wiki-article i, .article-footer, .article-license, .live-recent) {
+    font-family: "Pretendard";
+}
+.Nova :where(code, pre, kbd, samp) {
+    font-family: "Pretendard";
+}
 .Nova .container {
-    max-width: 1200px;
+    max-width: 1440px;
     margin: 0 auto;
-    padding-right: 1.25rem;
-    padding-left: 1.25rem;
+    padding-right: 48px;
+    padding-left: 48px;
 }
 .Nova .top-anchor { position: absolute; top: 0; }
 
-/* Navbar */
+/* Global navigation */
 .Nova .navbar {
-    position: sticky;
-    top: 0;
+    position: relative;
     z-index: 300;
     min-height: var(--nav-height);
     margin: 0;
+    padding: 0;
     border: 0;
-    border-bottom: 1px solid var(--border);
     border-radius: 0;
-    background: var(--surface);
-    box-shadow: none;
+    background: linear-gradient(90deg, var(--brand) 0%, color-mix(in srgb, var(--brand) 88%, #fff) 52%, var(--brand-dark) 100%);
+    color: #fff;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.18), 0 6px 18px color-mix(in srgb, var(--brand) 24%, transparent);
 }
 .Nova .navbar.navbar-fixed-top { position: fixed; right: 0; left: 0; }
 .Nova .navbar-inner {
-    max-width: 1200px;
+    max-width: 1440px;
     height: var(--nav-height);
     margin: 0 auto;
-    padding: 0 1.25rem;
+    padding: 0 var(--page-gutter);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 22px;
 }
 .Nova .navbar-brand {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 10px;
     flex: none;
     min-width: 0;
     height: auto;
     width: auto;
     margin: 0;
     padding: 0;
-    color: var(--text);
-    font-size: 1.05rem;
-    font-weight: 700;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0;
     line-height: 1;
 }
-.Nova .navbar-brand:hover { text-decoration: none; }
+.Nova .navbar-brand:hover { color: #fff; text-decoration: none; }
 .Nova .brand-mark {
-    width: 2rem;
-    height: 2rem;
-    border-radius: var(--radius-sm);
-    background: linear-gradient(135deg, var(--brand), var(--brand-bright));
-    box-shadow: 0 8px 22px color-mix(in srgb, var(--brand) 26%, transparent);
-    color: #fff;
-    display: flex;
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 2px 8px rgba(0, 63, 160, 0.18);
+    color: var(--brand);
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
+    font-size: 12.8px;
 }
 .Nova .brand-logo-image {
     display: block;
@@ -109,11 +187,12 @@ body {
 .Nova .navbar-burger {
     display: none;
     margin-left: auto;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 40px;
+    height: 40px;
     border: 0;
-    background: transparent;
-    color: var(--text);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
     cursor: pointer;
 }
 .Nova .mobile-search { display: none; }
@@ -123,76 +202,274 @@ body {
     justify-content: space-between;
     flex: 1;
     min-width: 0;
+    height: 100%;
 }
 .Nova .navbar-start,
 .Nova .navbar-end {
     display: flex;
     align-items: center;
-    gap: 0.15rem;
+    gap: 4px;
+    height: 100%;
+}
+.Nova .navbar-end {
+    gap: 12px;
 }
 .Nova .navbar-item {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.48rem 0.68rem;
+    gap: 8px;
+    height: 40px;
+    padding: 8px 13px;
     border: 0;
     border-radius: var(--radius-sm);
     background: transparent;
-    color: var(--text);
-    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 14.5px;
+    font-weight: 650;
     line-height: 1.2;
     white-space: nowrap;
     cursor: pointer;
+    transition: background 0.15s, color 0.15s;
 }
 .Nova .navbar-item:hover,
-.Nova .dropdown > div:first-child:hover .navbar-item { background: var(--bg); text-decoration: none; }
+.Nova .dropdown > div:first-child:hover .navbar-item {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    text-decoration: none;
+}
 .Nova .dropdown-toggle::after { display: none; }
-.Nova .chevron { opacity: 0.65; }
+.Nova .chevron { color: rgba(255, 255, 255, 0.9); font-size: 11px; opacity: 1; transition: transform 0.16s ease; }
 .Nova .dropdown { position: relative; }
 .Nova .dropdown-menu {
     position: absolute;
-    top: calc(100% + 6px);
+    top: calc(100% + 8px);
     left: 0;
     z-index: 350;
     display: block;
-    min-width: 220px;
+    min-width: 214px;
     margin: 0;
-    padding: 0.4rem;
+    padding: 8px;
     border: 1px solid var(--border);
-    border-radius: var(--radius);
+    border-radius: 12px;
     background: var(--surface);
-    box-shadow: 0 8px 24px rgba(16, 24, 40, 0.12);
+    color: var(--text);
+    box-shadow: var(--shadow);
 }
 .Nova .dropdown-menu-right { right: 0; left: auto; }
+.Nova .dropdown-panel {
+    position: relative;
+    z-index: 340;
+    transform-origin: top center;
+}
+.Nova .nova-dropdown-enter-active,
+.Nova .nova-dropdown-leave-active {
+    transition: opacity 0.16s ease, transform 0.16s ease;
+}
+.Nova .nova-dropdown-enter,
+.Nova .nova-dropdown-leave-to {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+}
+.Nova .dropdown.is-open .chevron {
+    transform: rotate(180deg);
+}
+.Nova .feature-dropdown {
+    min-width: 250px;
+}
+.Nova .feature-dropdown .dropdown-item {
+    min-height: 38px;
+}
+.Nova .feature-dropdown .dropdown-item.admin-feature:first-of-type {
+    color: var(--brand-dark);
+}
+.Nova .feature-dropdown .dropdown-item.admin-feature {
+    font-weight: 650;
+}
 .Nova .dropdown-item {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     width: 100%;
-    padding: 0.45rem 0.65rem;
+    padding: 10px 10px;
     border: 0;
     border-radius: var(--radius-sm);
     background: transparent;
     color: var(--text);
-    font-size: 0.88rem;
+    font-size: 13.5px;
+    font-weight: 500;
     text-align: left;
     cursor: pointer;
 }
-.Nova .dropdown-item:hover { background: var(--bg); color: var(--text); text-decoration: none; }
-.Nova .dropdown-divider { height: 1px; margin: 0.35rem 0.2rem; background: var(--border); }
-.Nova .dropdown-header { padding: 0.5rem 0.65rem; color: var(--text); font-size: 0.85rem; }
-.Nova .dropdown-header .muted { color: var(--text-muted); font-size: 0.78rem; }
-.Nova .avatar-toggle { padding: 0.35rem; }
-.Nova .avatar {
-    width: 2rem;
-    height: 2rem;
+.Nova .dropdown-item .nova-icon { width: 16px; height: 16px; color: var(--text-muted); }
+.Nova .dropdown-item:hover {
+    background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+    color: var(--brand-dark);
+    text-decoration: none;
+}
+.Nova .dropdown-item:hover .nova-icon { color: var(--brand-dark); }
+.Nova .dropdown-divider { height: 1px; margin: 6px 4px; background: var(--border); }
+.Nova .dropdown-header { padding: 9px 10px; color: var(--text); font-size: 13px; }
+.Nova .dropdown-header .muted { color: var(--text-muted); font-size: 12px; }
+.Nova .user-menu-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 230px;
+}
+.Nova .dropdown-avatar {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
     border-radius: 50%;
-    border: 0;
-    background: linear-gradient(135deg, var(--accent), var(--brand));
+    background: linear-gradient(135deg, var(--accent), #e0b563);
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.85rem;
+    object-fit: cover;
+    font-size: 13px;
+}
+.Nova .avatar-toggle { padding: 2px; }
+.Nova .avatar-summary { display: none; }
+.Nova .notification-toggle {
+    position: relative;
+    justify-content: center;
+    width: 40px;
+    padding: 8px;
+}
+.Nova .notification-toggle > .nova-icon {
+    width: 18px;
+    height: 18px;
+}
+.Nova .notification-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border: 2px solid color-mix(in srgb, var(--brand) 74%, #fff);
+    border-radius: 999px;
+    background: #ef4444;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
     font-weight: 700;
+    line-height: 1;
+}
+.Nova .notification-menu {
+    width: min(360px, calc(100vw - 28px));
+    padding: 0;
+    overflow: hidden;
+}
+.Nova .notification-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 14px 12px;
+    border-bottom: 1px solid var(--border);
+}
+.Nova .notification-menu-header strong {
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 650 !important;
+}
+.Nova .notification-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex: none;
+}
+.Nova .notification-actions a {
+    color: var(--brand-dark);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.Nova .notification-list {
+    max-height: 360px;
+    overflow-y: auto;
+    padding: 6px;
+}
+.Nova .notification-item {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    border-radius: 9px;
+    color: var(--text);
+}
+.Nova .notification-item:hover {
+    background: color-mix(in srgb, var(--brand) 9%, var(--surface));
+    text-decoration: none;
+}
+.Nova .notification-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--brand-dark);
+    background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+}
+.Nova .notification-icon .nova-icon {
+    width: 17px;
+    height: 17px;
+}
+.Nova .notification-icon.is-mention { color: #7c3aed; background: color-mix(in srgb, #7c3aed 12%, var(--surface)); }
+.Nova .notification-icon.is-owner { color: #c2410c; background: color-mix(in srgb, #f97316 13%, var(--surface)); }
+.Nova .notification-icon.is-default { color: var(--text-muted); background: color-mix(in srgb, var(--text-muted) 10%, var(--surface)); }
+.Nova .notification-body {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+}
+.Nova .notification-body strong {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.Nova .notification-body span {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+.Nova .notification-empty {
+    min-height: 116px;
+    padding: 22px 14px;
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+}
+.Nova .notification-empty .nova-icon {
+    width: 22px;
+    height: 22px;
+    color: var(--brand-dark);
+}
+.Nova .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 0;
+    background: linear-gradient(135deg, var(--accent), #e0b563);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
     object-fit: cover;
 }
 
@@ -201,7 +478,7 @@ body {
 .Nova .form-inline {
     display: flex;
     align-items: center;
-    margin: 0 0.5rem 0 0;
+    margin: 0;
     padding: 0;
     float: none;
 }
@@ -209,159 +486,611 @@ body {
     display: flex;
     align-items: center;
     gap: 0;
-    width: auto;
-    border: 1px solid var(--border);
+    width: 360px;
+    border: 1px solid rgba(255, 255, 255, 0.42);
     border-radius: 999px;
-    background: var(--bg);
+    background: rgba(255, 255, 255, 0.94);
     overflow: visible;
+    transition: background 0.15s, border-color 0.15s;
 }
-.Nova #searchform .input-search { position: relative; display: block; width: auto; }
+.Nova #searchform .input-group:focus-within {
+    background: #fff;
+    border-color: rgba(255, 255, 255, 0.7);
+}
+.Nova #searchform .input-search { position: relative; display: block; flex: 1; min-width: 0; }
 .Nova #searchform .form-control {
-    width: 160px;
-    height: auto;
-    padding: 0.38rem 0.25rem 0.38rem 0.78rem;
+    width: 100%;
+    height: 36px;
+    padding: 0 8px;
     border: 0;
-    border-radius: 999px 0 0 999px;
+    border-radius: 0;
     background: transparent;
     box-shadow: none;
-    color: var(--text);
-    font-size: 0.85rem;
+    color: #1f2937;
+    font-size: 13px;
 }
+.Nova #searchform .form-control::placeholder { color: #7b8794; }
 .Nova #searchform .form-control:focus { box-shadow: none; }
-.Nova #searchform .input-group-btn { display: flex; width: auto; }
-.Nova #searchform .btn.search-submit {
-    height: auto;
-    padding: 0.38rem 0.78rem 0.38rem 0.55rem;
+.Nova #searchform .input-group-btn { display: flex; align-items: stretch; width: auto; }
+.Nova #searchform .btn.search-action {
+    min-width: 38px;
+    height: 36px;
+    padding: 0 10px;
     border: 0;
-    border-radius: 0 999px 999px 0;
-    background: transparent;
-    color: var(--text-muted);
+    border-left: 1px solid color-mix(in srgb, var(--brand) 16%, #d8e1ec);
+    border-radius: 0;
+    background: color-mix(in srgb, var(--brand) 7%, #fff);
+    color: color-mix(in srgb, var(--brand) 62%, #172033);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
 }
-.Nova #searchform .btn.search-submit:hover { color: var(--brand-dark); }
-
-/* Hero */
-.Nova .hero {
-    background:
-        linear-gradient(135deg, color-mix(in srgb, var(--brand), #fff 7%) 0%, var(--brand-dark) 52%, var(--brand-bright) 100%);
+.Nova #searchform .btn.search-random {
+    min-width: 42px;
+    border-left: 0;
+    border-right: 1px solid color-mix(in srgb, var(--brand) 16%, #d8e1ec);
+    border-radius: 999px 0 0 999px;
+}
+.Nova #searchform .btn.search-submit { min-width: 38px; }
+.Nova #searchform .btn.search-move { min-width: 38px; border-radius: 0 999px 999px 0; }
+.Nova #searchform .btn.search-action:hover {
     color: #fff;
-    box-shadow: var(--glow);
+    background: var(--brand);
 }
-.Nova .hero.is-danger { background: linear-gradient(135deg, #e0435b 0%, #a82c40 100%); }
-.Nova .hero.is-warning { background: linear-gradient(135deg, #f3ac12 0%, #c4820a 100%); color: #3a2a00; }
+.Nova #searchform .btn.search-action .nova-icon { width: 16px; height: 16px; stroke-width: 2.25; }
+.Nova .v-autocomplete-list {
+    top: calc(100% + 8px);
+    width: 360px !important;
+    border-color: var(--border) !important;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+/* Document header */
+.Nova .hero {
+    padding-right: var(--page-gutter);
+    padding-left: var(--page-gutter);
+    background: transparent;
+    color: #fff;
+    box-shadow: none;
+}
+.Nova .hero.is-danger,
+.Nova .hero.is-warning { background: transparent; color: #fff; }
+.Nova .hero.is-danger .hero-inner { background: linear-gradient(135deg, #d64b56 0%, #9b2532 100%); border-color: rgba(185, 65, 74, 0.36); }
+.Nova .hero.is-warning .hero-inner { background: linear-gradient(135deg, #e0a12d 0%, #a16b12 100%); border-color: rgba(214, 155, 47, 0.4); }
 .Nova .hero-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1.35rem 1.25rem 1.55rem;
+    max-width: var(--doc-frame-max);
+    margin: 28px auto 0;
+    padding: 58px var(--doc-frame-pad) 50px;
+    border: 1px solid color-mix(in srgb, var(--brand) 26%, var(--border));
+    border-bottom: 0;
+    border-radius: 36px 36px 0 0;
+    background: radial-gradient(circle at 82% 0%, rgba(255, 255, 255, 0.18), transparent 32%), linear-gradient(135deg, var(--brand) 0%, color-mix(in srgb, var(--brand) 86%, #fff) 42%, var(--brand-dark) 100%);
+    box-shadow: 0 18px 44px rgba(31, 41, 55, 0.08);
+}
+.Nova .breadcrumb {
+    margin: 0 0 18px;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.75);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+}
+.Nova .doc-kind-label {
+    display: inline-grid;
+    place-items: center;
+    width: max-content;
+    min-height: 32px;
+    margin: 0 0 20px;
+    padding: 0 16px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.13);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+}
+.Nova .doc-kind-label span {
+    display: block;
+    line-height: 1;
 }
 .Nova .hero-title {
     margin: 0;
     color: inherit;
-    font-size: clamp(1.5rem, 3vw, 2.05rem);
-    font-weight: 800;
+    font-size: 34px;
+    font-weight: 600;
     letter-spacing: 0;
-    line-height: 1.3;
-    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.12);
+    line-height: 1.22;
+    text-shadow: none;
 }
 .Nova .hero-title a { color: inherit; }
-.Nova .hero-title .namespace,
-.Nova .hero-title small { opacity: 0.76; font-weight: 600; }
-.Nova .hero-title small { margin-left: 0.45rem; font-size: 0.55em; }
+.Nova .hero-title .namespace { opacity: 0.78; font-weight: 600; }
+.Nova .hero-title .doc-state-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    margin-left: 12px;
+    padding: 4px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.42em;
+    font-weight: 600;
+    line-height: 1.15;
+    vertical-align: 0.14em;
+    white-space: nowrap;
+}
+.Nova .doc-meta {
+    margin-top: 20px;
+    padding-bottom: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 13px;
+}
+.Nova .doc-meta-chip {
+    min-height: 30px;
+    padding: 6px 11px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.11);
+    color: rgba(255, 255, 255, 0.88);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    line-height: 1;
+    backdrop-filter: blur(10px);
+}
+.Nova .doc-meta-chip .nova-icon { width: 14px; height: 14px; }
+.Nova .doc-meta-chip .meta-label {
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 12px;
+    font-weight: 500;
+}
+.Nova .doc-meta-chip strong {
+    color: #fff;
+    font-weight: 600 !important;
+}
+.Nova .updated-chip {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+.Nova .subtle-chip {
+    padding-right: 10px;
+    padding-left: 10px;
+    color: rgba(255, 255, 255, 0.72);
+}
 
-/* Document tabs */
+/* Document tools */
 .Nova .document-tabs {
     position: sticky;
-    top: var(--nav-height);
+    top: 0;
     z-index: 250;
-    border-bottom: 1px solid var(--border);
-    background: color-mix(in srgb, var(--surface), transparent 4%);
-    box-shadow: 0 8px 18px rgba(32, 42, 68, 0.05);
-    backdrop-filter: blur(14px);
+    padding-right: var(--page-gutter);
+    padding-left: var(--page-gutter);
+    border: 0;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    box-shadow: none;
+    backdrop-filter: blur(10px);
 }
+.Nova .navbar-fixed-top + .hero + .document-tabs { top: var(--nav-height); }
 .Nova .document-tabs-inner {
     display: flex;
-    align-items: center;
-    min-height: 52px;
+    align-items: stretch;
+    max-width: var(--doc-frame-max);
+    min-height: 62px;
+    margin-right: auto;
+    margin-left: auto;
+    border: 1px solid var(--border);
+    border-top: 0;
+    border-radius: 0;
+    background: var(--surface);
+    box-shadow: none;
+    padding-right: 24px;
+    padding-left: 24px;
     overflow-x: auto;
-    scrollbar-width: none;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--brand) 38%, transparent) transparent;
 }
-.Nova .document-tabs-inner::-webkit-scrollbar { display: none; }
-.Nova .document-tabs .content-tools { width: 100%; float: none; padding: 0; }
-.Nova .document-tabs .content-tools .btn-group { display: flex; float: none; gap: 0.25rem; }
+.Nova .document-tabs-inner::-webkit-scrollbar { height: 6px; }
+.Nova .document-tabs-inner::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--brand) 34%, transparent);
+}
+.Nova .document-tabs-inner::-webkit-scrollbar-track { background: transparent; }
+.Nova .document-tabs:not(.is-stuck) .document-tabs-title {
+    display: none;
+}
+.Nova .document-tabs-title {
+    flex: 0 0 min(320px, 28vw);
+    min-width: 180px;
+    max-width: 320px;
+    min-height: 60px;
+    padding: 0 18px 0 0;
+    border-right: 1px solid var(--border);
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+    overflow: hidden;
+    text-decoration: none;
+}
+.Nova .document-tabs-title:hover { color: var(--brand-dark); text-decoration: none; }
+.Nova .document-tabs-title .nova-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--brand-dark);
+}
+.Nova .document-tabs-title span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.Nova .document-tabs .content-tools {
+    width: max-content;
+    min-width: 0;
+    float: none;
+    padding: 0;
+}
+.Nova .document-tabs .content-tools .btn-group {
+    display: flex;
+    align-items: flex-end;
+    float: none;
+    gap: 0;
+    width: max-content;
+    min-width: 0;
+}
 .Nova .document-tabs .content-tools .tools-btn {
     position: relative;
-    min-height: 52px;
+    flex: 0 0 auto;
+    min-height: 60px;
     margin: 0;
-    padding: 0 0.86rem;
+    padding: 13px 18px;
     border: 0;
+    border-right: 1px solid var(--border);
     border-radius: 0 !important;
     background: transparent;
-    color: var(--text);
+    color: var(--text-muted);
     display: flex;
     align-items: center;
-    gap: 0.38rem;
-    font-size: 0.9rem;
+    gap: 8px;
+    font-size: 12.8px;
+    font-weight: 600;
+    line-height: 1.2;
     white-space: nowrap;
     box-shadow: none;
+    transition: color 0.15s, background 0.15s, transform 0.15s;
 }
 .Nova .document-tabs .content-tools .tools-btn:hover,
 .Nova .document-tabs .content-tools .tools-btn:focus {
-    background: color-mix(in srgb, var(--brand) 6%, transparent);
+    background: color-mix(in srgb, var(--brand) 10%, var(--surface));
     color: var(--brand-dark);
     text-decoration: none;
+    outline: 0;
 }
-.Nova .document-tabs .content-tools .tools-btn:first-child { color: var(--brand-dark); font-weight: 700; }
-.Nova .document-tabs .content-tools .tools-btn:first-child::after {
+.Nova .document-tabs .content-tools .tools-btn.tools-btn-active {
+    top: 0;
+    min-height: 60px;
+    border: 0;
+    border-bottom: 3px solid var(--brand-dark);
+    border-radius: 0 !important;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 9%, #fff), rgba(255, 255, 255, 0));
+    box-shadow: none;
+    color: var(--brand-dark);
+    font-weight: 850;
+    z-index: 2;
+}
+.Nova .document-tabs .content-tools .dropdown.btn.tools-btn { padding: 0; }
+.Nova .document-tabs .content-tools .dropdown-toggle {
+    min-width: 78px;
+    min-height: 60px;
+    padding: 0 11px;
+    gap: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.Nova .document-tabs .content-tools .dropdown-menu { top: calc(100% + 8px); }
+.Nova .document-tabs .content-tools .btn-danger { color: #b9414a; }
+.Nova .document-tabs .content-tools .btn-discuss-progress { color: var(--brand-dark); background: color-mix(in srgb, var(--brand) 10%, var(--surface)); }
+.Nova .document-tabs .content-tools .star-count {
+    margin-left: 2px;
+    padding: 1px 5px;
+    border-radius: 6px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+}
+.Nova .document-tabs .content-tools .nova-icon-star { color: var(--accent); }
+.Nova .document-tabs .content-tools .tools-btn > .nova-icon {
+    width: 17px;
+    height: 17px;
+}
+.Nova .document-tabs .content-tools .tools-label { display: inline-block; }
+.Nova .document-tabs .content-tools .dropdown-toggle::after { content: "더 보기"; font-size: 12.8px; font-weight: 600; }
+.Nova .document-tabs .content-tools .tools-btn-active::before {
     content: "";
     position: absolute;
-    right: 0.55rem;
-    bottom: 0;
-    left: 0.55rem;
-    height: 3px;
-    border-radius: 999px 999px 0 0;
-    background: linear-gradient(90deg, var(--brand), var(--brand-bright), var(--accent));
+    right: 12px;
+    bottom: -1px;
+    left: 12px;
+    height: 0;
+    background: transparent;
 }
 
-/* Notice and layout shell */
-.Nova .notification {
-    position: relative;
-    margin: 1.25rem 0;
-    padding: 0.85rem 1rem;
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--brand);
-    border-radius: var(--radius-sm);
-    background: linear-gradient(90deg, color-mix(in srgb, var(--surface-2), var(--brand) 4%), var(--surface-2));
-    color: var(--text);
-    font-size: 0.88rem;
+
+/* Floating notices */
+.Nova .nova-alert-stack {
+    position: fixed;
+    top: calc(var(--nav-height) + 18px);
+    right: 24px;
+    z-index: 360;
+    width: min(380px, calc(100vw - 32px));
+    display: grid;
+    gap: 10px;
+    pointer-events: none;
 }
-.Nova .notification.is-warning { border-left-color: #f3ac12; }
+.Nova .nova-alert {
+    pointer-events: auto;
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 14px;
+    border: 1px solid var(--border);
+    border-left-width: 4px;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--surface) 94%, #fff);
+    color: var(--text);
+    box-shadow: var(--shadow);
+}
+.Nova .nova-alert > .nova-icon { margin-top: 2px; width: 18px; height: 18px; color: var(--brand-dark); }
+.Nova .nova-alert.is-warning { border-left-color: #d69b2f; }
+.Nova .nova-alert.is-danger { border-left-color: #b9414a; }
+.Nova .nova-alert.is-primary { border-left-color: var(--brand); }
+.Nova .nova-alert-body strong { display: block; margin-bottom: 4px; font-size: 13px; font-weight: 850; }
+.Nova .nova-alert-body p { margin: 0; color: var(--text-muted); font-size: 13px; line-height: 1.55; }
+.Nova .nova-alert-close {
+    width: 24px;
+    height: 24px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.Nova .nova-alert-close:hover { background: color-mix(in srgb, var(--brand) 9%, var(--surface)); color: var(--brand-dark); }
+.Nova .nova-alert-close .nova-icon { width: 14px; height: 14px; }
+
+/* Layout */
+.Nova .notification {
+    margin: 20px 0 0;
+    padding: 14px 18px;
+    border: 1px solid #eddcb3;
+    border-radius: var(--radius);
+    background: var(--accent-tint);
+    color: #7a5a1f;
+    font-size: 13.5px;
+}
+.Nova .notification.is-warning { border-left: 1px solid #eddcb3; }
 .Nova .layout-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 260px;
-    gap: 1.5rem;
+    grid-template-columns: minmax(0, 1fr) 292px;
+    column-gap: 24px;
+    row-gap: 0;
     align-items: start;
-    padding-top: 1rem;
-    padding-bottom: 3rem;
+    width: calc(100% - (var(--page-gutter) * 2));
+    max-width: var(--doc-frame-max);
+    margin: 0 auto 34px;
+    padding: var(--doc-frame-pad) var(--doc-frame-pad) 0;
+    border: 1px solid var(--border);
+    border-top: 0;
+    border-radius: 0 0 36px 36px;
+    background: var(--surface);
+    box-shadow: 0 18px 44px rgba(31, 41, 55, 0.08);
+    overflow: hidden;
 }
 .Nova .layout-grid.hide-sidebar { grid-template-columns: minmax(0, 1fr); }
-.Nova .content-column { min-width: 0; }
+.Nova .content-column {
+    min-width: 0;
+    padding-bottom: 0;
+}
 .Nova .wiki-article {
-    padding: 1.65rem 1.9rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--article-background-color, var(--surface));
-    box-shadow: var(--shadow);
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: var(--article-background-color, transparent);
+    box-shadow: none;
+    color: var(--wiki-text);
+}
+.Nova .wiki-article a:not(.not-exist):not(.wiki-link-external):not(.wiki-link-whitelisted) {
+    color: var(--wiki-link);
+}
+.Nova .wiki-article a:not(.not-exist):not(.wiki-link-external):not(.wiki-link-whitelisted):hover {
+    color: var(--wiki-link-hover);
+}
+.Nova .wiki-article .not-exist {
+    color: var(--wiki-link-missing) !important;
+}
+.Nova .wiki-article .wiki-link-external,
+.Nova .wiki-article .wiki-link-whitelisted {
+    color: var(--wiki-link-external) !important;
+}
+.Nova .wiki-article .wiki-table {
+    background-color: var(--wiki-table-bg);
+}
+.Nova .wiki-article .wiki-table td,
+.Nova .wiki-article .wiki-table th {
+    border-color: var(--wiki-table-border);
+}
+.Nova .wiki-article .wiki-quote {
+    background-color: var(--wiki-quote-bg);
+    border-color: var(--wiki-quote-border) var(--wiki-quote-border) var(--wiki-quote-border) var(--wiki-quote-line);
+    color: var(--wiki-text);
+}
+.Nova .wiki-article hr,
+.Nova .wiki-article h1.wiki-heading,
+.Nova .wiki-article h2.wiki-heading,
+.Nova .wiki-article h3.wiki-heading,
+.Nova .wiki-article h4.wiki-heading,
+.Nova .wiki-article h5.wiki-heading,
+.Nova .wiki-article h6.wiki-heading {
+    border-color: var(--wiki-rule);
+}
+.Nova .wiki-article .wiki-fn-unfolded,
+.Nova .wiki-article .wiki-link-unfolded {
+    background-color: var(--wiki-quote-bg);
+    border-color: var(--wiki-quote-border);
+    color: var(--wiki-link-muted);
+}
+.Nova .wiki-article .wiki-macro-footnote {
+    border-top-color: var(--wiki-link-muted);
+}
+.Nova .wiki-article > .alert,
+.Nova .wiki-article > .seed-alert {
+    margin-bottom: 18px;
+}
+
+.Nova .skin-license-page {
+    padding: 8px 0 12px;
     color: var(--text);
+}
+.Nova .skin-license-hero {
+    margin-bottom: 28px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--border);
+}
+.Nova .skin-license-kicker {
+    margin: 0 0 8px;
+    color: var(--brand-dark);
+    font-size: 13px;
+    font-weight: 800;
+}
+.Nova .skin-license-hero h2 {
+    margin: 0 0 12px;
+    font-size: 32px;
+    font-weight: 850;
+    line-height: 1.2;
+}
+.Nova .skin-license-hero p {
+    max-width: 720px;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.75;
+}
+.Nova .skin-license-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 32px;
+}
+.Nova .skin-license-section {
+    min-width: 0;
+}
+.Nova .skin-license-section h3 {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 12px;
+    color: var(--text);
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.35;
+}
+.Nova .skin-license-section p,
+.Nova .skin-license-section li {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.75;
+}
+.Nova .skin-license-section p {
+    margin: 0 0 10px;
+}
+.Nova .skin-license-section ul {
+    margin: 0;
+    padding-left: 18px;
+}
+.Nova .skin-license-section li + li {
+    margin-top: 7px;
+}
+.Nova .skin-license-section a {
+    color: #0275d8;
+    font-weight: 650;
+}
+
+.Nova .wiki-license-page {
+    max-width: 820px;
+    padding: 0;
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.75;
+}
+.Nova .wiki-license-page h2 {
+    margin: 0 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+.Nova .wiki-license-page h3 {
+    margin: 24px 0 10px;
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+.Nova .wiki-license-page p {
+    margin: 0 0 12px;
+}
+.Nova .wiki-license-page ul {
+    margin: 0 0 14px;
+    padding-left: 1.4rem;
+}
+.Nova .wiki-license-page li + li {
+    margin-top: 4px;
 }
 
 /* Footer */
+.Nova .article-license {
+    grid-column: 1 / -1;
+    margin: 36px calc(var(--doc-frame-pad) * -1) 0;
+    padding: 18px var(--doc-frame-pad) 0;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 12.5px;
+    line-height: 1.7;
+}
+.Nova .article-license a { color: #0275d8; }
+
 .Nova .article-footer {
-    margin-top: 1.5rem;
-    padding: 1rem 0 0;
-    border: 0;
-    background: transparent;
+    grid-column: 1 / -1;
+    margin: 24px calc(var(--doc-frame-pad) * -1) 0;
+    padding: 22px var(--doc-frame-pad) 30px;
+    border-top: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg) 82%, var(--surface));
     box-shadow: none;
     color: var(--text-muted);
-    font-size: 0.82rem;
+    font-size: 12.5px;
 }
 .Nova .footer-info,
 .Nova .footer-links,
@@ -369,44 +1098,58 @@ body {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.3rem 1rem;
-    margin: 0 0 0.5rem;
+    gap: 5px 16px;
+    margin: 0 0 8px;
     padding: 0;
 }
 .Nova .footer-links a,
 .Nova .footer-places a { color: var(--text-muted); }
-.Nova .footer-powered { margin-top: 0.6rem; }
+.Nova .footer-powered { margin-top: 12px; }
+.Nova .footer-powered p { margin: 0; }
+.Nova .footer-credit {
+    color: var(--text-muted);
+    font-size: 12.5px;
+    line-height: 1.65;
+}
+.Nova .footer-credit a {
+    color: var(--text-muted);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
 
 /* Sidebar */
-.Nova .sidebar-column { position: relative; }
-.Nova .sidebar-sticky { position: sticky; top: calc(var(--nav-height) + 1rem); }
+.Nova .sidebar-column {
+    position: relative;
+    min-height: 100%;
+    padding-left: 22px;
+    border-left: 1px solid var(--border);
+}
+.Nova .sidebar-sticky { position: sticky; top: 18px; }
+.Nova .navbar-fixed-top ~ .container .sidebar-sticky { top: calc(var(--nav-height) + 18px); }
 .Nova .live-recent {
     overflow: hidden;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
-    box-shadow: var(--shadow);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
 }
-.Nova .live-recent + .live-recent { margin-top: 0.9rem; }
+.Nova .live-recent + .live-recent {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+}
 .Nova .live-recent-header {
     position: relative;
     display: flex;
-    gap: 0.25rem;
-    padding: 0.72rem 0.78rem 0.66rem;
-    border-bottom: 1px solid var(--border);
-    background:
-        linear-gradient(90deg, color-mix(in srgb, var(--brand) 12%, var(--surface)), var(--surface));
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 0 10px;
+    border-bottom: 0;
+    background: transparent;
 }
-.Nova .live-recent-header::after {
-    content: "";
-    position: absolute;
-    right: 0.78rem;
-    bottom: -1px;
-    left: 0.78rem;
-    height: 2px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, var(--brand), var(--brand-bright));
-}
+.Nova .live-recent-header::after { display: none; }
 .Nova .live-recent-header .tab {
     flex: 1;
     padding: 0;
@@ -414,15 +1157,19 @@ body {
     border-radius: 0;
     background: transparent;
     color: var(--text);
-    font-size: 0.86rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14.5px;
     font-weight: 800;
     text-align: left;
     cursor: pointer;
 }
+.Nova .live-recent-header .tab .nova-icon { color: var(--brand-dark); width: 16px; height: 16px; }
 .Nova .live-recent-header .tab.active,
 .Nova .live-recent-header .tab:hover {
     background: transparent;
-    color: var(--brand-dark);
+    color: var(--text);
     text-decoration: none;
 }
 .Nova .live-recent-content {
@@ -430,111 +1177,1051 @@ body {
     background: transparent !important;
 }
 .Nova .live-recent-content ul {
-    max-height: 255px;
-    overflow-y: auto;
+    max-height: none;
+    overflow-y: visible;
+    margin: 0 !important;
+    padding: 8px !important;
     background: transparent !important;
 }
 .Nova .live-recent-content li {
     padding: 0 !important;
-    border-bottom: 1px solid var(--border) !important;
+    border-bottom: 0 !important;
     background: transparent !important;
+    list-style: none;
 }
-.Nova .live-recent-content li:last-child { border-bottom: 0 !important; }
 .Nova .live-recent-content a,
-.Nova .live-recent-content span {
+.Nova .live-recent-content span.recent-item {
     display: block;
-    padding: 0.45rem 0.75rem;
+    padding: 11px 12px;
+    border-radius: var(--radius-sm);
     color: var(--text) !important;
-    font-size: 0.8rem;
-    line-height: 1.35;
+    font-size: 14px;
+    line-height: 1.4;
 }
-.Nova .live-recent-content a:hover { background: var(--bg); text-decoration: none; }
+.Nova .live-recent-content a.recent-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+}
+.Nova .live-recent-content .recent-title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.Nova .live-recent-content .recent-time {
+    flex: none;
+    color: var(--text-muted);
+    font-size: 12.5px;
+    font-weight: 650;
+    white-space: nowrap;
+}
+.Nova .live-recent-content a:hover {
+    background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+    text-decoration: none;
+}
 .Nova .live-recent-footer {
-    padding: 0.48rem 0.75rem;
-    border-top: 1px solid var(--border);
-    background: var(--surface-2);
+    padding: 8px 0 0;
+    border-top: 0;
+    background: transparent;
     text-align: right;
 }
-.Nova .live-recent-footer a { font-size: 0.8rem; color: var(--brand-dark); }
+.Nova .live-recent-footer a { font-size: 12.5px; color: var(--brand-dark); font-weight: 600; }
+
+.Nova .toc-card .toc-list {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 8px;
+}
+.Nova .toc-card .toc-list a {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-size: 13.5px;
+    font-weight: 650;
+    line-height: 1.35;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.Nova .toc-card .recent-toc-num {
+    flex: none;
+    color: var(--brand-dark);
+    font-size: 12.5px;
+    font-weight: 700;
+}
+.Nova .toc-card .recent-item span:last-child {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.Nova .toc-card .toc-list a:hover {
+    background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+    color: var(--brand-dark);
+    text-decoration: none;
+}
+.Nova .toc-card .toc-level-3 { padding-left: 20px; }
+.Nova .toc-card .toc-level-4 { padding-left: 32px; font-size: 13px; }
 
 /* Floating buttons */
 .Nova .jump-buttons {
     position: fixed;
-    right: 1.25rem;
-    bottom: 1.5rem;
-    z-index: 230;
+    right: 18px;
+    bottom: max(22px, env(safe-area-inset-bottom));
+    z-index: 320;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 7px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
 }
 .Nova .jump-btn {
-    width: 2.6rem;
-    height: 2.6rem;
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    background: var(--surface);
-    box-shadow: 0 4px 14px rgba(16, 24, 40, 0.15);
+    width: 40px;
+    height: 40px;
+    border: 1px solid color-mix(in srgb, var(--brand) 18%, var(--border));
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface) 96%, #fff);
+    box-shadow: 0 8px 20px rgba(31, 41, 55, 0.13);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text);
+    color: var(--brand-dark);
+    transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
-.Nova .jump-btn:hover { background: var(--brand); color: #fff; text-decoration: none; }
+.Nova .jump-btn:hover {
+    border-color: color-mix(in srgb, var(--brand) 36%, var(--border));
+    background: var(--brand);
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--brand) 28%, transparent);
+}
+.Nova .jump-btn:active { transform: scale(0.94); }
+.Nova .jump-btn .nova-icon { width: 18px; height: 18px; color: inherit; stroke: currentColor !important; stroke-width: 2.4; opacity: 1; }
+
+
+/* Mobile side activity panel */
+.Nova .mobile-side-toggle,
+.Nova .mobile-side-panel,
+.Nova .mobile-side-backdrop,
+.Nova .mobile-nav-backdrop { display: none; }
+.Nova .mobile-nav-panel-header { display: none; }
 
 body.theseed-dark-mode,
-body.theseed-dark-mode .Nova { background-color: var(--nova-bg-color, #111217); }
 body.theseed-dark-mode .Nova {
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.5);
-    --glow: 0 14px 44px rgba(34, 211, 238, 0.12);
+    background-color: var(--nova-bg-color, #0d1117);
+    color-scheme: dark;
 }
-body.theseed-dark-mode .Nova a { color: var(--brand-bright); }
-body.theseed-dark-mode .Nova .document-tabs .content-tools .tools-btn:first-child,
-body.theseed-dark-mode .Nova .document-tabs .content-tools .tools-btn:hover { color: var(--brand-bright); }
-body.theseed-dark-mode .Nova #searchform .btn.search-submit:hover { color: var(--brand-bright); }
+body.theseed-dark-mode .Nova {
+    --brand: var(--liberty-brand-color, #4aa3ff);
+    --brand-dark: var(--liberty-brand-dark-color, color-mix(in srgb, var(--brand) 68%, #e8f3ff));
+    --brand-deep: color-mix(in srgb, var(--brand) 56%, #ffffff);
+    --brand-soft: color-mix(in srgb, var(--brand) 14%, #101620);
+    --brand-tint: var(--liberty-brand-bright-color, color-mix(in srgb, var(--brand) 12%, #151b24));
+    --ink: #e6edf3;
+    --ink-soft: #bdc8d4;
+    --accent: var(--nova-accent-color, color-mix(in srgb, var(--brand) 64%, #73d5c8));
+    --accent-tint: color-mix(in srgb, var(--accent) 13%, #151b24);
+    --bg: var(--nova-bg-color, #0d1117);
+    --surface: var(--nova-surface-color, #151b24);
+    --surface-2: var(--nova-surface-soft-color, #1b2430);
+    --border: var(--nova-border-color, #2b3643);
+    --text: var(--text-color, #e0e0e0);
+    --text-muted: var(--nova-muted-color, #a7b3c2);
+    --wiki-page-bg: #1c1d1f;
+    --wiki-text: #e0e0e0;
+    --wiki-comment: #608b4e;
+    --wiki-table-bg: #2d2f34;
+    --wiki-table-border: #383b40;
+    --wiki-link: #6eb6ff;
+    --wiki-link-hover: #9dccff;
+    --wiki-link-missing: #dc4343;
+    --wiki-link-external: #00b000;
+    --wiki-link-muted: #808080;
+    --wiki-rule: #383b40;
+    --wiki-quote-line: #666c75;
+    --wiki-quote-bg: #2d2f34;
+    --wiki-quote-border: #383b40;
+    --wiki-redirect-bg: #2378c3;
+    --wiki-redirect-text: #c0d2ee;
+    --wiki-namespace-bg: #545c5b;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.42), 0 18px 44px rgba(0, 0, 0, 0.28);
+    background: var(--bg);
+    color: var(--text);
+}
+body.theseed-dark-mode .Nova a { color: #6eb6ff; }
+body.theseed-dark-mode .Nova a:hover { color: #9dccff; }
+body.theseed-dark-mode .Nova .navbar {
+    background: linear-gradient(90deg, color-mix(in srgb, var(--brand) 68%, #111827) 0%, color-mix(in srgb, var(--brand) 52%, #121923) 52%, color-mix(in srgb, var(--brand) 34%, #0d1117) 100%);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.07), 0 10px 28px rgba(0, 0, 0, 0.26);
+}
+body.theseed-dark-mode .Nova .brand-mark {
+    background: rgba(255, 255, 255, 0.9);
+    color: color-mix(in srgb, var(--brand) 82%, #0b1220);
+}
+body.theseed-dark-mode .Nova .navbar-item:hover,
+body.theseed-dark-mode .Nova .dropdown > div:first-child:hover .navbar-item,
+body.theseed-dark-mode .Nova .navbar-burger,
+body.theseed-dark-mode .Nova .mobile-side-toggle {
+    background: rgba(255, 255, 255, 0.13);
+}
+body.theseed-dark-mode .Nova .dropdown-menu,
+body.theseed-dark-mode .Nova .login-dropdown-menu,
+body.theseed-dark-mode .Nova .feature-dropdown {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+    box-shadow: var(--shadow);
+}
+body.theseed-dark-mode .Nova .dropdown-item { color: var(--text); }
+body.theseed-dark-mode .Nova .dropdown-header,
+body.theseed-dark-mode .Nova .user-menu-header { color: var(--text); }
+body.theseed-dark-mode .Nova .dropdown-divider { background: var(--border); }
+body.theseed-dark-mode .Nova .dropdown-item:hover,
+body.theseed-dark-mode .Nova .dropdown-item:focus {
+    background: color-mix(in srgb, var(--brand) 17%, var(--surface));
+    color: #d8efff;
+}
+body.theseed-dark-mode .Nova .dropdown-item:hover .nova-icon,
+body.theseed-dark-mode .Nova .dropdown-item:focus .nova-icon,
+body.theseed-dark-mode .Nova .dropdown-avatar,
+body.theseed-dark-mode .Nova .user-menu-meta {
+    color: #d8efff;
+}
+body.theseed-dark-mode .Nova #searchform .input-group {
+    background: color-mix(in srgb, var(--surface) 94%, #fff);
+    border-color: color-mix(in srgb, var(--brand) 22%, var(--border));
+}
+body.theseed-dark-mode .Nova #searchform .input-group:focus-within {
+    background: color-mix(in srgb, var(--surface) 97%, #fff);
+    border-color: color-mix(in srgb, var(--brand) 46%, var(--border));
+}
+body.theseed-dark-mode .Nova #searchform .form-control,
+body.theseed-dark-mode .Nova #searchform .btn.search-action {
+    color: var(--text);
+}
+body.theseed-dark-mode .Nova #searchform .form-control::placeholder { color: var(--text-muted); }
+body.theseed-dark-mode .Nova #searchform .btn.search-action {
+    border-left-color: color-mix(in srgb, var(--brand) 26%, var(--border));
+    background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+    color: color-mix(in srgb, var(--brand) 55%, #e6edf3);
+}
+body.theseed-dark-mode .Nova #searchform .btn.search-random {
+    border-right-color: color-mix(in srgb, var(--brand) 26%, var(--border));
+}
+body.theseed-dark-mode .Nova #searchform .btn.search-action:hover {
+    background: color-mix(in srgb, var(--brand) 16%, var(--surface));
+    color: #d8efff;
+}
+body.theseed-dark-mode .Nova .v-autocomplete-list {
+    background: var(--surface) !important;
+    color: var(--text);
+    border-color: var(--border) !important;
+}
+body.theseed-dark-mode .Nova .v-autocomplete-list-item { color: var(--text); }
+body.theseed-dark-mode .Nova .v-autocomplete-list-item.v-autocomplete-item-active {
+    background: color-mix(in srgb, var(--brand) 15%, var(--surface));
+}
+body.theseed-dark-mode .Nova .hero-inner {
+    border-color: color-mix(in srgb, var(--brand) 24%, var(--border));
+    background: radial-gradient(circle at 82% 0%, rgba(255, 255, 255, 0.10), transparent 34%), linear-gradient(135deg, color-mix(in srgb, var(--brand) 62%, #111827) 0%, color-mix(in srgb, var(--brand) 43%, #131d2a) 48%, #111827 100%);
+    box-shadow: var(--shadow);
+}
+body.theseed-dark-mode .Nova .hero.is-danger .hero-inner {
+    background: linear-gradient(135deg, #9d3440 0%, #581b24 100%);
+    border-color: color-mix(in srgb, #d64b56 42%, var(--border));
+}
+body.theseed-dark-mode .Nova .hero.is-warning .hero-inner {
+    background: linear-gradient(135deg, #a06d20 0%, #53370f 100%);
+    border-color: color-mix(in srgb, #e0a12d 42%, var(--border));
+}
+body.theseed-dark-mode .Nova .document-tabs-inner,
+body.theseed-dark-mode .Nova .layout-grid {
+    background: var(--surface);
+    border-color: var(--border);
+}
+body.theseed-dark-mode .Nova .container {
+    background: transparent;
+}
+body.theseed-dark-mode .Nova .document-tabs-title,
+body.theseed-dark-mode .Nova .document-tabs .content-tools .tools-btn {
+    border-color: var(--border);
+    color: var(--text-muted);
+}
+body.theseed-dark-mode .Nova .document-tabs-title { color: var(--text); }
+body.theseed-dark-mode .Nova .document-tabs-title:hover,
+body.theseed-dark-mode .Nova .document-tabs .content-tools .tools-btn:hover,
+body.theseed-dark-mode .Nova .document-tabs .content-tools .tools-btn:focus,
+body.theseed-dark-mode .Nova .document-tabs .content-tools .tools-btn.tools-btn-active {
+    background: color-mix(in srgb, var(--brand) 16%, var(--surface));
+    color: #d8efff;
+}
+body.theseed-dark-mode .Nova .document-tabs .content-tools .tools-btn.tools-btn-active {
+    border-bottom-color: color-mix(in srgb, var(--brand) 68%, #fff);
+}
+body.theseed-dark-mode .Nova .document-tabs .content-tools .btn-danger { color: #ff9aa2; }
+body.theseed-dark-mode .Nova .document-tabs .content-tools .btn-discuss-progress {
+    background: color-mix(in srgb, var(--brand) 18%, var(--surface));
+    color: #d8efff;
+}
+body.theseed-dark-mode .Nova .wiki-article,
+body.theseed-dark-mode .Nova .skin-license-page,
+body.theseed-dark-mode .Nova .wiki-license-page {
+    color: var(--text);
+}
+body.theseed-dark-mode .Nova .wiki-article > .alert,
+body.theseed-dark-mode .Nova .wiki-article > .seed-alert,
+body.theseed-dark-mode .Nova .skin-license-section {
+    background: color-mix(in srgb, var(--surface) 92%, #000);
+    color: var(--text);
+    border-color: var(--border);
+}
+body.theseed-dark-mode .Nova .skin-license-kicker,
+body.theseed-dark-mode .Nova .skin-license-section p,
+body.theseed-dark-mode .Nova .skin-license-section li,
+body.theseed-dark-mode .Nova .wiki-license-page p,
+body.theseed-dark-mode .Nova .wiki-license-page li {
+    color: var(--text-muted);
+}
+body.theseed-dark-mode .Nova .skin-license-hero h2,
+body.theseed-dark-mode .Nova .skin-license-section h3,
+body.theseed-dark-mode .Nova .wiki-license-page h2,
+body.theseed-dark-mode .Nova .wiki-license-page h3 {
+    color: var(--text);
+    border-color: var(--border);
+}
+body.theseed-dark-mode .Nova .article-license,
+body.theseed-dark-mode .Nova .article-footer {
+    border-color: var(--border);
+    color: var(--text-muted);
+}
+body.theseed-dark-mode .Nova .footer-links a,
+body.theseed-dark-mode .Nova .footer-places a,
+body.theseed-dark-mode .Nova .footer-credit,
+body.theseed-dark-mode .Nova .footer-credit a { color: var(--text-muted); }
+body.theseed-dark-mode .Nova .mobile-side-panel,
+body.theseed-dark-mode .Nova .nova-alert {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+    box-shadow: var(--shadow);
+}
+body.theseed-dark-mode .Nova .live-recent,
+body.theseed-dark-mode .Nova .live-recent-header,
+body.theseed-dark-mode .Nova .live-recent-footer {
+    background: transparent;
+    border-color: var(--border);
+    box-shadow: none;
+}
+body.theseed-dark-mode .Nova .jump-btn {
+    background: var(--surface);
+    border-color: var(--border);
+    color: #d8efff;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+body.theseed-dark-mode .Nova .live-recent-content a,
+body.theseed-dark-mode .Nova .live-recent-content span.recent-item,
+body.theseed-dark-mode .Nova .live-recent-header .tab { color: var(--text) !important; }
+body.theseed-dark-mode .Nova .live-recent-content .recent-time,
+body.theseed-dark-mode .Nova .toc-card .toc-list a,
+body.theseed-dark-mode .Nova .nova-alert-body p { color: var(--text-muted); }
+body.theseed-dark-mode .Nova .live-recent-content a:hover,
+body.theseed-dark-mode .Nova .toc-card .toc-list a:hover,
+body.theseed-dark-mode .Nova .jump-btn:hover,
+body.theseed-dark-mode .Nova .nova-alert-close:hover {
+    background: color-mix(in srgb, var(--brand) 16%, var(--surface));
+    color: #d8efff;
+}
+body.theseed-dark-mode .Nova .mobile-side-panel-header button {
+    background: var(--surface-2);
+}
+body.theseed-dark-mode .Nova .mobile-side-panel-header {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+}
+body.theseed-dark-mode .Nova .mobile-side-backdrop { background: rgba(1, 6, 15, 0.56); }
+body.theseed-dark-mode .Nova .notification {
+    background: color-mix(in srgb, #d69b2f 14%, var(--surface));
+    color: #f7d891;
+    border-color: color-mix(in srgb, #d69b2f 42%, var(--border));
+}
+body.theseed-dark-mode .Nova .nova-alert.is-warning { border-left-color: #d69b2f; }
+body.theseed-dark-mode .Nova .nova-alert.is-danger { border-left-color: #ff8e98; }
+body.theseed-dark-mode .Nova .nova-alert.is-primary { border-left-color: var(--brand); }
+body.theseed-dark-mode .Nova pre,
+body.theseed-dark-mode .Nova code,
+body.theseed-dark-mode .Nova kbd,
+body.theseed-dark-mode .Nova samp,
+body.theseed-dark-mode .Nova textarea,
+body.theseed-dark-mode .Nova input,
+body.theseed-dark-mode .Nova select,
+body.theseed-dark-mode .Nova table,
+body.theseed-dark-mode .Nova .table {
+    color: var(--text);
+    border-color: var(--border);
+}
+body.theseed-dark-mode .Nova table:not(.wiki-table) {
+    background-color: var(--surface-2);
+}
+body.theseed-dark-mode .Nova table:not(.wiki-table) thead th,
+body.theseed-dark-mode .Nova .table thead th {
+    background: color-mix(in srgb, var(--brand) 18%, var(--surface));
+    color: var(--text);
+}
+body.theseed-dark-mode .Nova blockquote,
+body.theseed-dark-mode .Nova details,
+body.theseed-dark-mode .Nova summary,
+body.theseed-dark-mode .Nova fieldset,
+body.theseed-dark-mode .Nova legend {
+    color: var(--text);
+    border-color: var(--border);
+}
+body.theseed-dark-mode .Nova hr,
+body.theseed-dark-mode .Nova th,
+body.theseed-dark-mode .Nova td,
+body.theseed-dark-mode .Nova textarea {
+    border-color: var(--border);
+}
+body.theseed-dark-mode .Nova ::selection {
+    background: color-mix(in srgb, var(--brand) 36%, #0b1220);
+    color: #fff;
+}
+.Nova.nova-dark {
+    background-color: var(--nova-bg-color, #0d1117);
+    color-scheme: dark;
+}
+.Nova.nova-dark {
+    --brand: var(--liberty-brand-color, #4aa3ff);
+    --brand-dark: var(--liberty-brand-dark-color, color-mix(in srgb, var(--brand) 68%, #e8f3ff));
+    --brand-deep: color-mix(in srgb, var(--brand) 56%, #ffffff);
+    --brand-soft: color-mix(in srgb, var(--brand) 14%, #101620);
+    --brand-tint: var(--liberty-brand-bright-color, color-mix(in srgb, var(--brand) 12%, #151b24));
+    --ink: #e6edf3;
+    --ink-soft: #bdc8d4;
+    --accent: var(--nova-accent-color, color-mix(in srgb, var(--brand) 64%, #73d5c8));
+    --accent-tint: color-mix(in srgb, var(--accent) 13%, #151b24);
+    --bg: var(--nova-bg-color, #0d1117);
+    --surface: var(--nova-surface-color, #151b24);
+    --surface-2: var(--nova-surface-soft-color, #1b2430);
+    --border: var(--nova-border-color, #2b3643);
+    --text: var(--text-color, #e0e0e0);
+    --text-muted: var(--nova-muted-color, #a7b3c2);
+    --wiki-page-bg: #1c1d1f;
+    --wiki-text: #e0e0e0;
+    --wiki-comment: #608b4e;
+    --wiki-table-bg: #2d2f34;
+    --wiki-table-border: #383b40;
+    --wiki-link: #6eb6ff;
+    --wiki-link-hover: #9dccff;
+    --wiki-link-missing: #dc4343;
+    --wiki-link-external: #00b000;
+    --wiki-link-muted: #808080;
+    --wiki-rule: #383b40;
+    --wiki-quote-line: #666c75;
+    --wiki-quote-bg: #2d2f34;
+    --wiki-quote-border: #383b40;
+    --wiki-redirect-bg: #2378c3;
+    --wiki-redirect-text: #c0d2ee;
+    --wiki-namespace-bg: #545c5b;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.42), 0 18px 44px rgba(0, 0, 0, 0.28);
+    background: var(--bg);
+    color: var(--text);
+}
+.Nova.nova-dark a { color: #6eb6ff; }
+.Nova.nova-dark a:hover { color: #9dccff; }
+.Nova.nova-dark .navbar {
+    background: linear-gradient(90deg, color-mix(in srgb, var(--brand) 68%, #111827) 0%, color-mix(in srgb, var(--brand) 52%, #121923) 52%, color-mix(in srgb, var(--brand) 34%, #0d1117) 100%);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.07), 0 10px 28px rgba(0, 0, 0, 0.26);
+}
+.Nova.nova-dark .brand-mark {
+    background: rgba(255, 255, 255, 0.9);
+    color: color-mix(in srgb, var(--brand) 82%, #0b1220);
+}
+.Nova.nova-dark .navbar-item:hover,
+.Nova.nova-dark .dropdown > div:first-child:hover .navbar-item,
+.Nova.nova-dark .navbar-burger,
+.Nova.nova-dark .mobile-side-toggle {
+    background: rgba(255, 255, 255, 0.13);
+}
+.Nova.nova-dark .dropdown-menu,
+.Nova.nova-dark .login-dropdown-menu,
+.Nova.nova-dark .feature-dropdown {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+    box-shadow: var(--shadow);
+}
+.Nova.nova-dark .dropdown-item { color: var(--text); }
+.Nova.nova-dark .dropdown-header,
+.Nova.nova-dark .user-menu-header { color: var(--text); }
+.Nova.nova-dark .dropdown-divider { background: var(--border); }
+.Nova.nova-dark .dropdown-item:hover,
+.Nova.nova-dark .dropdown-item:focus {
+    background: color-mix(in srgb, var(--brand) 17%, var(--surface));
+    color: #d8efff;
+}
+.Nova.nova-dark .dropdown-item:hover .nova-icon,
+.Nova.nova-dark .dropdown-item:focus .nova-icon,
+.Nova.nova-dark .dropdown-avatar,
+.Nova.nova-dark .user-menu-meta {
+    color: #d8efff;
+}
+.Nova.nova-dark #searchform .input-group {
+    background: color-mix(in srgb, var(--surface) 94%, #fff);
+    border-color: color-mix(in srgb, var(--brand) 22%, var(--border));
+}
+.Nova.nova-dark #searchform .input-group:focus-within {
+    background: color-mix(in srgb, var(--surface) 97%, #fff);
+    border-color: color-mix(in srgb, var(--brand) 46%, var(--border));
+}
+.Nova.nova-dark #searchform .form-control,
+.Nova.nova-dark #searchform .btn.search-action {
+    color: var(--text);
+}
+.Nova.nova-dark #searchform .form-control::placeholder { color: var(--text-muted); }
+.Nova.nova-dark #searchform .btn.search-action {
+    border-left-color: color-mix(in srgb, var(--brand) 26%, var(--border));
+    background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+    color: color-mix(in srgb, var(--brand) 55%, #e6edf3);
+}
+.Nova.nova-dark #searchform .btn.search-random {
+    border-right-color: color-mix(in srgb, var(--brand) 26%, var(--border));
+}
+.Nova.nova-dark #searchform .btn.search-action:hover {
+    background: var(--brand);
+    color: #fff;
+}
+.Nova.nova-dark .v-autocomplete-list {
+    background: var(--surface) !important;
+    color: var(--text);
+    border-color: var(--border) !important;
+}
+.Nova.nova-dark .v-autocomplete-list-item { color: var(--text); }
+.Nova.nova-dark .v-autocomplete-list-item.v-autocomplete-item-active {
+    background: color-mix(in srgb, var(--brand) 15%, var(--surface));
+}
+.Nova.nova-dark .hero-inner {
+    border-color: color-mix(in srgb, var(--brand) 24%, var(--border));
+    background: radial-gradient(circle at 82% 0%, rgba(255, 255, 255, 0.10), transparent 34%), linear-gradient(135deg, color-mix(in srgb, var(--brand) 62%, #111827) 0%, color-mix(in srgb, var(--brand) 43%, #131d2a) 48%, #111827 100%);
+    box-shadow: var(--shadow);
+}
+.Nova.nova-dark .hero.is-danger .hero-inner {
+    background: linear-gradient(135deg, #9d3440 0%, #581b24 100%);
+    border-color: color-mix(in srgb, #d64b56 42%, var(--border));
+}
+.Nova.nova-dark .hero.is-warning .hero-inner {
+    background: linear-gradient(135deg, #a06d20 0%, #53370f 100%);
+    border-color: color-mix(in srgb, #e0a12d 42%, var(--border));
+}
+.Nova.nova-dark .document-tabs-inner,
+.Nova.nova-dark .layout-grid {
+    background: var(--surface);
+    border-color: var(--border);
+}
+.Nova.nova-dark .container {
+    background: transparent;
+}
+.Nova.nova-dark .document-tabs-title,
+.Nova.nova-dark .document-tabs .content-tools .tools-btn {
+    border-color: var(--border);
+    color: var(--text-muted);
+}
+.Nova.nova-dark .document-tabs-title { color: var(--text); }
+.Nova.nova-dark .document-tabs-title:hover,
+.Nova.nova-dark .document-tabs .content-tools .tools-btn:hover,
+.Nova.nova-dark .document-tabs .content-tools .tools-btn:focus,
+.Nova.nova-dark .document-tabs .content-tools .tools-btn.tools-btn-active {
+    background: color-mix(in srgb, var(--brand) 16%, var(--surface));
+    color: #d8efff;
+}
+.Nova.nova-dark .document-tabs .content-tools .tools-btn.tools-btn-active {
+    border-bottom-color: color-mix(in srgb, var(--brand) 68%, #fff);
+}
+.Nova.nova-dark .document-tabs .content-tools .btn-danger { color: #ff9aa2; }
+.Nova.nova-dark .document-tabs .content-tools .btn-discuss-progress {
+    background: color-mix(in srgb, var(--brand) 18%, var(--surface));
+    color: #d8efff;
+}
+.Nova.nova-dark .wiki-article,
+.Nova.nova-dark .skin-license-page,
+.Nova.nova-dark .wiki-license-page {
+    color: var(--text);
+}
+.Nova.nova-dark .wiki-article > .alert,
+.Nova.nova-dark .wiki-article > .seed-alert,
+.Nova.nova-dark .skin-license-section {
+    background: color-mix(in srgb, var(--surface) 92%, #000);
+    color: var(--text);
+    border-color: var(--border);
+}
+.Nova.nova-dark .skin-license-kicker,
+.Nova.nova-dark .skin-license-section p,
+.Nova.nova-dark .skin-license-section li,
+.Nova.nova-dark .wiki-license-page p,
+.Nova.nova-dark .wiki-license-page li {
+    color: var(--text-muted);
+}
+.Nova.nova-dark .skin-license-hero h2,
+.Nova.nova-dark .skin-license-section h3,
+.Nova.nova-dark .wiki-license-page h2,
+.Nova.nova-dark .wiki-license-page h3 {
+    color: var(--text);
+    border-color: var(--border);
+}
+.Nova.nova-dark .article-license,
+.Nova.nova-dark .article-footer {
+    border-color: var(--border);
+    color: var(--text-muted);
+}
+.Nova.nova-dark .footer-links a,
+.Nova.nova-dark .footer-places a,
+.Nova.nova-dark .footer-credit,
+.Nova.nova-dark .footer-credit a { color: var(--text-muted); }
+.Nova.nova-dark .mobile-side-panel,
+.Nova.nova-dark .nova-alert {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+    box-shadow: var(--shadow);
+}
+.Nova.nova-dark .live-recent,
+.Nova.nova-dark .live-recent-header,
+.Nova.nova-dark .live-recent-footer {
+    background: transparent;
+    border-color: var(--border);
+    box-shadow: none;
+}
+.Nova.nova-dark .jump-btn {
+    background: var(--surface);
+    border-color: var(--border);
+    color: #d8efff;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+.Nova.nova-dark .live-recent-content a,
+.Nova.nova-dark .live-recent-content span.recent-item,
+.Nova.nova-dark .live-recent-header .tab { color: var(--text) !important; }
+.Nova.nova-dark .live-recent-content .recent-time,
+.Nova.nova-dark .toc-card .toc-list a,
+.Nova.nova-dark .nova-alert-body p { color: var(--text-muted); }
+.Nova.nova-dark .live-recent-content a:hover,
+.Nova.nova-dark .toc-card .toc-list a:hover,
+.Nova.nova-dark .jump-btn:hover,
+.Nova.nova-dark .nova-alert-close:hover {
+    background: color-mix(in srgb, var(--brand) 16%, var(--surface));
+    color: #d8efff;
+}
+.Nova.nova-dark .mobile-side-panel-header button {
+    background: var(--surface-2);
+}
+.Nova.nova-dark .mobile-side-panel-header {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+}
+.Nova.nova-dark .mobile-side-backdrop { background: rgba(1, 6, 15, 0.56); }
+.Nova.nova-dark .notification {
+    background: color-mix(in srgb, #d69b2f 14%, var(--surface));
+    color: #f7d891;
+    border-color: color-mix(in srgb, #d69b2f 42%, var(--border));
+}
+.Nova.nova-dark .nova-alert.is-warning { border-left-color: #d69b2f; }
+.Nova.nova-dark .nova-alert.is-danger { border-left-color: #ff8e98; }
+.Nova.nova-dark .nova-alert.is-primary { border-left-color: var(--brand); }
+.Nova.nova-dark pre,
+.Nova.nova-dark code,
+.Nova.nova-dark kbd,
+.Nova.nova-dark samp,
+.Nova.nova-dark textarea,
+.Nova.nova-dark input,
+.Nova.nova-dark select,
+.Nova.nova-dark table,
+.Nova.nova-dark .table {
+    color: var(--text);
+    border-color: var(--border);
+}
+.Nova.nova-dark table:not(.wiki-table) {
+    background-color: var(--surface-2);
+}
+.Nova.nova-dark table:not(.wiki-table) thead th,
+.Nova.nova-dark .table thead th {
+    background: color-mix(in srgb, var(--brand) 18%, var(--surface));
+    color: var(--text);
+}
+.Nova.nova-dark blockquote,
+.Nova.nova-dark details,
+.Nova.nova-dark summary,
+.Nova.nova-dark fieldset,
+.Nova.nova-dark legend {
+    color: var(--text);
+    border-color: var(--border);
+}
+.Nova.nova-dark hr,
+.Nova.nova-dark th,
+.Nova.nova-dark td,
+.Nova.nova-dark textarea {
+    border-color: var(--border);
+}
+.Nova.nova-dark ::selection {
+    background: color-mix(in srgb, var(--brand) 36%, #0b1220);
+    color: #fff;
+}
+@media (min-width: 1024px) and (max-width: 1180px) {
+    .Nova {
+        --page-gutter: 24px;
+        --doc-frame-pad: 32px;
+    }
+    .Nova .layout-grid {
+        grid-template-columns: minmax(0, 1fr) 248px;
+        column-gap: 20px;
+    }
+    .Nova .sidebar-column {
+        padding-left: 18px;
+    }
+    .Nova .document-tabs-title {
+        flex-basis: 220px;
+        min-width: 180px;
+    }
+    .Nova .document-tabs .content-tools .tools-btn {
+        padding-right: 13px;
+        padding-left: 13px;
+        gap: 6px;
+        font-size: 12.5px;
+    }
+    .Nova .document-tabs .content-tools .dropdown-toggle {
+        min-width: 62px;
+    }
+}
 
 @media (max-width: 1023px) {
+    .Nova { --page-gutter: 12px; --doc-frame-pad: 28px; }
+    .Nova .nova-alert-stack { top: auto; right: 16px; bottom: 16px; }
     .Nova .navbar-inner {
         flex-wrap: wrap;
         height: auto;
         min-height: var(--nav-height);
-        padding: 0.55rem 1rem;
+        padding: 9px 12px;
+        gap: 10px;
     }
-    .Nova .navbar-burger { display: inline-flex; align-items: center; justify-content: center; }
-    .Nova .mobile-search { display: block; flex: 1; min-width: 150px; order: 2; }
-    .Nova .mobile-search #searchform { margin: 0; }
-    .Nova .mobile-search #searchform .input-group,
-    .Nova .mobile-search #searchform .input-search,
-    .Nova .mobile-search #searchform .form-control { width: 100%; }
+    .Nova .navbar-burger { display: inline-flex; align-items: center; justify-content: center; order: 1; margin-left: 0; }
+    .Nova .navbar-brand {
+        order: 2;
+        flex: 1 1 0;
+        min-width: 0;
+        justify-content: center;
+        text-align: center;
+    }
+    .Nova .mobile-search { display: block; flex: 0 0 100%; width: 100%; min-width: 0; order: 4; }
+    .Nova .mobile-search #searchform { width: 100%; }
+    .Nova .mobile-search #searchform .input-group { width: 100%; }
+    .Nova .mobile-search .v-autocomplete-list { width: 100% !important; }
     .Nova .navbar-menu {
-        display: none;
-        order: 3;
-        width: 100%;
-        flex-basis: 100%;
-        padding-top: 0.5rem;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 345;
+        display: block;
+        width: min(320px, calc(100vw - 44px));
+        height: auto;
+        padding: 16px 14px 18px;
+        overflow-y: auto;
+        border-right: 1px solid var(--border);
+        background: var(--surface);
+        box-shadow: 18px 0 38px rgba(31, 41, 55, 0.16);
+        transform: translateX(-100%);
+        transition: transform 0.18s ease;
     }
-    .Nova .navbar-menu.is-active { display: block; }
+    .Nova .navbar-menu.is-active { transform: translateX(0); }
+    .Nova .mobile-nav-panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+        padding: 4px 2px 12px;
+        border-bottom: 1px solid var(--border);
+    }
+    .Nova .mobile-panel-copy {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        gap: 3px;
+    }
+    .Nova .mobile-panel-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+        color: var(--text);
+        font-size: 15px;
+        font-weight: 650;
+        line-height: 1.2;
+    }
+    .Nova .mobile-panel-title .nova-icon { color: var(--brand); font-size: 17px; }
+    .Nova .mobile-nav-panel-header button {
+        width: 30px;
+        height: 30px;
+        border: 0;
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--brand) 8%, var(--surface));
+        color: var(--text-muted);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
     .Nova .navbar-start,
-    .Nova .navbar-end { align-items: stretch; flex-direction: column; }
+    .Nova .navbar-end { align-items: stretch; flex-direction: column; height: auto; gap: 6px; }
+    .Nova .navbar-end {
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid var(--border);
+    }
     .Nova .navbar-end > #searchform,
     .Nova .navbar-end > .form-inline { display: none; }
-    .Nova .navbar-item { width: 100%; justify-content: flex-start; }
-    .Nova .dropdown-menu { position: static; width: 100%; margin: 0.25rem 0 0.5rem; box-shadow: none; }
+    .Nova .navbar-menu .navbar-item {
+        width: 100%;
+        min-height: 44px;
+        justify-content: flex-start;
+        padding: 10px 12px;
+        border-radius: 9px;
+        color: var(--text);
+        font-size: 15px;
+        font-weight: 600;
+    }
+    .Nova .navbar-menu .navbar-item .nova-icon { color: var(--brand); }
+    .Nova .navbar-menu .navbar-item:hover,
+    .Nova .navbar-menu .dropdown > div:first-child:hover .navbar-item {
+        background: color-mix(in srgb, var(--brand) 9%, var(--surface));
+        color: var(--brand-dark);
+    }
+    .Nova .navbar-menu .notification-toggle {
+        width: 100%;
+        min-height: 44px;
+        justify-content: flex-start;
+        padding: 10px 12px;
+    }
+    .Nova .navbar-menu .notification-toggle::after {
+        content: "알림";
+        color: var(--text);
+        font-size: 15px;
+        font-weight: 600;
+    }
+    .Nova .navbar-menu .notification-badge {
+        position: static;
+        margin-left: auto;
+        border-color: var(--surface);
+    }
+    .Nova .navbar-menu .notification-menu {
+        width: 100%;
+        max-width: none;
+    }
+    .Nova .navbar-menu .avatar-toggle {
+        min-height: 72px;
+        padding: 12px 14px;
+        border: 1px solid color-mix(in srgb, var(--brand) 16%, var(--border));
+        border-radius: 12px;
+        background: color-mix(in srgb, var(--brand) 7%, var(--surface));
+        gap: 12px;
+    }
+    .Nova .navbar-menu .avatar-summary {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        gap: 3px;
+        text-align: left;
+        line-height: 1.25;
+    }
+    .Nova .navbar-menu .avatar-summary strong {
+        color: var(--text);
+        font-size: 15px;
+        font-weight: 650 !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .Nova .navbar-menu .avatar-summary span {
+        color: var(--text-muted);
+        font-size: 12.5px;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .Nova .navbar-menu .chevron { margin-left: auto; color: var(--text-muted); }
+    .Nova .navbar-menu .dropdown-menu {
+        position: static;
+        width: 100%;
+        min-width: 0;
+        margin: 6px 0 10px;
+        padding: 6px;
+        border-radius: 10px;
+        box-shadow: none;
+        background: color-mix(in srgb, var(--brand) 3%, var(--surface));
+    }
+    .Nova .mobile-nav-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 335;
+        display: block;
+        background: rgba(15, 23, 42, 0.28);
+    }
     .Nova .document-tabs { top: 0; }
     .Nova .layout-grid { grid-template-columns: minmax(0, 1fr); }
     .Nova .sidebar-column { display: none; }
+    .Nova .document-tabs {
+        padding-right: var(--page-gutter);
+        padding-left: var(--page-gutter);
+    }
+    .Nova .document-tabs-inner {
+        min-height: 54px;
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+    .Nova .document-tabs-title {
+        flex-basis: min(220px, 42vw);
+        min-width: 150px;
+        min-height: 52px;
+        padding-right: 12px;
+        font-size: 12.5px;
+    }
+    .Nova .document-tabs .content-tools .tools-btn {
+        min-width: auto;
+        min-height: 52px;
+        justify-content: center;
+        padding: 10px 13px;
+        gap: 7px;
+    }
+    .Nova .document-tabs .content-tools .tools-btn-active { min-height: 52px; }
+    .Nova .document-tabs .content-tools .tools-label,
+    .Nova .document-tabs .content-tools .dropdown-toggle::after { display: inline-block; }
+    .Nova .document-tabs .content-tools .dropdown-toggle {
+        min-width: auto;
+        min-height: 52px;
+        padding: 0 13px;
+    }
+    .Nova .mobile-side-toggle {
+        order: 3;
+        width: 40px;
+        height: 40px;
+        border: 0;
+        border-radius: var(--radius-sm);
+        background: rgba(255, 255, 255, 0.16);
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    .Nova .mobile-side-toggle .nova-icon { width: 19px; height: 19px; }
+    .Nova .mobile-side-toggle.is-active { background: rgba(255, 255, 255, 0.26); }
+    .Nova .mobile-side-panel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 340;
+        width: min(320px, calc(100vw - 44px));
+        padding: 14px;
+        background: var(--surface);
+        border-left: 1px solid var(--border);
+        box-shadow: -18px 0 38px rgba(31, 41, 55, 0.16);
+        transform: translateX(100%);
+        transition: transform 0.18s ease;
+        display: block;
+        overflow-y: auto;
+    }
+    .Nova .mobile-side-panel.is-open { transform: translateX(0); }
+    .Nova .mobile-side-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 330;
+        display: block;
+        background: rgba(15, 23, 42, 0.28);
+    }
+    .Nova .mobile-side-panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding: 4px 2px 10px;
+        border-bottom: 1px solid var(--border);
+    }
+    .Nova .mobile-side-panel-header button {
+        width: 30px;
+        height: 30px;
+        border: 0;
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--brand) 8%, var(--surface));
+        color: var(--text-muted);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    .Nova .mobile-side-panel .live-recent {
+        padding: 0;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+    }
+    .Nova .mobile-side-panel .live-recent-header { padding: 12px 14px; border-bottom: 1px solid var(--border); }
+    .Nova .mobile-side-panel .live-recent-footer { padding: 8px 14px 12px; }
+    .Nova .mobile-side-panel .live-recent + .live-recent { padding-top: 0; border-top: 1px solid var(--border); }
+    .Nova .mobile-side-panel .live-recent + .live-recent { margin-top: 12px; }
+}
+
+@media (max-width: 860px) {
+    .Nova .container { padding-right: var(--page-gutter); padding-left: var(--page-gutter); }
+    .Nova .hero-inner { padding-right: var(--doc-frame-pad); padding-left: var(--doc-frame-pad); }
+    .Nova .navbar-inner { padding-right: 12px; padding-left: 12px; }
+    .Nova .skin-license-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .Nova .skin-license-hero h2 { font-size: 28px; }
+    .Nova .layout-grid { padding: var(--doc-frame-pad) var(--doc-frame-pad) 0; border-bottom-right-radius: 24px; border-bottom-left-radius: 24px; }
+    .Nova .article-license { margin-right: calc(var(--doc-frame-pad) * -1); margin-left: calc(var(--doc-frame-pad) * -1); padding-right: var(--doc-frame-pad); padding-left: var(--doc-frame-pad); }
+    .Nova .article-footer { margin-right: calc(var(--doc-frame-pad) * -1); margin-left: calc(var(--doc-frame-pad) * -1); padding-right: var(--doc-frame-pad); padding-left: var(--doc-frame-pad); }
+    .Nova .hero-inner { padding-top: 52px; padding-bottom: 48px; border-top-left-radius: 24px; border-top-right-radius: 24px; }
+    .Nova .hero-title { font-size: 32px; }
+    .Nova .document-tabs-inner { padding-right: 12px; padding-left: 12px; }
+    .Nova .document-tabs .content-tools .tools-btn { padding: 12px 14px; }
 }
 
 @media (max-width: 640px) {
-    .Nova .container,
-    .Nova .navbar-inner,
-    .Nova .hero-inner { padding-right: 0.85rem; padding-left: 0.85rem; }
+    .Nova { --page-gutter: 10px; --doc-frame-pad: 22px; }
+    .Nova .container { padding-right: var(--page-gutter); padding-left: var(--page-gutter); }
+    .Nova .hero-inner { padding-right: var(--doc-frame-pad); padding-left: var(--doc-frame-pad); }
+    .Nova .navbar-inner { padding-right: 8px; padding-left: 8px; }
     .Nova .brand-text { max-width: 42vw; overflow: hidden; text-overflow: ellipsis; }
-    .Nova .hero-inner { padding-top: 1.05rem; padding-bottom: 1.2rem; }
-    .Nova .hero-title { font-size: 1.45rem; }
-    .Nova .wiki-article { padding: 1rem; border-right: 0; border-left: 0; border-radius: 0; }
-    .Nova .layout-grid { padding-right: 0; padding-left: 0; }
-    .Nova .layout-grid > .content-column { min-width: 0; }
-    .Nova .article-footer { padding-right: 0.85rem; padding-left: 0.85rem; }
-    .Nova .jump-buttons { right: 0.75rem; bottom: 0.85rem; }
-    .Nova .jump-btn { width: 2.35rem; height: 2.35rem; }
+    .Nova #searchform .input-group { width: 100%; }
+    .Nova .v-autocomplete-list { width: 100% !important; }
+    .Nova .hero-title { font-size: 29px; line-height: 1.25; }
+    .Nova .layout-grid { padding-right: var(--doc-frame-pad); padding-left: var(--doc-frame-pad); }
+    .Nova .article-license { margin-right: calc(var(--doc-frame-pad) * -1); margin-left: calc(var(--doc-frame-pad) * -1); padding-right: var(--doc-frame-pad); padding-left: var(--doc-frame-pad); }
+    .Nova .article-footer { margin-right: calc(var(--doc-frame-pad) * -1); margin-left: calc(var(--doc-frame-pad) * -1); padding-right: var(--doc-frame-pad); padding-left: var(--doc-frame-pad); }
+    .Nova .document-tabs-inner { padding-right: 10px; padding-left: 10px; }
+    .Nova .document-tabs-title { flex-basis: 160px; min-width: 140px; }
+    .Nova .doc-meta { padding-bottom: 0; }
+    .Nova .jump-buttons {
+        right: 12px;
+        bottom: max(12px, env(safe-area-inset-bottom));
+        flex-direction: column;
+        gap: 6px;
+        transform: none;
+        height: auto;
+        margin: 0;
+        overflow: visible;
+    }
+    .Nova .jump-btn {
+        width: 38px;
+        height: 38px;
+        padding: 0;
+    }
 }
