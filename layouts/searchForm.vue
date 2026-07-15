@@ -4,16 +4,16 @@
             <button type="button" name="random" value="랜덤" class="btn btn-secondary search-action search-random" aria-label="랜덤 문서" title="랜덤 문서" @click="onClickRandom"><nova-icon name="shuffle" /></button>
             <div class="input-search">
                 <input type="search" name="q" placeholder="검색" accesskey="f" class="form-control" id="searchInput" autocomplete="off" v-on:input="searchText = $event.target.value" v-model="searchTextModel" @blur="blur" @focus="focus" @input="inputChange" @keydown.enter="keyEnter" @keydown.tab="keyEnter" @keydown.up="keyUp" @keydown.down="keyDown">
-                <div v-if="show" class="v-autocomplete-list">
-                    <div class="v-autocomplete-list-item" v-for="(item, i) in internalItems" @click="onClickItem(item)" v-bind:key="i" :class="{'v-autocomplete-item-active': i === cursor}" @mouseover="cursor = i">
-                        <div>{{ item }}</div>
-                    </div>
-                </div>
             </div>
             <span class="input-group-btn">
               <button type="submit" name="fulltext" value="검색" class="btn btn-secondary search-action search-submit" aria-label="검색" title="검색" @click="onClickSearch"><nova-icon name="search" /></button>
               <button type="button" name="go" value="바로가기" class="btn btn-secondary search-action search-move" aria-label="바로가기" @click="onClickMove"><nova-icon name="arrowRight" /></button>
             </span>
+            <div v-if="show" class="v-autocomplete-list">
+                <div class="v-autocomplete-list-item" v-for="(item, i) in internalItems" @click="onClickItem(item)" v-bind:key="i" :class="{'v-autocomplete-item-active': i === cursor}" @mouseover="cursor = i">
+                    <div>{{ item }}</div>
+                </div>
+            </div>
         </div>
     </form>
 </template>
@@ -22,23 +22,19 @@
 .v-autocomplete-list {
     position: absolute;
     z-index: 3;
-    width: 10.8rem;
+    right: 0;
+    left: 0;
+    width: 100%;
     border: 1px solid var(--border, #d8e1ec);
     background-color: var(--surface, #fff);
     box-shadow: var(--shadow, 0 12px 32px rgba(31, 41, 55, 0.08));
 }
 
-@media (max-width: 1023px) {
-    .v-autocomplete-list {
-        width: 100%;
-    }
-}
-
 .v-autocomplete-list-item {
     cursor: pointer;
     color: var(--text, #1f2937);
-    padding: 0.5rem;
-    word-break: break-all;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
 }
 
 .v-autocomplete-list-item.v-autocomplete-item-active {

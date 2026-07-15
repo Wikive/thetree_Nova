@@ -30,6 +30,10 @@ button { cursor: pointer; }
     --brand-deep: color-mix(in srgb, var(--brand) 66%, #001d3d);
     --brand-soft: color-mix(in srgb, var(--brand) 12%, #fff);
     --brand-tint: var(--nova-brand-bright-color, color-mix(in srgb, var(--brand) 10%, #fff));
+    --brand-color-1: var(--brand);
+    --brand-color-2: color-mix(in srgb, var(--brand) 82%, #ffffff);
+    --brand-bright-color-1: color-mix(in srgb, var(--brand) 18%, #ffffff);
+    --brand-bright-color-2: color-mix(in srgb, var(--brand) 10%, #ffffff);
     --ink: var(--brand);
     --ink-soft: var(--brand-dark);
     --accent: var(--nova-accent-color, color-mix(in srgb, var(--brand) 82%, #00a6a6));
@@ -110,6 +114,99 @@ body :where(b, strong),
 .Nova :where(code, pre, kbd, samp) {
     font-family: "Pretendard";
 }
+
+.Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select) {
+    min-height: 38px;
+    padding: 8px 12px;
+    border: 1px solid color-mix(in srgb, var(--brand) 14%, var(--border));
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--surface) 96%, #fff);
+    color: var(--text);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 1px 2px rgba(31, 41, 55, 0.04);
+    font-size: 14px;
+    line-height: 1.45;
+    outline: 0;
+    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+}
+.Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select)::placeholder {
+    color: color-mix(in srgb, var(--text-muted) 78%, transparent);
+}
+.Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select):hover {
+    border-color: color-mix(in srgb, var(--brand) 28%, var(--border));
+    background: var(--surface);
+}
+.Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select):focus {
+    border-color: color-mix(in srgb, var(--brand) 54%, var(--border));
+    background: var(--surface);
+    box-shadow: 0 0 0 3px var(--brand-bright-color-2), 0 8px 20px rgba(31, 41, 55, 0.08);
+}
+.Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select):disabled,
+.Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select)[readonly] {
+    background: color-mix(in srgb, var(--surface-2) 86%, var(--surface));
+    color: var(--text-muted);
+    cursor: not-allowed;
+    opacity: 0.72;
+}
+.Nova textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+.Nova select {
+    padding-right: 34px;
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position: calc(100% - 17px) 50%, calc(100% - 12px) 50%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    appearance: none;
+}
+.Nova input[type=file] {
+    color: var(--text);
+    font-size: 14px;
+}
+.Nova input[type=file]::file-selector-button {
+    margin-right: 10px;
+    padding: 7px 11px;
+    border: 1px solid color-mix(in srgb, var(--brand) 18%, var(--border));
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--brand) 8%, var(--surface));
+    color: var(--brand-dark);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+.Nova input[type=file]::file-selector-button:hover {
+    background: color-mix(in srgb, var(--brand) 14%, var(--surface));
+}
+
+/* Engine setting modal */
+.Nova .thetree-modal-content,
+.Nova .setting-block {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+}
+.Nova .setting-block :where(h1, header, ul, li, label, small, span, p, div),
+.Nova .setting-item,
+.Nova .setting-item-content {
+    color: var(--text);
+}
+.Nova .setting-block :where(small, .muted) { color: var(--text-muted); }
+.Nova .setting-block header { border-color: var(--border); }
+.Nova .setting-block header > ul > li { color: var(--text); }
+.Nova .setting-block header > ul > li.selected-tab {
+    background: color-mix(in srgb, var(--brand) 16%, var(--surface));
+    color: var(--brand-dark);
+}
+.Nova .setting-block button {
+    color: var(--text);
+    text-shadow: none;
+}
+.Nova .setting-block select,
+.Nova .setting-block option {
+    background-color: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+}
 .Nova .container {
     max-width: 1440px;
     margin: 0 auto;
@@ -170,9 +267,15 @@ body :where(b, strong),
     justify-content: center;
     font-size: 12.8px;
 }
+.Nova .navbar-brand.has-logo {
+    flex: 0 1 auto;
+    max-width: min(22vw, 7rem);
+    gap: 0;
+}
 .Nova .brand-logo-image {
     display: block;
-    width: var(--nova-navbar-logo-width, 8.5rem);
+    width: min(var(--nova-navbar-logo-width, 6.5rem), 7rem);
+    max-width: 100%;
     height: 32px;
     background-image: var(--nova-navbar-logo-image, none);
     background-repeat: no-repeat;
@@ -427,12 +530,16 @@ body :where(b, strong),
 }
 .Nova .user-menu-header .user-menu-title {
     display: flex;
-    align-items: baseline;
-    gap: 6px;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    line-height: 1.35;
 }
 .Nova .user-menu-header .user-menu-title strong,
 .Nova .user-menu-header .user-menu-title .muted {
-    display: inline;
+    display: block;
+    max-width: 100%;
 }
 .Nova .user-menu-header strong,
 .Nova .user-menu-header .muted {
@@ -611,6 +718,7 @@ body :where(b, strong),
     float: none;
 }
 .Nova #searchform .input-group {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 0;
@@ -671,12 +779,48 @@ body :where(b, strong),
 }
 .Nova #searchform .btn.search-action .nova-icon { width: 16px; height: 16px; stroke-width: 2.25; }
 .Nova .v-autocomplete-list {
-    top: calc(100% + 8px);
-    width: 360px !important;
-    border-color: var(--border) !important;
+    z-index: 420;
+    top: calc(100% + 10px);
+    right: 0;
+    left: 0;
+    width: 100% !important;
+    max-height: min(420px, 58vh);
+    padding: 8px;
+    border: 1px solid color-mix(in srgb, var(--brand) 18%, var(--border)) !important;
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--surface) 96%, #fff);
+    box-shadow: 0 18px 42px rgba(31, 41, 55, 0.16);
+    overflow-y: auto;
+    overflow-x: hidden;
+    backdrop-filter: blur(12px);
+}
+.Nova .v-autocomplete-list-item {
+    min-height: 42px;
+    padding: 10px 13px;
     border-radius: 12px;
-    box-shadow: var(--shadow);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 550;
+    line-height: 1.5;
+    letter-spacing: 0;
+    transition: background 0.14s ease, color 0.14s ease, transform 0.14s ease;
+}
+.Nova .v-autocomplete-list-item + .v-autocomplete-list-item {
+    margin-top: 2px;
+}
+.Nova .v-autocomplete-list-item > div {
+    min-width: 0;
     overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.Nova .v-autocomplete-list-item:hover,
+.Nova .v-autocomplete-list-item.v-autocomplete-item-active {
+    background: color-mix(in srgb, var(--brand) 11%, var(--surface));
+    color: var(--brand-dark);
+    transform: translateX(2px);
 }
 
 /* Document header */
@@ -816,10 +960,11 @@ body :where(b, strong),
 }
 .Nova .navbar-fixed-top + .hero + .document-tabs { top: var(--nav-height); }
 .Nova .document-tabs-inner {
+    --doc-tabs-height: 62px;
     display: flex;
     align-items: stretch;
     max-width: var(--doc-frame-max);
-    min-height: 62px;
+    min-height: var(--doc-tabs-height);
     margin-right: auto;
     margin-left: auto;
     border: 1px solid var(--border);
@@ -827,7 +972,7 @@ body :where(b, strong),
     border-radius: 0;
     background: var(--surface);
     box-shadow: none;
-    padding-right: 24px;
+    padding-right: 0;
     padding-left: 24px;
     overflow-x: auto;
     overflow-y: hidden;
@@ -858,9 +1003,9 @@ body :where(b, strong),
     flex: 0 0 min(320px, 28vw);
     min-width: 180px;
     max-width: 320px;
-    min-height: 60px;
+    min-height: var(--doc-tabs-height);
     padding: 0 18px 0 0;
-    border-right: 1px solid var(--border);
+    border-right: 0;
     color: var(--text);
     display: inline-flex;
     align-items: center;
@@ -884,6 +1029,8 @@ body :where(b, strong),
     white-space: nowrap;
 }
 .Nova .document-tabs .content-tools {
+    align-self: stretch;
+    display: flex;
     width: max-content;
     min-width: 0;
     margin-left: auto;
@@ -892,18 +1039,21 @@ body :where(b, strong),
 }
 .Nova .document-tabs .content-tools .btn-group {
     display: flex;
-    align-items: flex-end;
+    align-items: stretch;
     float: none;
     gap: 0;
     width: max-content;
     min-width: 0;
+    height: 100%;
 }
 .Nova .document-tabs .content-tools .tools-btn {
     position: relative;
     flex: 0 0 auto;
-    min-height: 60px;
+    height: var(--doc-tabs-height);
+    min-height: var(--doc-tabs-height);
+    box-sizing: border-box;
     margin: 0;
-    padding: 13px 18px;
+    padding: 0 18px;
     border: 0;
     border-right: 1px solid var(--border);
     border-radius: 0 !important;
@@ -917,8 +1067,9 @@ body :where(b, strong),
     line-height: 1.5;
     white-space: nowrap;
     box-shadow: none;
-    transition: color 0.15s, background 0.15s, transform 0.15s;
+    transition: color 0.15s, background 0.15s, box-shadow 0.15s, transform 0.15s;
 }
+.Nova .document-tabs .content-tools .tools-btn:first-child { border-left: 1px solid var(--border); }
 .Nova .document-tabs .content-tools .tools-btn:hover,
 .Nova .document-tabs .content-tools .tools-btn:focus {
     background: color-mix(in srgb, var(--brand) 10%, var(--surface));
@@ -928,20 +1079,22 @@ body :where(b, strong),
 }
 .Nova .document-tabs .content-tools .tools-btn.tools-btn-active {
     top: 0;
-    min-height: 60px;
-    border: 0;
-    border-bottom: 3px solid var(--brand-dark);
+    height: var(--doc-tabs-height);
+    min-height: var(--doc-tabs-height);
+    border-right-color: color-mix(in srgb, var(--brand) 26%, var(--border));
+    border-bottom: 0;
     border-radius: 0 !important;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 9%, #fff), rgba(255, 255, 255, 0));
-    box-shadow: none;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 14%, var(--surface)), color-mix(in srgb, var(--brand) 6%, var(--surface)));
+    box-shadow: inset 0 -3px 0 var(--brand-dark), inset 0 1px 0 color-mix(in srgb, var(--brand) 22%, transparent);
     color: var(--brand-dark);
-    font-weight: 850;
+    font-weight: 750;
     z-index: 2;
 }
 .Nova .document-tabs .content-tools .dropdown.btn.tools-btn { padding: 0; }
 .Nova .document-tabs .content-tools .dropdown-toggle {
     min-width: 78px;
-    min-height: 60px;
+    height: var(--doc-tabs-height);
+    min-height: var(--doc-tabs-height);
     padding: 0 11px;
     gap: 6px;
     display: flex;
@@ -976,9 +1129,9 @@ body :where(b, strong),
 .Nova .document-tabs .content-tools .tools-btn-active::before {
     content: "";
     position: absolute;
-    right: 12px;
-    bottom: -1px;
-    left: 12px;
+    right: 0;
+    bottom: 0;
+    left: 0;
     height: 0;
     background: transparent;
 }
@@ -1043,8 +1196,8 @@ body :where(b, strong),
 .Nova .notification.is-warning { border-left: 1px solid #eddcb3; }
 .Nova .layout-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 260px;
-    column-gap: 20px;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    column-gap: 22px;
     row-gap: 0;
     align-items: start;
     width: calc(100% - (var(--page-gutter) * 2));
@@ -1076,6 +1229,7 @@ body :where(b, strong),
     background: var(--article-background-color, transparent);
     box-shadow: none;
     color: var(--wiki-text);
+    font-size: 15px;
     line-height: 1.5;
 }
 .Nova .wiki-article a:not(.not-exist):not(.wiki-link-external):not(.wiki-link-whitelisted) {
@@ -1275,7 +1429,7 @@ body :where(b, strong),
 .Nova .sidebar-column {
     position: relative;
     min-height: 100%;
-    padding-left: 18px;
+    padding-left: 20px;
     border-left: 1px solid var(--border);
 }
 .Nova .sidebar-sticky { position: sticky; top: 18px; }
@@ -1333,7 +1487,7 @@ body :where(b, strong),
     max-height: none;
     overflow-y: visible;
     margin: 0 !important;
-    padding: 4px 0 0 24px !important;
+    padding: 4px 0 0 !important;
     background: transparent !important;
 }
 .Nova .live-recent-content li {
@@ -1345,10 +1499,11 @@ body :where(b, strong),
 .Nova .live-recent-content a,
 .Nova .live-recent-content span.recent-item {
     display: block;
-    padding: 10px 0;
+    padding: 9px 12px 9px 24px;
     border-radius: var(--radius-sm);
     color: var(--text) !important;
     font-size: 14px;
+    font-weight: 650;
     line-height: 1.5;
 }
 .Nova .live-recent-content a.recent-item {
@@ -1356,6 +1511,10 @@ body :where(b, strong),
     align-items: baseline;
     justify-content: space-between;
     gap: 12px;
+    padding: 9px 12px 9px 24px;
+    font-size: 14px;
+    font-weight: 650;
+    line-height: 1.5;
 }
 .Nova .live-recent-content .recent-title {
     min-width: 0;
@@ -1385,16 +1544,16 @@ body :where(b, strong),
 .Nova .toc-card .toc-list {
     max-height: 300px;
     overflow-y: auto;
-    padding: 8px;
+    padding: 4px 0 0;
 }
 .Nova .toc-card .toc-list a {
     display: flex;
     align-items: baseline;
     gap: 6px;
-    padding: 8px 10px;
+    padding: 9px 12px 9px 24px;
     border-radius: var(--radius-sm);
     color: var(--text-muted);
-    font-size: 13.5px;
+    font-size: 14px;
     font-weight: 650;
     line-height: 1.5;
     overflow: hidden;
@@ -1417,8 +1576,8 @@ body :where(b, strong),
     color: var(--brand-dark);
     text-decoration: none;
 }
-.Nova .toc-card .toc-level-3 { padding-left: 20px; }
-.Nova .toc-card .toc-level-4 { padding-left: 32px; font-size: 13px; }
+.Nova .toc-card .toc-level-3 { padding-left: 36px; }
+.Nova .toc-card .toc-level-4 { padding-left: 48px; font-size: 13.5px; }
 
 /* Floating buttons */
 .Nova .jump-buttons {
@@ -1478,6 +1637,10 @@ body.theseed-dark-mode .Nova {
     --brand-deep: color-mix(in srgb, var(--brand) 56%, #ffffff);
     --brand-soft: color-mix(in srgb, var(--brand) 14%, #101620);
     --brand-tint: var(--nova-brand-bright-color, color-mix(in srgb, var(--brand) 12%, #151b24));
+    --brand-color-1: color-mix(in srgb, var(--brand) 78%, #151b24);
+    --brand-color-2: color-mix(in srgb, var(--brand) 58%, #151b24);
+    --brand-bright-color-1: color-mix(in srgb, var(--brand) 28%, #151b24);
+    --brand-bright-color-2: color-mix(in srgb, var(--brand) 18%, #151b24);
     --ink: #e6edf3;
     --ink-soft: #bdc8d4;
     --accent: var(--nova-accent-color, color-mix(in srgb, var(--brand) 64%, #73d5c8));
@@ -1535,6 +1698,46 @@ body.theseed-dark-mode .Nova .dropdown-item { color: var(--text); }
 body.theseed-dark-mode .Nova .dropdown-header,
 body.theseed-dark-mode .Nova .user-menu-header { color: var(--text); }
 body.theseed-dark-mode .Nova .dropdown-divider { background: var(--border); }
+body.theseed-dark-mode .Nova .feature-switch {
+    border-color: color-mix(in srgb, var(--brand) 34%, var(--border));
+    background: color-mix(in srgb, var(--brand) 12%, var(--surface));
+}
+body.theseed-dark-mode .Nova .feature-switch button {
+    color: var(--text-muted);
+}
+body.theseed-dark-mode .Nova .feature-switch button.active {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 40%, var(--surface)), color-mix(in srgb, var(--brand) 25%, var(--surface)));
+    color: #d8efff;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand) 54%, var(--border)), 0 6px 16px rgba(0, 0, 0, 0.24);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.16);
+}
+body.theseed-dark-mode .thetree-modal-content,
+body.theseed-dark-mode .setting-block {
+    background: #151b24 !important;
+    color: #e0e0e0 !important;
+    border-color: #2b3643 !important;
+}
+body.theseed-dark-mode .setting-block :where(h1, header, ul, li, label, small, span, p, div),
+body.theseed-dark-mode .setting-item,
+body.theseed-dark-mode .setting-item-content {
+    color: #e0e0e0 !important;
+}
+body.theseed-dark-mode .setting-block small { color: #a7b3c2 !important; }
+body.theseed-dark-mode .setting-block header { border-color: #2b3643 !important; }
+body.theseed-dark-mode .setting-block header > ul > li { color: #e0e0e0 !important; }
+body.theseed-dark-mode .setting-block header > ul > li.selected-tab {
+    background: color-mix(in srgb, var(--nova-brand-color, #4aa3ff) 22%, #151b24) !important;
+    color: #d8efff !important;
+}
+body.theseed-dark-mode .setting-block button {
+    color: #e0e0e0 !important;
+    text-shadow: none !important;
+}
+body.theseed-dark-mode .setting-block :where(select, option) {
+    background-color: #151b24 !important;
+    color: #e0e0e0 !important;
+    border-color: #2b3643 !important;
+}
 body.theseed-dark-mode .Nova .dropdown-item:hover,
 body.theseed-dark-mode .Nova .dropdown-item:focus {
     background: color-mix(in srgb, var(--brand) 17%, var(--surface));
@@ -1572,13 +1775,16 @@ body.theseed-dark-mode .Nova #searchform .btn.search-action:hover {
     color: #d8efff;
 }
 body.theseed-dark-mode .Nova .v-autocomplete-list {
-    background: var(--surface) !important;
+    background: color-mix(in srgb, var(--surface) 96%, #000) !important;
     color: var(--text);
-    border-color: var(--border) !important;
+    border-color: color-mix(in srgb, var(--brand) 24%, var(--border)) !important;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34);
 }
 body.theseed-dark-mode .Nova .v-autocomplete-list-item { color: var(--text); }
+body.theseed-dark-mode .Nova .v-autocomplete-list-item:hover,
 body.theseed-dark-mode .Nova .v-autocomplete-list-item.v-autocomplete-item-active {
-    background: color-mix(in srgb, var(--brand) 15%, var(--surface));
+    background: color-mix(in srgb, var(--brand) 18%, var(--surface));
+    color: #d8efff;
 }
 body.theseed-dark-mode .Nova .hero-inner {
     border-color: color-mix(in srgb, var(--brand) 24%, var(--border));
@@ -1615,7 +1821,9 @@ body.theseed-dark-mode .Nova .document-tabs .content-tools .tools-btn.tools-btn-
     color: #d8efff;
 }
 body.theseed-dark-mode .Nova .document-tabs .content-tools .tools-btn.tools-btn-active {
-    border-bottom-color: color-mix(in srgb, var(--brand) 68%, #fff);
+    border-right-color: color-mix(in srgb, var(--brand) 34%, var(--border));
+    box-shadow: inset 0 -3px 0 color-mix(in srgb, var(--brand) 68%, #fff), inset 0 1px 0 color-mix(in srgb, var(--brand) 24%, transparent);
+    font-weight: 750;
 }
 body.theseed-dark-mode .Nova .document-tabs .content-tools .btn-danger { color: #ff9aa2; }
 body.theseed-dark-mode .Nova .document-tabs .content-tools .btn-discuss-progress {
@@ -1755,6 +1963,10 @@ body.theseed-dark-mode .Nova ::selection {
     --brand-deep: color-mix(in srgb, var(--brand) 56%, #ffffff);
     --brand-soft: color-mix(in srgb, var(--brand) 14%, #101620);
     --brand-tint: var(--nova-brand-bright-color, color-mix(in srgb, var(--brand) 12%, #151b24));
+    --brand-color-1: color-mix(in srgb, var(--brand) 78%, #151b24);
+    --brand-color-2: color-mix(in srgb, var(--brand) 58%, #151b24);
+    --brand-bright-color-1: color-mix(in srgb, var(--brand) 28%, #151b24);
+    --brand-bright-color-2: color-mix(in srgb, var(--brand) 18%, #151b24);
     --ink: #e6edf3;
     --ink-soft: #bdc8d4;
     --accent: var(--nova-accent-color, color-mix(in srgb, var(--brand) 64%, #73d5c8));
@@ -1812,6 +2024,46 @@ body.theseed-dark-mode .Nova ::selection {
 .Nova.nova-dark .dropdown-header,
 .Nova.nova-dark .user-menu-header { color: var(--text); }
 .Nova.nova-dark .dropdown-divider { background: var(--border); }
+.Nova.nova-dark .feature-switch {
+    border-color: color-mix(in srgb, var(--brand) 34%, var(--border));
+    background: color-mix(in srgb, var(--brand) 12%, var(--surface));
+}
+.Nova.nova-dark .feature-switch button {
+    color: var(--text-muted);
+}
+.Nova.nova-dark .feature-switch button.active {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 40%, var(--surface)), color-mix(in srgb, var(--brand) 25%, var(--surface)));
+    color: #d8efff;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand) 54%, var(--border)), 0 6px 16px rgba(0, 0, 0, 0.24);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.16);
+}
+.Nova.nova-dark .thetree-modal-content,
+.Nova.nova-dark .setting-block {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+.Nova.nova-dark .setting-block :where(h1, header, ul, li, label, small, span, p, div),
+.Nova.nova-dark .setting-item,
+.Nova.nova-dark .setting-item-content {
+    color: var(--text) !important;
+}
+.Nova.nova-dark .setting-block small { color: var(--text-muted) !important; }
+.Nova.nova-dark .setting-block header { border-color: var(--border) !important; }
+.Nova.nova-dark .setting-block header > ul > li { color: var(--text) !important; }
+.Nova.nova-dark .setting-block header > ul > li.selected-tab {
+    background: color-mix(in srgb, var(--brand) 22%, var(--surface)) !important;
+    color: #d8efff !important;
+}
+.Nova.nova-dark .setting-block button {
+    color: var(--text) !important;
+    text-shadow: none !important;
+}
+.Nova.nova-dark .setting-block :where(select, option) {
+    background-color: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
 .Nova.nova-dark .dropdown-item:hover,
 .Nova.nova-dark .dropdown-item:focus {
     background: color-mix(in srgb, var(--brand) 17%, var(--surface));
@@ -1849,13 +2101,16 @@ body.theseed-dark-mode .Nova ::selection {
     color: #fff;
 }
 .Nova.nova-dark .v-autocomplete-list {
-    background: var(--surface) !important;
+    background: color-mix(in srgb, var(--surface) 96%, #000) !important;
     color: var(--text);
-    border-color: var(--border) !important;
+    border-color: color-mix(in srgb, var(--brand) 24%, var(--border)) !important;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34);
 }
 .Nova.nova-dark .v-autocomplete-list-item { color: var(--text); }
+.Nova.nova-dark .v-autocomplete-list-item:hover,
 .Nova.nova-dark .v-autocomplete-list-item.v-autocomplete-item-active {
-    background: color-mix(in srgb, var(--brand) 15%, var(--surface));
+    background: color-mix(in srgb, var(--brand) 18%, var(--surface));
+    color: #d8efff;
 }
 .Nova.nova-dark .hero-inner {
     border-color: color-mix(in srgb, var(--brand) 24%, var(--border));
@@ -1892,7 +2147,9 @@ body.theseed-dark-mode .Nova ::selection {
     color: #d8efff;
 }
 .Nova.nova-dark .document-tabs .content-tools .tools-btn.tools-btn-active {
-    border-bottom-color: color-mix(in srgb, var(--brand) 68%, #fff);
+    border-right-color: color-mix(in srgb, var(--brand) 34%, var(--border));
+    box-shadow: inset 0 -3px 0 color-mix(in srgb, var(--brand) 68%, #fff), inset 0 1px 0 color-mix(in srgb, var(--brand) 24%, transparent);
+    font-weight: 750;
 }
 .Nova.nova-dark .document-tabs .content-tools .btn-danger { color: #ff9aa2; }
 .Nova.nova-dark .document-tabs .content-tools .btn-discuss-progress {
@@ -2028,11 +2285,11 @@ body.theseed-dark-mode .Nova ::selection {
         --doc-frame-pad: 28px;
     }
     .Nova .layout-grid {
-        grid-template-columns: minmax(0, 1fr) 228px;
+        grid-template-columns: minmax(0, 1fr) 252px;
         column-gap: 16px;
     }
     .Nova .sidebar-column {
-        padding-left: 14px;
+        padding-left: 16px;
     }
     .Nova .document-tabs-title {
         flex-basis: 220px;
@@ -2066,6 +2323,12 @@ body.theseed-dark-mode .Nova ::selection {
         min-width: 0;
         justify-content: center;
         text-align: center;
+    }
+    .Nova .navbar-brand.has-logo {
+        max-width: none;
+    }
+    .Nova .navbar-brand.has-logo .brand-logo-image {
+        width: min(var(--nova-navbar-logo-width, 6.5rem), 34vw, 7rem);
     }
     .Nova .mobile-search { display: block; flex: 0 0 100%; width: 100%; min-width: 0; order: 4; }
     .Nova .mobile-search #searchform { width: 100%; }
@@ -2236,11 +2499,11 @@ body.theseed-dark-mode .Nova ::selection {
         flex: 1 1 auto;
         min-width: 0;
         max-width: 100%;
-        flex-direction: row;
-        align-items: baseline;
-        gap: 6px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
         text-align: left;
-        line-height: 1.5;
+        line-height: 1.35;
     }
     .Nova .navbar-menu .avatar-summary strong {
         min-width: 0;
@@ -2252,8 +2515,7 @@ body.theseed-dark-mode .Nova ::selection {
         white-space: nowrap;
     }
     .Nova .navbar-menu .avatar-summary span {
-        flex: 0 0 auto;
-        max-width: 42%;
+        max-width: 100%;
         color: var(--text-muted);
         font-size: 12.5px;
         font-weight: 500;
@@ -2293,30 +2555,55 @@ body.theseed-dark-mode .Nova ::selection {
         padding-left: var(--page-gutter);
     }
     .Nova .document-tabs-inner {
-        min-height: 54px;
-        padding-right: 12px;
+        --doc-tabs-height: 54px;
+        min-height: var(--doc-tabs-height);
+        padding-right: 0;
         padding-left: 12px;
     }
     .Nova .document-tabs-title {
         flex-basis: min(220px, 42vw);
         min-width: 150px;
-        min-height: 52px;
+        min-height: var(--doc-tabs-height);
         padding-right: 12px;
         font-size: 12.5px;
     }
     .Nova .document-tabs .content-tools .tools-btn {
         min-width: auto;
-        min-height: 52px;
+        height: var(--doc-tabs-height);
+        min-height: var(--doc-tabs-height);
         justify-content: center;
-        padding: 10px 13px;
+        padding: 0 13px;
         gap: 7px;
+        line-height: 1;
     }
-    .Nova .document-tabs .content-tools .tools-btn-active { min-height: 52px; }
+    .Nova .document-tabs .content-tools .btn-group {
+        align-items: stretch;
+    }
+    .Nova .document-tabs .content-tools .tools-btn-active {
+        height: var(--doc-tabs-height);
+        min-height: var(--doc-tabs-height);
+    }
+    .Nova .document-tabs .content-tools .tools-btn > .nova-icon {
+        flex: 0 0 18px;
+        width: 18px;
+        height: 18px;
+    }
+    .Nova .document-tabs .content-tools .star-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 18px;
+        height: 18px;
+        margin-left: 1px;
+        padding: 0 5px;
+        line-height: 1;
+    }
     .Nova .document-tabs .content-tools .tools-label,
     .Nova .document-tabs .content-tools .dropdown-toggle::after { display: inline-block; }
     .Nova .document-tabs .content-tools .dropdown-toggle {
         min-width: auto;
-        min-height: 52px;
+        height: var(--doc-tabs-height);
+        min-height: var(--doc-tabs-height);
         padding: 0 13px;
     }
     .Nova .mobile-side-toggle {
@@ -2389,6 +2676,24 @@ body.theseed-dark-mode .Nova ::selection {
         padding: 0 0 10px;
         border-bottom: 0;
     }
+    .Nova .mobile-side-panel .live-recent-content ul {
+        padding-top: 2px !important;
+    }
+    .Nova .mobile-side-panel .live-recent-content a,
+    .Nova .mobile-side-panel .live-recent-content span.recent-item,
+    .Nova .mobile-side-panel .live-recent-content a.recent-item,
+    .Nova .mobile-side-panel .toc-card .toc-list a {
+        padding: 9px 4px;
+    }
+    .Nova .mobile-side-panel .live-recent-content a.recent-item {
+        gap: 10px;
+    }
+    .Nova .mobile-side-panel .live-recent-content .recent-time {
+        min-width: 56px;
+        text-align: right;
+    }
+    .Nova .mobile-side-panel .toc-card .toc-level-3 { padding-left: 16px; }
+    .Nova .mobile-side-panel .toc-card .toc-level-4 { padding-left: 28px; }
     .Nova .mobile-side-panel .live-recent-footer {
         padding: 8px 0 0;
     }
@@ -2410,8 +2715,8 @@ body.theseed-dark-mode .Nova ::selection {
     .Nova .article-footer { margin-right: calc(var(--doc-frame-pad) * -1); margin-left: calc(var(--doc-frame-pad) * -1); padding-right: var(--doc-frame-pad); padding-left: var(--doc-frame-pad); }
     .Nova .hero-inner { padding-top: 52px; padding-bottom: 48px; border-top-left-radius: 24px; border-top-right-radius: 24px; }
     .Nova .hero-title { font-size: 32px; }
-    .Nova .document-tabs-inner { padding-right: 12px; padding-left: 12px; }
-    .Nova .document-tabs .content-tools .tools-btn { padding: 12px 14px; }
+    .Nova .document-tabs-inner { padding-right: 0; padding-left: 12px; }
+    .Nova .document-tabs .content-tools .tools-btn { padding: 0 14px; }
 }
 
 @media (max-width: 640px) {
@@ -2426,7 +2731,7 @@ body.theseed-dark-mode .Nova ::selection {
     .Nova .layout-grid { padding-right: var(--doc-frame-pad); padding-left: var(--doc-frame-pad); }
     .Nova .article-license { margin-right: calc(var(--doc-frame-pad) * -1); margin-left: calc(var(--doc-frame-pad) * -1); padding-right: var(--doc-frame-pad); padding-left: var(--doc-frame-pad); }
     .Nova .article-footer { margin-right: calc(var(--doc-frame-pad) * -1); margin-left: calc(var(--doc-frame-pad) * -1); padding-right: var(--doc-frame-pad); padding-left: var(--doc-frame-pad); }
-    .Nova .document-tabs-inner { padding-right: 10px; padding-left: 10px; }
+    .Nova .document-tabs-inner { padding-right: 0; padding-left: 10px; }
     .Nova .document-tabs-title { flex-basis: 160px; min-width: 140px; }
     .Nova .doc-meta { padding-bottom: 0; }
     .Nova .jump-buttons {

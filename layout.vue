@@ -60,14 +60,9 @@
                                         <nuxt-link to="/License" class="dropdown-item"><nova-icon name="copyright" />라이선스</nuxt-link>
                                     </div>
                                     <div v-else key="admin" class="feature-pane">
-                                        <nuxt-link to="/admin/grant" class="dropdown-item admin-feature"><nova-icon name="shield" />권한</nuxt-link>
-                                        <nuxt-link to="/admin/manage_account" class="dropdown-item admin-feature"><nova-icon name="users" />계정 관리</nuxt-link>
-                                        <nuxt-link to="/admin/login_history" class="dropdown-item admin-feature"><nova-icon name="history" />로그인 기록 조회</nuxt-link>
-                                        <nuxt-link to="/aclgroup" class="dropdown-item admin-feature"><nova-icon name="users" />ACL Group</nuxt-link>
-                                        <nuxt-link to="/admin/batch_revert" class="dropdown-item admin-feature"><nova-icon name="undo" />일괄 되돌리기</nuxt-link>
-                                        <nuxt-link to="/admin/audit_log" class="dropdown-item admin-feature"><nova-icon name="document" />감사 로그</nuxt-link>
-                                        <nuxt-link to="/admin/config" class="dropdown-item admin-feature"><nova-icon name="gear" />설정</nuxt-link>
-                                        <nuxt-link to="/admin/developer" class="dropdown-item admin-feature"><nova-icon name="terminal" />개발자 설정</nuxt-link>
+                                        <nuxt-link v-for="item in adminMenuItems" :key="item.to" :to="item.to" class="dropdown-item admin-feature">
+                                            <nova-icon :name="item.icon" />{{ item.title }}
+                                        </nuxt-link>
                                     </div>
                                 </transition>
                             </div>
@@ -467,9 +462,31 @@ export default {
             if (data.body && data.body.baserev) return `r${data.body.baserev}`;
             return '';
         },
+        adminMenuItems() {
+            const menus = this.$store.state.session.menus || [];
+            const iconMap = {
+                '/admin/grant': 'shield',
+                '/admin/manage_account': 'users',
+                '/admin/login_history': 'history',
+                '/aclgroup': 'users',
+                '/admin/batch_revert': 'undo',
+                '/admin/audit_log': 'document',
+                '/admin/config': 'gear',
+                '/admin/developer': 'terminal'
+            };
+            return menus.map((menu, index) => {
+                const to = menu.l || menu.to || menu.href;
+                if (!to) return null;
+                return {
+                    to,
+                    title: menu.t || menu.title || menu.name || to,
+                    icon: iconMap[to] || iconMap[to.replace(/\/$/, '')] || (to.startsWith('/aclgroup') ? 'users' : to.startsWith('/admin/developer') ? 'terminal' : to.startsWith('/admin') ? 'gear' : 'grid'),
+                    order: index
+                };
+            }).filter(Boolean);
+        },
         showAdminMenu() {
-            const session = this.$store.state.session;
-            return !!(session.quick_block || (session.menus || []).some(m => /^\/(admin|aclgroup)(\/|$)/.test(m.l)));
+            return this.adminMenuItems.length > 0;
         },
         brand_color() {
             return this.configValue(['skin.nova.brand_color'], '#006cf0');
@@ -494,7 +511,7 @@ export default {
                 '--nova-accent-color': this.selectByTheme('color-mix(in srgb, var(--nova-brand-color) 82%, #00a6a6)', 'color-mix(in srgb, var(--nova-brand-color) 62%, #fff)'),
                 '--nova-warm-color': this.selectByTheme('color-mix(in srgb, var(--nova-brand-color) 82%, #00a6a6)', 'color-mix(in srgb, var(--nova-brand-color) 62%, #fff)'),
                 '--nova-navbar-logo-image': this.cssUrl(this.navbarLogoImage),
-                '--nova-navbar-logo-width': this.configValue(['skin.nova.navbar_logo_width'], '8.5rem'),
+                '--nova-navbar-logo-width': this.configValue(['skin.nova.navbar_logo_width'], '6.5rem'),
                 '--text-color': this.selectByTheme('#1f2937', '#e6edf3'),
                 '--article-background-color': 'transparent',
                 '--nova-bg-color': this.selectByTheme('#f8fafc', '#0d1117'),
