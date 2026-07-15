@@ -68,6 +68,7 @@ button { cursor: pointer; }
     --page-gutter: 48px;
     --doc-frame-max: 1440px;
     --doc-frame-pad: 36px;
+    --nova-control-height: 42px;
     min-height: 100vh;
     background: var(--bg);
     color: var(--text);
@@ -116,7 +117,7 @@ body :where(b, strong),
 }
 
 .Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select) {
-    min-height: 38px;
+    min-height: var(--nova-control-height);
     padding: 8px 12px;
     border: 1px solid color-mix(in srgb, var(--brand) 14%, var(--border));
     border-radius: 9px;
@@ -147,15 +148,18 @@ body :where(b, strong),
     cursor: not-allowed;
     opacity: 0.72;
 }
+.Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), select) {
+    height: var(--nova-control-height);
+}
 .Nova textarea {
     min-height: 110px;
     resize: vertical;
 }
 .Nova select {
-    padding-right: 34px;
-    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
-    background-position: calc(100% - 17px) 50%, calc(100% - 12px) 50%;
-    background-size: 5px 5px, 5px 5px;
+    padding-right: 36px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23606b7a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-position: right 12px center;
+    background-size: 16px 16px;
     background-repeat: no-repeat;
     appearance: none;
 }
@@ -178,6 +182,15 @@ body :where(b, strong),
     background: color-mix(in srgb, var(--brand) 14%, var(--surface));
 }
 
+.Nova :where(.wiki-article, .liberty-content-main, .setting-block) form :where(input, select, textarea, button) {
+    margin: 4px 5px 4px 0;
+}
+.Nova :where(.wiki-article, .liberty-content-main, .setting-block) form :where(input[type=button], input[type=submit], input[type=reset], button) {
+    border-radius: 8px;
+}
+.Nova :where(.wiki-article, .liberty-content-main, .setting-block) form :where(input[type=button], input[type=submit], input[type=reset], button) + :where(input[type=button], input[type=submit], input[type=reset], button) {
+    margin-left: 5px;
+}
 /* Engine setting modal */
 .Nova .thetree-modal-content,
 .Nova .setting-block {
@@ -720,9 +733,10 @@ body :where(b, strong),
 .Nova #searchform .input-group {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     gap: 0;
     width: 360px;
+    min-height: var(--nova-control-height);
     border: 1px solid rgba(255, 255, 255, 0.42);
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.94);
@@ -733,10 +747,11 @@ body :where(b, strong),
     background: #fff;
     border-color: rgba(255, 255, 255, 0.7);
 }
-.Nova #searchform .input-search { position: relative; display: block; flex: 1; min-width: 0; }
+.Nova #searchform .input-search { position: relative; display: flex; align-items: stretch; flex: 1; min-width: 0; }
 .Nova #searchform .form-control {
     width: 100%;
-    height: 36px;
+    height: auto;
+    min-height: var(--nova-control-height);
     padding: 0 8px;
     border: 0;
     border-radius: 0;
@@ -750,7 +765,9 @@ body :where(b, strong),
 .Nova #searchform .input-group-btn { display: flex; align-items: stretch; width: auto; }
 .Nova #searchform .btn.search-action {
     min-width: 38px;
-    height: 36px;
+    height: auto;
+    min-height: var(--nova-control-height);
+    align-self: stretch;
     padding: 0 10px;
     border: 0;
     border-left: 1px solid color-mix(in srgb, var(--brand) 16%, #d8e1ec);
@@ -771,12 +788,14 @@ body :where(b, strong),
     border-right: 1px solid color-mix(in srgb, var(--brand) 16%, #d8e1ec);
     border-radius: 999px 0 0 999px;
 }
-.Nova #searchform .btn.search-submit { min-width: 38px; }
+.Nova #searchform .btn.search-submit { min-width: 38px; border-radius: 0; }
 .Nova #searchform .btn.search-move { min-width: 38px; border-radius: 0 999px 999px 0; }
 .Nova #searchform .btn.search-action:hover {
-    color: #fff;
-    background: var(--brand);
+    color: var(--brand-dark);
+    background: color-mix(in srgb, var(--brand) 12%, transparent);
+    box-shadow: none;
 }
+.Nova #searchform .btn.search-submit:hover { border-radius: 0; }
 .Nova #searchform .btn.search-action .nova-icon { width: 16px; height: 16px; stroke-width: 2.25; }
 .Nova .v-autocomplete-list {
     z-index: 420;
@@ -1114,12 +1133,27 @@ body :where(b, strong),
     margin-left: 2px;
     padding: 1px 5px;
     border-radius: 6px;
-    background: var(--accent);
-    color: #fff;
+    background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+    color: color-mix(in srgb, var(--accent) 72%, var(--text));
     font-size: 10px;
     font-weight: 800;
 }
 .Nova .document-tabs .content-tools .nova-icon-star { color: var(--accent); }
+.Nova .document-tabs .content-tools .tools-btn-starred {
+    background: color-mix(in srgb, var(--accent) 16%, var(--surface));
+    color: color-mix(in srgb, var(--accent) 72%, var(--text));
+}
+.Nova .document-tabs .content-tools .tools-btn-starred .nova-icon-star {
+    fill: currentColor;
+    color: var(--accent);
+}
+.Nova .document-tabs .content-tools .tools-btn-starred .star-count {
+    background: var(--accent);
+    color: #fff;
+}
+.Nova .document-tabs .content-tools .tools-btn-star:not(.tools-btn-starred) .nova-icon-star {
+    fill: transparent;
+}
 .Nova .document-tabs .content-tools .tools-btn > .nova-icon {
     width: 17px;
     height: 17px;
@@ -1499,7 +1533,7 @@ body :where(b, strong),
 .Nova .live-recent-content a,
 .Nova .live-recent-content span.recent-item {
     display: block;
-    padding: 9px 12px 9px 24px;
+    padding: 10px 12px;
     border-radius: var(--radius-sm);
     color: var(--text) !important;
     font-size: 14px;
@@ -1510,8 +1544,8 @@ body :where(b, strong),
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 12px;
-    padding: 9px 12px 9px 24px;
+    gap: 10px;
+    padding: 10px 12px;
     font-size: 14px;
     font-weight: 650;
     line-height: 1.5;
@@ -1637,10 +1671,10 @@ body.theseed-dark-mode .Nova {
     --brand-deep: color-mix(in srgb, var(--brand) 56%, #ffffff);
     --brand-soft: color-mix(in srgb, var(--brand) 14%, #101620);
     --brand-tint: var(--nova-brand-bright-color, color-mix(in srgb, var(--brand) 12%, #151b24));
-    --brand-color-1: color-mix(in srgb, var(--brand) 78%, #151b24);
-    --brand-color-2: color-mix(in srgb, var(--brand) 58%, #151b24);
-    --brand-bright-color-1: color-mix(in srgb, var(--brand) 28%, #151b24);
-    --brand-bright-color-2: color-mix(in srgb, var(--brand) 18%, #151b24);
+    --brand-color-1: color-mix(in srgb, var(--brand) 86%, #e8f3ff);
+    --brand-color-2: color-mix(in srgb, var(--brand) 70%, #151b24);
+    --brand-bright-color-1: color-mix(in srgb, var(--brand) 76%, #e8f3ff);
+    --brand-bright-color-2: color-mix(in srgb, var(--brand) 36%, #151b24);
     --ink: #e6edf3;
     --ink-soft: #bdc8d4;
     --accent: var(--nova-accent-color, color-mix(in srgb, var(--brand) 64%, #73d5c8));
@@ -1726,8 +1760,9 @@ body.theseed-dark-mode .setting-block small { color: #a7b3c2 !important; }
 body.theseed-dark-mode .setting-block header { border-color: #2b3643 !important; }
 body.theseed-dark-mode .setting-block header > ul > li { color: #e0e0e0 !important; }
 body.theseed-dark-mode .setting-block header > ul > li.selected-tab {
-    background: color-mix(in srgb, var(--nova-brand-color, #4aa3ff) 22%, #151b24) !important;
+    background: transparent !important;
     color: #d8efff !important;
+    box-shadow: inset 0 -3px 0 color-mix(in srgb, var(--nova-brand-color, #4aa3ff) 78%, #e8f3ff);
 }
 body.theseed-dark-mode .setting-block button {
     color: #e0e0e0 !important;
@@ -1750,12 +1785,12 @@ body.theseed-dark-mode .Nova .user-menu-meta {
     color: #d8efff;
 }
 body.theseed-dark-mode .Nova #searchform .input-group {
-    background: color-mix(in srgb, var(--surface) 94%, #fff);
-    border-color: color-mix(in srgb, var(--brand) 22%, var(--border));
+    background: color-mix(in srgb, var(--surface-2) 88%, transparent);
+    border-color: color-mix(in srgb, var(--text-muted) 18%, transparent);
 }
 body.theseed-dark-mode .Nova #searchform .input-group:focus-within {
-    background: color-mix(in srgb, var(--surface) 97%, #fff);
-    border-color: color-mix(in srgb, var(--brand) 46%, var(--border));
+    background: color-mix(in srgb, var(--surface-2) 94%, transparent);
+    border-color: color-mix(in srgb, var(--brand) 32%, var(--text-muted));
 }
 body.theseed-dark-mode .Nova #searchform .form-control,
 body.theseed-dark-mode .Nova #searchform .btn.search-action {
@@ -1763,16 +1798,17 @@ body.theseed-dark-mode .Nova #searchform .btn.search-action {
 }
 body.theseed-dark-mode .Nova #searchform .form-control::placeholder { color: var(--text-muted); }
 body.theseed-dark-mode .Nova #searchform .btn.search-action {
-    border-left-color: color-mix(in srgb, var(--brand) 26%, var(--border));
-    background: color-mix(in srgb, var(--brand) 10%, var(--surface));
-    color: color-mix(in srgb, var(--brand) 55%, #e6edf3);
+    border-left-color: color-mix(in srgb, var(--text-muted) 18%, transparent);
+    background: transparent;
+    color: color-mix(in srgb, var(--brand) 48%, #d8efff);
 }
 body.theseed-dark-mode .Nova #searchform .btn.search-random {
-    border-right-color: color-mix(in srgb, var(--brand) 26%, var(--border));
+    border-right-color: color-mix(in srgb, var(--text-muted) 18%, transparent);
 }
 body.theseed-dark-mode .Nova #searchform .btn.search-action:hover {
-    background: color-mix(in srgb, var(--brand) 16%, var(--surface));
+    background: color-mix(in srgb, var(--brand) 18%, transparent);
     color: #d8efff;
+    box-shadow: none;
 }
 body.theseed-dark-mode .Nova .v-autocomplete-list {
     background: color-mix(in srgb, var(--surface) 96%, #000) !important;
@@ -1785,6 +1821,13 @@ body.theseed-dark-mode .Nova .v-autocomplete-list-item:hover,
 body.theseed-dark-mode .Nova .v-autocomplete-list-item.v-autocomplete-item-active {
     background: color-mix(in srgb, var(--brand) 18%, var(--surface));
     color: #d8efff;
+}
+body.theseed-dark-mode .Nova .link-tab :where(a.active, .active > a, li:has(a.active) > a) {
+    background: transparent;
+    color: #d8efff !important;
+}
+body.theseed-dark-mode .Nova .link-tab :where(a.active, .active > a, li:has(a.active) > a)::after {
+    background-color: color-mix(in srgb, var(--brand) 78%, #e8f3ff);
 }
 body.theseed-dark-mode .Nova .hero-inner {
     border-color: color-mix(in srgb, var(--brand) 24%, var(--border));
@@ -1829,6 +1872,18 @@ body.theseed-dark-mode .Nova .document-tabs .content-tools .btn-danger { color: 
 body.theseed-dark-mode .Nova .document-tabs .content-tools .btn-discuss-progress {
     background: color-mix(in srgb, var(--brand) 18%, var(--surface));
     color: #d8efff;
+}
+body.theseed-dark-mode .Nova .document-tabs .content-tools .tools-btn-starred {
+    background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+    color: #ffd889;
+}
+body.theseed-dark-mode .Nova .document-tabs .content-tools .tools-btn-starred .star-count {
+    background: color-mix(in srgb, var(--accent) 82%, #fff);
+    color: #172033;
+}
+body.theseed-dark-mode .Nova .document-tabs .content-tools .tools-btn-starred .nova-icon-star {
+    fill: currentColor;
+    color: #ffd889;
 }
 body.theseed-dark-mode .Nova .wiki-article,
 body.theseed-dark-mode .Nova .skin-license-page,
@@ -1907,6 +1962,29 @@ body.theseed-dark-mode .Nova .mobile-side-panel-header {
     border-color: var(--border);
 }
 body.theseed-dark-mode .Nova .mobile-side-backdrop { background: rgba(1, 6, 15, 0.56); }
+body.theseed-dark-mode .context-menu {
+    background: #1c1d1f;
+    border-color: #484848;
+    color: #e0e0e0;
+}
+body.theseed-dark-mode .context-menu :where(.account-info, .account-type, .account-name) {
+    color: #e0e0e0;
+}
+body.theseed-dark-mode .context-menu .account-type {
+    color: #a7b3c2;
+}
+body.theseed-dark-mode .context-menu .v-popper__inner > div :where(button, a, label, span) {
+    --button-color: #e0e0e0;
+    --button-background-color: transparent;
+    color: #e0e0e0 !important;
+}
+body.theseed-dark-mode .context-menu .v-popper__inner > div :where(button, a):hover {
+    --button-background-color: #2d2f34;
+    background: #2d2f34;
+}
+body.theseed-dark-mode .context-menu .v-popper__inner > div > hr {
+    border-color: #484848;
+}
 body.theseed-dark-mode .Nova .notification {
     background: color-mix(in srgb, #d69b2f 14%, var(--surface));
     color: #f7d891;
@@ -1926,6 +2004,24 @@ body.theseed-dark-mode .Nova table,
 body.theseed-dark-mode .Nova .table {
     color: var(--text);
     border-color: var(--border);
+}
+body.theseed-dark-mode .Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select, .input, .seed-form-input) {
+    background-color: var(--surface-2);
+    border-color: var(--border);
+    color: var(--text);
+    box-shadow: none;
+}
+body.theseed-dark-mode .Nova select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2396caff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-position: right 12px center;
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+}
+body.theseed-dark-mode .Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select, .input, .seed-form-input):focus,
+body.theseed-dark-mode .Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select, .input, .seed-form-input):focus-visible {
+    border-color: color-mix(in srgb, var(--brand) 48%, var(--border));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 18%, transparent);
+    outline: 0;
 }
 body.theseed-dark-mode .Nova table:not(.wiki-table) {
     background-color: var(--surface-2);
@@ -1963,10 +2059,10 @@ body.theseed-dark-mode .Nova ::selection {
     --brand-deep: color-mix(in srgb, var(--brand) 56%, #ffffff);
     --brand-soft: color-mix(in srgb, var(--brand) 14%, #101620);
     --brand-tint: var(--nova-brand-bright-color, color-mix(in srgb, var(--brand) 12%, #151b24));
-    --brand-color-1: color-mix(in srgb, var(--brand) 78%, #151b24);
-    --brand-color-2: color-mix(in srgb, var(--brand) 58%, #151b24);
-    --brand-bright-color-1: color-mix(in srgb, var(--brand) 28%, #151b24);
-    --brand-bright-color-2: color-mix(in srgb, var(--brand) 18%, #151b24);
+    --brand-color-1: color-mix(in srgb, var(--brand) 86%, #e8f3ff);
+    --brand-color-2: color-mix(in srgb, var(--brand) 70%, #151b24);
+    --brand-bright-color-1: color-mix(in srgb, var(--brand) 76%, #e8f3ff);
+    --brand-bright-color-2: color-mix(in srgb, var(--brand) 36%, #151b24);
     --ink: #e6edf3;
     --ink-soft: #bdc8d4;
     --accent: var(--nova-accent-color, color-mix(in srgb, var(--brand) 64%, #73d5c8));
@@ -2052,8 +2148,9 @@ body.theseed-dark-mode .Nova ::selection {
 .Nova.nova-dark .setting-block header { border-color: var(--border) !important; }
 .Nova.nova-dark .setting-block header > ul > li { color: var(--text) !important; }
 .Nova.nova-dark .setting-block header > ul > li.selected-tab {
-    background: color-mix(in srgb, var(--brand) 22%, var(--surface)) !important;
+    background: transparent !important;
     color: #d8efff !important;
+    box-shadow: inset 0 -3px 0 color-mix(in srgb, var(--brand) 78%, #e8f3ff);
 }
 .Nova.nova-dark .setting-block button {
     color: var(--text) !important;
@@ -2076,12 +2173,12 @@ body.theseed-dark-mode .Nova ::selection {
     color: #d8efff;
 }
 .Nova.nova-dark #searchform .input-group {
-    background: color-mix(in srgb, var(--surface) 94%, #fff);
-    border-color: color-mix(in srgb, var(--brand) 22%, var(--border));
+    background: color-mix(in srgb, var(--surface-2) 88%, transparent);
+    border-color: color-mix(in srgb, var(--text-muted) 18%, transparent);
 }
 .Nova.nova-dark #searchform .input-group:focus-within {
-    background: color-mix(in srgb, var(--surface) 97%, #fff);
-    border-color: color-mix(in srgb, var(--brand) 46%, var(--border));
+    background: color-mix(in srgb, var(--surface-2) 94%, transparent);
+    border-color: color-mix(in srgb, var(--brand) 32%, var(--text-muted));
 }
 .Nova.nova-dark #searchform .form-control,
 .Nova.nova-dark #searchform .btn.search-action {
@@ -2089,16 +2186,17 @@ body.theseed-dark-mode .Nova ::selection {
 }
 .Nova.nova-dark #searchform .form-control::placeholder { color: var(--text-muted); }
 .Nova.nova-dark #searchform .btn.search-action {
-    border-left-color: color-mix(in srgb, var(--brand) 26%, var(--border));
-    background: color-mix(in srgb, var(--brand) 10%, var(--surface));
-    color: color-mix(in srgb, var(--brand) 55%, #e6edf3);
+    border-left-color: color-mix(in srgb, var(--text-muted) 18%, transparent);
+    background: transparent;
+    color: color-mix(in srgb, var(--brand) 48%, #d8efff);
 }
 .Nova.nova-dark #searchform .btn.search-random {
-    border-right-color: color-mix(in srgb, var(--brand) 26%, var(--border));
+    border-right-color: color-mix(in srgb, var(--text-muted) 18%, transparent);
 }
 .Nova.nova-dark #searchform .btn.search-action:hover {
-    background: var(--brand);
-    color: #fff;
+    background: color-mix(in srgb, var(--brand) 18%, transparent);
+    color: #d8efff;
+    box-shadow: none;
 }
 .Nova.nova-dark .v-autocomplete-list {
     background: color-mix(in srgb, var(--surface) 96%, #000) !important;
@@ -2111,6 +2209,13 @@ body.theseed-dark-mode .Nova ::selection {
 .Nova.nova-dark .v-autocomplete-list-item.v-autocomplete-item-active {
     background: color-mix(in srgb, var(--brand) 18%, var(--surface));
     color: #d8efff;
+}
+.Nova.nova-dark .link-tab :where(a.active, .active > a, li:has(a.active) > a) {
+    background: transparent;
+    color: #d8efff !important;
+}
+.Nova.nova-dark .link-tab :where(a.active, .active > a, li:has(a.active) > a)::after {
+    background-color: color-mix(in srgb, var(--brand) 78%, #e8f3ff);
 }
 .Nova.nova-dark .hero-inner {
     border-color: color-mix(in srgb, var(--brand) 24%, var(--border));
@@ -2155,6 +2260,18 @@ body.theseed-dark-mode .Nova ::selection {
 .Nova.nova-dark .document-tabs .content-tools .btn-discuss-progress {
     background: color-mix(in srgb, var(--brand) 18%, var(--surface));
     color: #d8efff;
+}
+.Nova.nova-dark .document-tabs .content-tools .tools-btn-starred {
+    background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+    color: #ffd889;
+}
+.Nova.nova-dark .document-tabs .content-tools .tools-btn-starred .star-count {
+    background: color-mix(in srgb, var(--accent) 82%, #fff);
+    color: #172033;
+}
+.Nova.nova-dark .document-tabs .content-tools .tools-btn-starred .nova-icon-star {
+    fill: currentColor;
+    color: #ffd889;
 }
 .Nova.nova-dark .wiki-article,
 .Nova.nova-dark .skin-license-page,
@@ -2253,6 +2370,24 @@ body.theseed-dark-mode .Nova ::selection {
     color: var(--text);
     border-color: var(--border);
 }
+.Nova.nova-dark :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select, .input, .seed-form-input) {
+    background-color: var(--surface-2);
+    border-color: var(--border);
+    color: var(--text);
+    box-shadow: none;
+}
+.Nova.nova-dark select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2396caff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-position: right 12px center;
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+}
+.Nova.nova-dark :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select, .input, .seed-form-input):focus,
+.Nova.nova-dark :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select, .input, .seed-form-input):focus-visible {
+    border-color: color-mix(in srgb, var(--brand) 48%, var(--border));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 18%, transparent);
+    outline: 0;
+}
 .Nova.nova-dark table:not(.wiki-table) {
     background-color: var(--surface-2);
 }
@@ -2310,27 +2445,43 @@ body.theseed-dark-mode .Nova ::selection {
     .Nova { --page-gutter: 12px; --doc-frame-pad: 28px; }
     .Nova .nova-alert-stack { top: auto; right: 16px; bottom: 16px; }
     .Nova .navbar-inner {
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: 40px minmax(0, 1fr) 40px;
+        grid-template-rows: auto auto;
+        align-items: center;
         height: auto;
         min-height: var(--nav-height);
         padding: 9px 12px;
         gap: 10px;
     }
-    .Nova .navbar-burger { display: inline-flex; align-items: center; justify-content: center; order: 1; margin-left: 0; }
+    .Nova .navbar-burger {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: start;
+        order: initial;
+        margin-left: 0;
+    }
     .Nova .navbar-brand {
-        order: 2;
-        flex: 1 1 0;
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: center;
+        order: initial;
+        flex: none;
         min-width: 0;
+        max-width: 100%;
         justify-content: center;
         text-align: center;
     }
     .Nova .navbar-brand.has-logo {
-        max-width: none;
+        max-width: 100%;
     }
     .Nova .navbar-brand.has-logo .brand-logo-image {
         width: min(var(--nova-navbar-logo-width, 6.5rem), 34vw, 7rem);
     }
-    .Nova .mobile-search { display: block; flex: 0 0 100%; width: 100%; min-width: 0; order: 4; }
+    .Nova .mobile-search { display: block; grid-column: 1 / -1; grid-row: 2; width: 100%; min-width: 0; order: initial; }
     .Nova .mobile-search #searchform { width: 100%; }
     .Nova .mobile-search #searchform .input-group { width: 100%; }
     .Nova .mobile-search .v-autocomplete-list { width: 100% !important; }
@@ -2481,6 +2632,11 @@ body.theseed-dark-mode .Nova ::selection {
         margin: 6px 0 0;
     }
     .Nova .navbar-menu .avatar-toggle {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
         min-height: 58px;
         padding: 11px 14px;
         border: 1px solid color-mix(in srgb, var(--brand) 16%, var(--border));
@@ -2506,7 +2662,10 @@ body.theseed-dark-mode .Nova ::selection {
         line-height: 1.35;
     }
     .Nova .navbar-menu .avatar-summary strong {
+        display: block;
+        width: 100%;
         min-width: 0;
+        max-width: 100%;
         color: var(--text);
         font-size: 15px;
         font-weight: 650 !important;
@@ -2515,6 +2674,9 @@ body.theseed-dark-mode .Nova ::selection {
         white-space: nowrap;
     }
     .Nova .navbar-menu .avatar-summary span {
+        display: block;
+        width: 100%;
+        min-width: 0;
         max-width: 100%;
         color: var(--text-muted);
         font-size: 12.5px;
@@ -2607,7 +2769,10 @@ body.theseed-dark-mode .Nova ::selection {
         padding: 0 13px;
     }
     .Nova .mobile-side-toggle {
-        order: 3;
+        grid-column: 3;
+        grid-row: 1;
+        justify-self: end;
+        order: initial;
         width: 40px;
         height: 40px;
         border: 0;

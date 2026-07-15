@@ -371,7 +371,10 @@ export default {
             this.mobileSidebarOpen = false;
             this.featurePanel = 'special';
             this.documentTabsStuck = false;
-            this.$nextTick(this.updateDocumentTabsStuck);
+            this.$nextTick(() => {
+                this.resetDocumentTabsScroll();
+                this.updateDocumentTabsStuck();
+            });
         }
     },
     head() {
@@ -635,6 +638,12 @@ export default {
                 this.updateDocumentTabsStuck();
             });
         },
+        resetDocumentTabsScroll() {
+            if (!this.$el || !this.$el.querySelector || typeof window === 'undefined') return;
+            if (!window.matchMedia || !window.matchMedia('(max-width: 1023px)').matches) return;
+            const inner = this.$el.querySelector('.document-tabs-inner');
+            if (inner && inner.scrollLeft !== 0) inner.scrollLeft = 0;
+        },
         updateDocumentTabsStuck() {
             if (!this.$el || !this.$el.querySelector || typeof window === 'undefined') return;
             const tabs = this.$el.querySelector('.document-tabs');
@@ -644,7 +653,9 @@ export default {
             }
             const top = this.fixedNavbar ? parseFloat(getComputedStyle(this.$el).getPropertyValue('--nav-height')) || 0 : 0;
             const rect = tabs.getBoundingClientRect();
-            this.documentTabsStuck = window.pageYOffset > 0 && rect.top <= top + 1;
+            const nextStuck = window.pageYOffset > 0 && rect.top <= top + 1;
+            if (nextStuck && !this.documentTabsStuck) this.resetDocumentTabsScroll();
+            this.documentTabsStuck = nextStuck;
         },
     }
 }

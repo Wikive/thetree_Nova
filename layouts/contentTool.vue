@@ -186,6 +186,9 @@ export default {
             if (viewName === 'thread' || viewName === 'thread_list' || viewName === 'thread_list_close') return 'discuss';
             if (viewName === 'edit' || viewName === 'edit_request' || viewName === 'edit_edit_request') return 'edit';
             if (viewName === 'history' || viewName === 'raw' || viewName === 'blame' || viewName === 'revert' || viewName === 'diff') return 'history';
+            if (viewName === 'backlink') return 'backlink';
+            if (viewName === 'move') return 'move';
+            if (viewName === 'delete') return 'delete';
             if (viewName === 'acl') return 'acl';
             return 'read';
         },
@@ -200,27 +203,6 @@ export default {
                 to: this.doc_action_link(this.data.document, 'w', uuid ? { uuid } : undefined),
                 class: this.activeClass('read'),
                 html: `${this.iconHtml('eye')}<span class="tools-label">읽기</span>`
-            });
-            if (!isDeleted) {
-                if (this.data.starred) this.main.push({
-                    to: this.doc_action_link(this.data.document, 'member/unstar'),
-                    tooltip: "Unstar",
-                    html: `${this.iconHtml('star')}<span class="star-count">${this.data.star_count}</span>`
-                });
-                else if (this.data.star_count >= 0) this.main.push({
-                    to: this.doc_action_link(this.data.document, 'member/star'),
-                    tooltip: "Star",
-                    html: `${this.iconHtml('star')}<span class="star-count">${this.data.star_count}</span>`
-                });
-            }
-            this.main.push({
-                to: this.doc_action_link(this.data.document, 'backlink'),
-                title: "역링크"
-            });
-            this.main.push({
-                to: this.doc_action_link(this.data.document, 'discuss'),
-                class: [this.activeClass('discuss'), this.data.discuss_progress ? 'btn-discuss-progress' : null].filter(Boolean).join(' ') || null,
-                title: "토론"
             });
             if (isDeleted) {
                 this.main.push({
@@ -245,16 +227,41 @@ export default {
                 html: `${this.iconHtml('edit')}<span class="tools-label">편집</span>`
             });
             this.main.push({
+                to: this.doc_action_link(this.data.document, 'discuss'),
+                class: [this.activeClass('discuss'), this.data.discuss_progress ? 'btn-discuss-progress' : null].filter(Boolean).join(' ') || null,
+                title: "토론"
+            });
+            this.main.push({
                 to: this.doc_action_link(this.data.document, 'history', this.data.rev ? { from: this.data.rev } : undefined),
                 class: this.activeClass('history'),
                 title: "역사"
             });
+            if (!isDeleted) {
+                if (this.data.starred) this.main.push({
+                    to: this.doc_action_link(this.data.document, 'member/unstar'),
+                    class: 'tools-btn-starred',
+                    tooltip: "Unstar",
+                    html: `${this.iconHtml('star')}<span class="star-count">${this.data.star_count}</span>`
+                });
+                else if (this.data.star_count >= 0) this.main.push({
+                    to: this.doc_action_link(this.data.document, 'member/star'),
+                    class: 'tools-btn-star',
+                    tooltip: "Star",
+                    html: `${this.iconHtml('star')}<span class="star-count">${this.data.star_count}</span>`
+                });
+            }
+            this.main.push({
+                to: this.doc_action_link(this.data.document, 'backlink'),
+                class: this.activeClass('backlink'),
+                title: "역링크"
+            });
             this.main.push({
                 to: this.doc_action_link(this.data.document, 'move'),
+                class: this.activeClass('move'),
                 title: "이동"
             });
             this.main.push({
-                class: "btn-danger",
+                class: ['btn-danger', this.activeClass('delete')].filter(Boolean).join(' '),
                 to: this.doc_action_link(this.data.document, 'delete'),
                 title: "삭제"
             });
