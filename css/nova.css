@@ -69,6 +69,8 @@ button { cursor: pointer; }
     --doc-frame-max: 1440px;
     --doc-frame-pad: 36px;
     --nova-control-height: 42px;
+    --nova-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23606b7a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    --nova-select-arrow-up: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23606b7a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m18 15-6-6-6 6'/%3E%3C/svg%3E");
     min-height: 100vh;
     background: var(--bg);
     color: var(--text);
@@ -121,29 +123,29 @@ body :where(b, strong),
     padding: 8px 12px;
     border: 1px solid color-mix(in srgb, var(--brand) 14%, var(--border));
     border-radius: 9px;
-    background: color-mix(in srgb, var(--surface) 96%, #fff);
+    background-color: color-mix(in srgb, var(--surface) 96%, #fff);
     color: var(--text);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 1px 2px rgba(31, 41, 55, 0.04);
     font-size: 14px;
     line-height: 1.45;
     outline: 0;
-    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
 }
 .Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select)::placeholder {
     color: color-mix(in srgb, var(--text-muted) 78%, transparent);
 }
 .Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select):hover {
     border-color: color-mix(in srgb, var(--brand) 28%, var(--border));
-    background: var(--surface);
+    background-color: var(--surface);
 }
 .Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select):focus {
     border-color: color-mix(in srgb, var(--brand) 54%, var(--border));
-    background: var(--surface);
+    background-color: var(--surface);
     box-shadow: 0 0 0 3px var(--brand-bright-color-2), 0 8px 20px rgba(31, 41, 55, 0.08);
 }
 .Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select):disabled,
 .Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select)[readonly] {
-    background: color-mix(in srgb, var(--surface-2) 86%, var(--surface));
+    background-color: color-mix(in srgb, var(--surface-2) 86%, var(--surface));
     color: var(--text-muted);
     cursor: not-allowed;
     opacity: 0.72;
@@ -157,11 +159,185 @@ body :where(b, strong),
 }
 .Nova select {
     padding-right: 36px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23606b7a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-image: var(--nova-select-arrow);
     background-position: right 12px center;
     background-size: 16px 16px;
     background-repeat: no-repeat;
     appearance: none;
+    cursor: pointer;
+}
+/* Keep the chevron pinned: interaction states must not move or drop the background layer. */
+.Nova select:hover,
+.Nova select:focus,
+.Nova select:active,
+.Nova select:disabled,
+.Nova select[readonly] {
+    background-image: var(--nova-select-arrow);
+    background-position: right 12px center;
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+}
+/* Open state without base-select support: swap to the up chevron (no rotation available). */
+.Nova select:focus {
+    background-image: var(--nova-select-arrow-up);
+}
+@supports selector(select:open) {
+    .Nova select:focus {
+        background-image: var(--nova-select-arrow);
+    }
+    .Nova select:open {
+        background-image: var(--nova-select-arrow-up);
+    }
+}
+/* Customisable select (Chromium 135+): the control and its panel follow the same language
+   as .dropdown-menu / .dropdown-item so a select reads as one of the skin's own dropdowns.
+   Browsers without `appearance: base-select` keep the native popup. */
+@supports (appearance: base-select) {
+    .Nova select,
+    .Nova select::picker(select) {
+        appearance: base-select;
+    }
+    .Nova select {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding-right: 12px;
+        text-align: left;
+        font-weight: 500;
+    }
+    /* the background chevron is replaced by ::picker-icon in this mode */
+    .Nova select,
+    .Nova select:hover,
+    .Nova select:focus,
+    .Nova select:active,
+    .Nova select:open,
+    .Nova select:disabled,
+    .Nova select[readonly] {
+        background-image: none;
+    }
+    .Nova select::picker-icon {
+        content: "";
+        width: 16px;
+        height: 16px;
+        flex: none;
+        background-image: var(--nova-select-arrow);
+        background-position: center;
+        background-size: 16px 16px;
+        background-repeat: no-repeat;
+        /* same rotation timing as .dropdown .chevron */
+        transition: rotate 0.16s ease;
+    }
+    .Nova select:open::picker-icon {
+        rotate: 180deg;
+    }
+    /* .dropdown-menu geometry: 8px below the control, 12px radius, 8px inner padding */
+    .Nova select::picker(select) {
+        position-area: block-end span-inline-end;
+        position-try-fallbacks: flip-block;
+        min-width: anchor-size(inline);
+        max-height: 320px;
+        margin-block-start: 8px;
+        padding: 8px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--surface);
+        color: var(--text);
+        box-shadow: var(--shadow);
+        overflow-y: auto;
+        opacity: 0;
+        transform-origin: 50% -8px;
+        translate: 0 -6px;
+        scale: 0.985;
+        /* mirrors .nova-dropdown-enter-active */
+        transition: opacity 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
+                    translate 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
+                    scale 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
+                    display 0.18s allow-discrete,
+                    overlay 0.18s allow-discrete;
+    }
+    .Nova select:open::picker(select) {
+        opacity: 1;
+        translate: 0 0;
+        scale: 1;
+    }
+    @starting-style {
+        .Nova select:open::picker(select) {
+            opacity: 0;
+            translate: 0 -6px;
+            scale: 0.985;
+        }
+    }
+    /* .dropdown-item metrics */
+    .Nova select option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 38px;
+        padding: 10px;
+        border: 0;
+        border-radius: var(--radius-sm);
+        background: transparent;
+        color: var(--text);
+        font-size: 13.5px;
+        font-weight: 500;
+        text-align: left;
+        cursor: pointer;
+    }
+    .Nova select option:hover,
+    .Nova select option:focus {
+        background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+        color: var(--brand-dark);
+        outline: 0;
+    }
+    .Nova select option:checked {
+        background: color-mix(in srgb, var(--brand) 14%, var(--surface));
+        color: var(--brand-dark);
+        font-weight: 600;
+    }
+    .Nova select option:disabled {
+        color: var(--text-muted);
+        cursor: not-allowed;
+        opacity: 0.72;
+    }
+    .Nova select option::checkmark {
+        content: "";
+        width: 14px;
+        height: 14px;
+        flex: none;
+        order: 1;
+        margin-left: auto;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 13 4 4 10-10'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+    .Nova select option:not(:checked)::checkmark {
+        opacity: 0;
+    }
+    /* .dropdown-header voice */
+    .Nova select optgroup {
+        padding: 9px 10px 3px;
+        color: var(--text-muted);
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .Nova select optgroup + optgroup {
+        margin-top: 6px;
+        border-top: 1px solid var(--border);
+    }
+    .Nova select selectedcontent {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .Nova select::picker-icon,
+    .Nova select::picker(select) {
+        transition: none;
+    }
 }
 .Nova input[type=file] {
     color: var(--text);
@@ -1667,6 +1843,8 @@ body.theseed-dark-mode .Nova {
 }
 body.theseed-dark-mode .Nova {
     --brand: var(--nova-brand-color, #4aa3ff);
+    --nova-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2396caff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    --nova-select-arrow-up: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2396caff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m18 15-6-6-6 6'/%3E%3C/svg%3E");
     --brand-dark: var(--nova-brand-dark-color, color-mix(in srgb, var(--brand) 68%, #e8f3ff));
     --brand-deep: color-mix(in srgb, var(--brand) 56%, #ffffff);
     --brand-soft: color-mix(in srgb, var(--brand) 14%, #101620);
@@ -2011,12 +2189,6 @@ body.theseed-dark-mode .Nova :where(input:not([type=checkbox]):not([type=radio])
     color: var(--text);
     box-shadow: none;
 }
-body.theseed-dark-mode .Nova select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2396caff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-    background-position: right 12px center;
-    background-size: 16px 16px;
-    background-repeat: no-repeat;
-}
 body.theseed-dark-mode .Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select, .input, .seed-form-input):focus,
 body.theseed-dark-mode .Nova :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select, .input, .seed-form-input):focus-visible {
     border-color: color-mix(in srgb, var(--brand) 48%, var(--border));
@@ -2055,6 +2227,8 @@ body.theseed-dark-mode .Nova ::selection {
 }
 .Nova.nova-dark {
     --brand: var(--nova-brand-color, #4aa3ff);
+    --nova-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2396caff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    --nova-select-arrow-up: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2396caff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m18 15-6-6-6 6'/%3E%3C/svg%3E");
     --brand-dark: var(--nova-brand-dark-color, color-mix(in srgb, var(--brand) 68%, #e8f3ff));
     --brand-deep: color-mix(in srgb, var(--brand) 56%, #ffffff);
     --brand-soft: color-mix(in srgb, var(--brand) 14%, #101620);
@@ -2375,12 +2549,6 @@ body.theseed-dark-mode .Nova ::selection {
     border-color: var(--border);
     color: var(--text);
     box-shadow: none;
-}
-.Nova.nova-dark select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2396caff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-    background-position: right 12px center;
-    background-size: 16px 16px;
-    background-repeat: no-repeat;
 }
 .Nova.nova-dark :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select, .input, .seed-form-input):focus,
 .Nova.nova-dark :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]):not([type=reset]):not([type=image]), textarea, select, .input, .seed-form-input):focus-visible {
