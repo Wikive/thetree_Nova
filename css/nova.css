@@ -23,7 +23,6 @@ button { cursor: pointer; }
 .clearfix::after { display: table; clear: both; content: ""; }
 .float-right { float: right; }
 
-/* Nova skin frame. The wiki document body itself is left to the wiki CSS. */
 .Nova {
     --brand: var(--nova-brand-color, #006cf0);
     --brand-dark: var(--nova-brand-dark-color, color-mix(in srgb, var(--brand) 76%, #002b52));
@@ -166,7 +165,6 @@ body :where(b, strong),
     appearance: none;
     cursor: pointer;
 }
-/* Keep the chevron pinned: interaction states must not move or drop the background layer. */
 .Nova select:hover,
 .Nova select:focus,
 .Nova select:active,
@@ -178,7 +176,6 @@ body :where(b, strong),
     background-repeat: no-repeat;
     transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
 }
-/* Open state without base-select support: swap to the up chevron (no rotation available). */
 .Nova select:focus {
     background-image: var(--nova-select-arrow-up);
 }
@@ -190,9 +187,6 @@ body :where(b, strong),
         background-image: var(--nova-select-arrow-up);
     }
 }
-/* Customisable select (Chromium 135+): the control and its panel follow the same language
-   as .dropdown-menu / .dropdown-item so a select reads as one of the skin's own dropdowns.
-   Browsers without `appearance: base-select` keep the native popup. */
 @supports (appearance: base-select) {
     .Nova select,
     .Nova select::picker(select) {
@@ -207,7 +201,6 @@ body :where(b, strong),
         text-align: left;
         font-weight: 500;
     }
-    /* the background chevron is replaced by ::picker-icon in this mode */
     .Nova select,
     .Nova select:hover,
     .Nova select:focus,
@@ -226,13 +219,11 @@ body :where(b, strong),
         background-position: center;
         background-size: 16px 16px;
         background-repeat: no-repeat;
-        /* same rotation timing as .dropdown .chevron */
         transition: rotate 0.16s ease;
     }
     .Nova select:open::picker-icon {
         rotate: 180deg;
     }
-    /* .dropdown-menu geometry: 8px below the control, 12px radius, 8px inner padding */
     .Nova select::picker(select) {
         position-area: block-end span-inline-end;
         position-try-fallbacks: flip-block;
@@ -250,7 +241,6 @@ body :where(b, strong),
         transform-origin: 50% -8px;
         translate: 0 -6px;
         scale: 0.985;
-        /* mirrors .nova-dropdown-enter-active */
         transition: opacity 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
                     translate 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
                     scale 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
@@ -269,7 +259,6 @@ body :where(b, strong),
             scale: 0.985;
         }
     }
-    /* .dropdown-item metrics */
     .Nova select option {
         display: flex;
         align-items: center;
@@ -315,7 +304,6 @@ body :where(b, strong),
     .Nova select option:not(:checked)::checkmark {
         opacity: 0;
     }
-    /* .dropdown-header voice */
     .Nova select optgroup {
         padding: 9px 10px 3px;
         color: var(--text-muted);
@@ -367,7 +355,6 @@ body :where(b, strong),
 .Nova :where(.wiki-article, .liberty-content-main, .setting-block) form :where(input[type=button], input[type=submit], input[type=reset], button) + :where(input[type=button], input[type=submit], input[type=reset], button) {
     margin-left: 5px;
 }
-/* Engine setting modal */
 .Nova .thetree-modal-content,
 .Nova .setting-block {
     background: var(--surface);
@@ -404,7 +391,6 @@ body :where(b, strong),
 }
 .Nova .top-anchor { position: absolute; top: 0; }
 
-/* Global navigation */
 .Nova .navbar {
     position: relative;
     z-index: 300;
@@ -622,6 +608,111 @@ body :where(b, strong),
 }
 .Nova .feature-switch button:active {
     transform: scale(0.98);
+}
+.Nova .login-dropdown-menu .feature-switch {
+    margin: 0 4px 8px;
+}
+.Nova .feature-switch .account-count-badge {
+    display: inline-flex;
+    min-width: 18px;
+    height: 18px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 3px;
+    padding: 0 4px;
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--brand) 20%, transparent);
+    color: #fff;
+    font-size: 11px;
+    line-height: 1;
+}
+.Nova .account-switch-list {
+    max-height: 220px;
+    overflow-y: auto;
+}
+.Nova .account-switch-item {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    min-height: 38px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text);
+    text-align: left;
+    transition: background 0.15s;
+}
+.Nova .account-switch-item:hover {
+    background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+    color: var(--brand-dark);
+    text-decoration: none;
+}
+.Nova .account-switch-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+    padding: 10px;
+    color: inherit;
+    text-decoration: none;
+}
+.Nova .account-switch-link:hover {
+    color: inherit;
+    text-decoration: none;
+}
+.Nova .account-switch-name {
+    font-weight: 600;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.Nova .account-switch-logout {
+    background: rgba(239, 68, 68, 0.15);
+    border: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #ef4444;
+    margin-right: 6px;
+    padding: 0;
+    flex: 0 0 18px;
+    transition: background 0.15s, color 0.15s;
+}
+.Nova .account-switch-logout:hover {
+    background: rgba(239, 68, 68, 0.25);
+    color: #dc2626;
+}
+.Nova .account-switch-logout .nova-icon {
+    width: 14px;
+    height: 14px;
+}
+.Nova .account-switch-avatar {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #e0b563);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: cover;
+    font-size: 11px;
+    font-weight: 700;
+}
+.Nova .account-empty {
+    color: var(--text-muted) !important;
+    cursor: default !important;
+}
+.Nova .account-empty:hover {
+    background: transparent;
+    color: var(--text-muted);
 }
 .Nova .feature-pane {
     min-width: 0;
@@ -897,7 +988,6 @@ body :where(b, strong),
     object-fit: cover;
 }
 
-/* Search */
 .Nova #searchform,
 .Nova .form-inline {
     display: flex;
@@ -1018,7 +1108,6 @@ body :where(b, strong),
     transform: translateX(2px);
 }
 
-/* Document header */
 .Nova .hero {
     padding-right: var(--page-gutter);
     padding-left: var(--page-gutter);
@@ -1141,7 +1230,6 @@ body :where(b, strong),
     color: rgba(255, 255, 255, 0.72);
 }
 
-/* Document tools */
 .Nova .document-tabs {
     position: sticky;
     top: 0;
@@ -1346,8 +1434,6 @@ body :where(b, strong),
     background: transparent;
 }
 
-
-/* Floating notices */
 .Nova .nova-alert-stack {
     position: fixed;
     top: calc(var(--nav-height) + 18px);
@@ -1393,7 +1479,6 @@ body :where(b, strong),
 .Nova .nova-alert-close:hover { background: color-mix(in srgb, var(--brand) 9%, var(--surface)); color: var(--brand-dark); }
 .Nova .nova-alert-close .nova-icon { width: 14px; height: 14px; }
 
-/* Layout */
 .Nova .notification {
     margin: 20px 0 0;
     padding: 14px 18px;
@@ -1587,7 +1672,6 @@ body :where(b, strong),
     margin-top: 4px;
 }
 
-/* Footer */
 .Nova .article-license {
     grid-column: 1 / -1;
     margin: 36px calc(var(--doc-frame-pad) * -1) 0;
@@ -1635,7 +1719,6 @@ body :where(b, strong),
     text-underline-offset: 3px;
 }
 
-/* Sidebar */
 .Nova .sidebar-column {
     position: relative;
     min-height: 100%;
@@ -1789,7 +1872,6 @@ body :where(b, strong),
 .Nova .toc-card .toc-level-3 { padding-left: 36px; }
 .Nova .toc-card .toc-level-4 { padding-left: 48px; font-size: 13.5px; }
 
-/* Floating buttons */
 .Nova .jump-buttons {
     position: fixed;
     right: 18px;
@@ -1829,7 +1911,6 @@ body :where(b, strong),
 .Nova .jump-btn .nova-icon { width: 18px; height: 18px; color: inherit; stroke: currentColor !important; stroke-width: 2.4; opacity: 1; }
 
 
-/* Mobile side activity panel */
 .Nova .mobile-side-toggle,
 .Nova .mobile-side-panel,
 .Nova .mobile-side-backdrop,
@@ -1961,6 +2042,14 @@ body.theseed-dark-mode .Nova .dropdown-item:focus .nova-icon,
 body.theseed-dark-mode .Nova .dropdown-avatar,
 body.theseed-dark-mode .Nova .user-menu-meta {
     color: #d8efff;
+}
+body.theseed-dark-mode .Nova .account-switch-logout {
+    background: rgba(248, 113, 113, 0.15);
+    color: #f87171;
+}
+body.theseed-dark-mode .Nova .account-switch-logout:hover {
+    background: rgba(248, 113, 113, 0.25);
+    color: #fca5a5;
 }
 body.theseed-dark-mode .Nova #searchform .input-group {
     background: color-mix(in srgb, var(--surface-2) 88%, transparent);
@@ -2221,6 +2310,10 @@ body.theseed-dark-mode .Nova ::selection {
     background: color-mix(in srgb, var(--brand) 36%, #0b1220);
     color: #fff;
 }
+body.theseed-dark-mode .Nova .account-switch-item:hover {
+    background: color-mix(in srgb, var(--brand) 17%, var(--surface));
+    color: #d8efff;
+}
 .Nova.nova-dark {
     background-color: var(--nova-bg-color, #0d1117);
     color-scheme: dark;
@@ -2345,6 +2438,14 @@ body.theseed-dark-mode .Nova ::selection {
 .Nova.nova-dark .dropdown-avatar,
 .Nova.nova-dark .user-menu-meta {
     color: #d8efff;
+}
+.Nova.nova-dark .account-switch-logout {
+    background: rgba(248, 113, 113, 0.15);
+    color: #f87171;
+}
+.Nova.nova-dark .account-switch-logout:hover {
+    background: rgba(248, 113, 113, 0.25);
+    color: #fca5a5;
 }
 .Nova.nova-dark #searchform .input-group {
     background: color-mix(in srgb, var(--surface-2) 88%, transparent);
