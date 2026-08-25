@@ -121,24 +121,49 @@
                                     <span class="user-menu-title"><strong>{{ accountName }}</strong><span class="muted">{{ accountDescription }}</span></span>
                                 </div>
                                 <div class="dropdown-divider"></div>
-                                <a href="#" class="dropdown-item" @click.prevent="openSettingModal"><nova-icon name="sliders" />설정</a>
-                                <a v-if="$store.state.currentTheme === 'light'" href="#" class="dropdown-item" @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.theme', value: 'dark'})"><nova-icon name="moon" />다크 테마로</a>
-                                <a v-if="$store.state.currentTheme === 'dark'" href="#" class="dropdown-item" @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.theme', value: 'light'})"><nova-icon name="sun" />라이트 테마로</a>
-                                <div class="dropdown-divider"></div>
-                                <template v-if="$store.state.session.account.type === 1">
-                                    <nuxt-link to="/member/mypage" class="dropdown-item"><nova-icon name="id" />내 정보</nuxt-link>
-                                    <nuxt-link :to="doc_action_link(user_doc($store.state.session.account.name), 'w')" class="dropdown-item"><nova-icon name="user" />내 사용자 문서</nuxt-link>
-                                    <nuxt-link to="/member/starred_documents" class="dropdown-item"><nova-icon name="star" />내 문서함</nuxt-link>
-                                    <div class="dropdown-divider"></div>
-                                </template>
-                                <template v-if="$store.state.session.account.uuid">
-                                    <nuxt-link class="dropdown-item" :to="contribution_link($store.state.session.account.uuid)"><nova-icon name="edit" />내 문서 기여 목록</nuxt-link>
-                                    <nuxt-link class="dropdown-item" :to="contribution_link_discuss($store.state.session.account.uuid)"><nova-icon name="comment" />내 토론 기여 목록</nuxt-link>
-                                    <nuxt-link class="dropdown-item" :to="contribution_link_edit_request($store.state.session.account.uuid)"><nova-icon name="check" />내 편집 요청 목록</nuxt-link>
-                                    <div class="dropdown-divider"></div>
-                                </template>
-                                <nuxt-link v-if="$store.state.session.account.type === 1" :to="{path:'/member/logout',query:{redirect:$route.fullPath}}" class="dropdown-item"><nova-icon name="logout" />로그아웃</nuxt-link>
-                                <nuxt-link v-else :to="{path:'/member/login',query:{redirect:$route.fullPath}}" class="dropdown-item"><nova-icon name="login" />로그인</nuxt-link>
+                                <div v-if="isLoggedIn" class="feature-switch" role="tablist" aria-label="사용자 메뉴">
+                                    <button type="button" :class="{ active: profilePanel === 'user' }" @click.stop.prevent="profilePanel = 'user'">사용자</button>
+                                    <button type="button" :class="{ active: profilePanel === 'account' }" @click.stop.prevent="profilePanel = 'account'">계정 <span v-if="loggedAccountCount > 0" class="account-count-badge">{{ loggedAccountCount }}</span></button>
+                                </div>
+                                <transition :name="profilePanel === 'account' ? 'feature-pane-forward' : 'feature-pane-back'" mode="out-in">
+                                    <div v-if="!isLoggedIn || profilePanel === 'user'" key="user" class="feature-pane">
+                                        <a href="#" class="dropdown-item" @click.prevent="openSettingModal"><nova-icon name="sliders" />설정</a>
+                                        <a v-if="$store.state.currentTheme === 'light'" href="#" class="dropdown-item" @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.theme', value: 'dark'})"><nova-icon name="moon" />다크 테마로</a>
+                                        <a v-if="$store.state.currentTheme === 'dark'" href="#" class="dropdown-item" @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.theme', value: 'light'})"><nova-icon name="sun" />라이트 테마로</a>
+                                        <div class="dropdown-divider"></div>
+                                        <template v-if="$store.state.session.account.type === 1">
+                                            <nuxt-link to="/member/mypage" class="dropdown-item"><nova-icon name="id" />내 정보</nuxt-link>
+                                            <nuxt-link :to="doc_action_link(user_doc($store.state.session.account.name), 'w')" class="dropdown-item"><nova-icon name="user" />내 사용자 문서</nuxt-link>
+                                            <nuxt-link to="/member/starred_documents" class="dropdown-item"><nova-icon name="star" />내 문서함</nuxt-link>
+                                            <div class="dropdown-divider"></div>
+                                        </template>
+                                        <template v-if="$store.state.session.account.uuid">
+                                            <nuxt-link class="dropdown-item" :to="contribution_link($store.state.session.account.uuid)"><nova-icon name="edit" />내 문서 기여 목록</nuxt-link>
+                                            <nuxt-link class="dropdown-item" :to="contribution_link_discuss($store.state.session.account.uuid)"><nova-icon name="comment" />내 토론 기여 목록</nuxt-link>
+                                            <nuxt-link class="dropdown-item" :to="contribution_link_edit_request($store.state.session.account.uuid)"><nova-icon name="check" />내 편집 요청 목록</nuxt-link>
+                                            <div class="dropdown-divider"></div>
+                                        </template>
+                                        <nuxt-link v-if="$store.state.session.account.type === 1" :to="{path:'/member/logout',query:{redirect:$route.fullPath}}" class="dropdown-item"><nova-icon name="logout" />로그아웃</nuxt-link>
+                                        <nuxt-link v-else :to="{path:'/member/login',query:{redirect:$route.fullPath}}" class="dropdown-item"><nova-icon name="login" />로그인</nuxt-link>
+                                    </div>
+                                    <div v-else key="account" class="feature-pane">
+                                        <div v-if="secondaryAccounts.length" class="account-switch-list">
+                                            <div v-for="(account, index) in secondaryAccounts" :key="account.uuid || account.name || index" class="account-switch-item">
+                                                <nuxt-link :to="switchAccountRoute(account)" class="account-switch-link">
+                                                    <img v-if="account.avatar" class="account-switch-avatar" :src="account.avatar" :alt="account.name || 'account'">
+                                                    <span v-else class="account-switch-avatar account-switch-avatar--fallback">{{ (account.name || '?').charAt(0).toUpperCase() }}</span>
+                                                    <span class="account-switch-name">{{ account.name }}</span>
+                                                </nuxt-link>
+                                                <button type="button" class="account-switch-logout" @click.stop.prevent="logoutOtherAccount(account.uuid)">
+                                                    <nova-icon name="close" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div v-else class="dropdown-item account-empty"><nova-icon name="userRemove" />전환할 다른 계정이 없습니다.</div>
+                                        <div class="dropdown-divider"></div>
+                                        <nuxt-link :to="{path:'/member/login',query:{redirect:$route.fullPath}}" class="dropdown-item"><nova-icon name="user" />계정 추가</nuxt-link>
+                                    </div>
+                                </transition>
                             </div>
                             </dropdown>
                         </div>
@@ -361,6 +386,7 @@ export default {
             documentTabsStuck: false,
             mobileSidebarOpen: false,
             featurePanel: 'special',
+            profilePanel: 'user',
             stickyScrollRaf: null
         };
     },
@@ -426,6 +452,20 @@ export default {
         },
         accountDescription() {
             return this.$store.state.session.account.type === 1 ? 'Member' : '로그인이 필요합니다';
+        },
+        secondaryAccounts() {
+            const session = this.$store.state.session || {};
+            const currentUuid = session.account && session.account.uuid;
+            return (Array.isArray(session.otherAccounts) ? session.otherAccounts : [])
+                .filter(account => account && account.uuid && account.uuid !== currentUuid)
+                .map(account => ({
+                    uuid: account.uuid,
+                    name: account.name || account.uuid,
+                    avatar: account.gravatar_url || ''
+                }));
+        },
+        loggedAccountCount() {
+            return this.secondaryAccounts.length;
         },
         documentKindLabel() {
             const page = this.$store.state.page;
@@ -608,6 +648,10 @@ export default {
         openSettingModal() {
             this.$vfm.show({ component: SettingModal });
         },
+        switchAccountRoute(account) {
+            const uuid = account && account.uuid;
+            return uuid ? `/member/switch_account/${encodeURIComponent(uuid)}` : '/member/login';
+        },
         notificationIconName(type) {
             if (type === 0) return 'comment';
             if (type === 1) return 'user';
@@ -657,6 +701,11 @@ export default {
             if (nextStuck && !this.documentTabsStuck) this.resetDocumentTabsScroll();
             this.documentTabsStuck = nextStuck;
         },
+        async logoutOtherAccount(uuid) {
+            if (!uuid) return;
+            await this.internalRequestAndProcess(`/member/logout_other/${encodeURIComponent(uuid)}`, { method: 'POST' });
+            if (typeof window !== 'undefined') window.location.reload();
+        }
     }
 }
 </script>
