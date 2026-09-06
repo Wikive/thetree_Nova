@@ -60,7 +60,7 @@ export default {
             this.$router.push(Common.methods.doc_action_link(this.searchText, 'w'));
         },
         onClickRandom() {
-            this.$router.push('/RandomPage');
+            this.$router.push('/Random');
         }
     },
     watch: {
