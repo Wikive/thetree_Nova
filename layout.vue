@@ -88,6 +88,22 @@
                                         <nuxt-link v-if="isLoggedIn" to="/member/notifications">전체 보기</nuxt-link>
                                     </div>
                                 </div>
+                                <div v-if="pinnedNoticeCount" class="notification-list notification-pinned">
+                                    <a v-if="siteNotice && siteNoticeHidden" href="#" class="notification-item" title="공지를 본문 위에 다시 표시" @click.prevent="setSiteNoticeHidden(false)">
+                                        <span class="notification-icon is-notice"><nova-icon name="bell" /></span>
+                                        <span class="notification-body">
+                                            <strong>{{ siteNoticeText }}</strong>
+                                            <span>공지 · 눌러서 다시 표시</span>
+                                        </span>
+                                    </a>
+                                    <nuxt-link v-if="hasUserDiscuss && userDiscussHidden" :to="doc_action_link(user_doc($store.state.session.account.name), 'discuss')" class="notification-item">
+                                        <span class="notification-icon"><nova-icon name="comment" /></span>
+                                        <span class="notification-body">
+                                            <strong>진행 중인 사용자 토론이 있습니다</strong>
+                                            <span>사용자 토론 · 눌러서 이동</span>
+                                        </span>
+                                    </nuxt-link>
+                                </div>
                                 <div v-if="notificationCount" class="notification-list">
                                     <nuxt-link v-for="item in $store.state.session.notifications" :key="item.uuid" :to="item.url || '/member/notifications'" class="notification-item">
                                         <span class="notification-icon" :class="notificationToneClass(item.type)"><nova-icon :name="notificationIconName(item.type)" /></span>
@@ -97,7 +113,7 @@
                                         </span>
                                     </nuxt-link>
                                 </div>
-                                <div v-else class="notification-empty">
+                                <div v-else-if="!pinnedNoticeCount" class="notification-empty">
                                     <nova-icon name="bell" />
                                     <span>새 알림이 없습니다.</span>
                                 </div>
@@ -204,34 +220,47 @@
             </div>
         </nav>
 
+        <transition name="nova-acl">
+            <div v-if="isShowACLMessage && $store.state.page.data.edit_acl_message" class="nova-acl-popup" role="alertdialog" aria-labelledby="nova-acl-title" aria-describedby="nova-acl-message">
+                <div class="nova-acl-head">
+                    <span class="nova-acl-badge"><nova-icon name="lock" /></span>
+                    <div class="nova-acl-heading">
+                        <span class="nova-acl-eyebrow">권한 안내</span>
+                        <strong id="nova-acl-title">{{ requestable ? '이 문서는 직접 편집할 수 없습니다' : '이 문서를 편집할 권한이 없습니다' }}</strong>
+                    </div>
+                    <button type="button" class="nova-acl-close" aria-label="닫기" @click="isShowACLMessage = false"><nova-icon name="close" /></button>
+                </div>
+                <div id="nova-acl-message" class="nova-acl-message" v-html="$store.state.page.data.edit_acl_message" @click="onDynamicContentClick($event)"></div>
+                <p v-if="requestable" class="nova-acl-hint"><nova-icon name="info" />대신 편집 요청을 생성하면 권한이 있는 사용자가 검토 후 반영합니다.</p>
+                <div class="nova-acl-actions">
+                    <nuxt-link v-if="requestable" class="nova-acl-btn is-primary" :to="doc_action_link($store.state.page.data.document, 'new_edit_request')"><nova-icon name="edit" />편집 요청 생성</nuxt-link>
+                    <nuxt-link v-else class="nova-acl-btn is-primary" :to="doc_action_link($store.state.page.data.document, 'edit')"><nova-icon name="code" />원본 보기</nuxt-link>
+                    <button type="button" class="nova-acl-btn" @click="isShowACLMessage = false">닫기</button>
+                </div>
+            </div>
+        </transition>
+
         <div class="nova-alert-stack" aria-live="polite">
-            <div v-if="$store.state.config['wiki.sitenotice']" id="site-notice" class="nova-alert is-warning">
-                <nova-icon name="bell" />
-                <div class="nova-alert-body">
-                    <strong>공지</strong>
-                    <p v-html="$store.state.config['wiki.sitenotice']" @click="onDynamicContentClick($event)"></p>
-                </div>
-            </div>
-            <div v-if="isShowACLMessage && $store.state.page.data.edit_acl_message" class="nova-alert is-danger">
-                <nova-icon name="shield" />
-                <div class="nova-alert-body">
-                    <strong>권한 안내</strong>
-                    <p><span v-html="$store.state.page.data.edit_acl_message" @click="onDynamicContentClick($event)"></span><span v-if="requestable"> 대신 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'new_edit_request')">편집 요청</nuxt-link>을 생성할 수 있습니다.</span></p>
-                </div>
-                <button type="button" class="nova-alert-close" aria-label="닫기" @click="isShowACLMessage = false"><nova-icon name="close" /></button>
-            </div>
-            <div v-if="showUserDiscussNotice" class="nova-alert is-primary">
+            <div v-if="hasUserDiscuss && !userDiscussHidden" class="nova-alert is-primary">
                 <nova-icon name="comment" />
                 <div class="nova-alert-body">
                     <strong>사용자 토론</strong>
                     <p>현재 진행 중인 <nuxt-link :to="doc_action_link(user_doc($store.state.session.account.name), 'discuss')">사용자 토론</nuxt-link>이 있습니다.</p>
                 </div>
-                <button type="button" class="nova-alert-close" aria-label="닫기" @click="$store.commit('localConfigSetValue', {key: 'wiki.hide_user_document_discuss', value: $store.state.session.user_document_discuss})"><nova-icon name="close" /></button>
+                <button type="button" class="nova-alert-close" aria-label="닫기" title="닫으면 알림 목록으로 이동합니다" @click="setUserDiscussHidden(true)"><nova-icon name="close" /></button>
             </div>
         </div>
 
         <div class="container layout-grid" :class="{ 'hide-sidebar': sidebarMode === 'hide' || sidebarMode === 'footer' }">
             <main class="content-column">
+                <section v-if="siteNotice && !siteNoticeHidden" id="site-notice" class="nova-notice" aria-label="사이트 공지">
+                    <span class="nova-notice-badge"><nova-icon name="bell" /></span>
+                    <div class="nova-notice-body">
+                        <span class="nova-notice-label">공지</span>
+                        <div class="nova-notice-content" v-html="siteNotice" @click="onDynamicContentClick($event)"></div>
+                    </div>
+                    <button type="button" class="nova-notice-close" aria-label="공지 닫기" title="닫으면 알림 목록으로 이동합니다" @click="setSiteNoticeHidden(true)"><nova-icon name="close" /></button>
+                </section>
                 <div class="liberty-content-main" :class="{ 'wiki-article': $store.state.page.viewName === 'wiki' }">
                     <alert v-if="$store.state.page.viewName === 'notfound' && $store.state.page.data.document.namespace === '문서'" style="line-height: 2.1rem;">
                         '{{ $store.state.page.title }}'을(를) 검색하시겠습니까?
@@ -567,8 +596,24 @@ export default {
         requestable() {
             return this.$store.state.page.data.editable === true && this.$store.state.page.data.edit_acl_message && this.$store.state.page.viewName !== 'notfound';
         },
-        showUserDiscussNotice() {
-            return this.$store.state.session.user_document_discuss && this.$store.state.localConfig['wiki.hide_user_document_discuss'] !== this.$store.state.session.user_document_discuss;
+        siteNotice() {
+            return this.$store.state.config['wiki.sitenotice'];
+        },
+        siteNoticeHidden() {
+            // 닫은 공지 내용을 기억해 두고, 공지가 바뀌면 다시 본문 위에 표시
+            return !!this.siteNotice && this.$store.state.localConfig['nova.hidden_sitenotice'] === this.siteNotice;
+        },
+        siteNoticeText() {
+            return this.siteNotice ? this.removeHtmlTags(String(this.siteNotice)).trim() : '';
+        },
+        hasUserDiscuss() {
+            return !!this.$store.state.session.user_document_discuss;
+        },
+        userDiscussHidden() {
+            return this.hasUserDiscuss && this.$store.state.localConfig['wiki.hide_user_document_discuss'] === this.$store.state.session.user_document_discuss;
+        },
+        pinnedNoticeCount() {
+            return (this.siteNotice && this.siteNoticeHidden ? 1 : 0) + (this.userDiscussHidden ? 1 : 0);
         },
         isLoggedIn() {
             return this.$store.state.session.account.type === 1;
@@ -629,6 +674,18 @@ export default {
             else {
                 this.isShowACLMessage = true;
             }
+        },
+        setSiteNoticeHidden(hidden) {
+            this.$store.commit('localConfigSetValue', {
+                key: 'nova.hidden_sitenotice',
+                value: hidden ? this.siteNotice : null
+            });
+        },
+        setUserDiscussHidden(hidden) {
+            this.$store.commit('localConfigSetValue', {
+                key: 'wiki.hide_user_document_discuss',
+                value: hidden ? this.$store.state.session.user_document_discuss : null
+            });
         },
         configValue(keys, fallback = null) {
             for (const key of keys) {

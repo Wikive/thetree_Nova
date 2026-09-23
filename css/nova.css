@@ -937,6 +937,8 @@ body :where(b, strong),
 .Nova .notification-icon.is-mention { color: #7c3aed; background: color-mix(in srgb, #7c3aed 12%, var(--surface)); }
 .Nova .notification-icon.is-owner { color: #c2410c; background: color-mix(in srgb, #f97316 13%, var(--surface)); }
 .Nova .notification-icon.is-default { color: var(--text-muted); background: color-mix(in srgb, var(--text-muted) 10%, var(--surface)); }
+.Nova .notification-icon.is-notice { color: #b7791f; background: color-mix(in srgb, #d69b2f 14%, var(--surface)); }
+.Nova .notification-pinned + .notification-list { border-top: 1px solid var(--border); }
 .Nova .notification-body {
     display: flex;
     min-width: 0;
@@ -1478,6 +1480,205 @@ body :where(b, strong),
 }
 .Nova .nova-alert-close:hover { background: color-mix(in srgb, var(--brand) 9%, var(--surface)); color: var(--brand-dark); }
 .Nova .nova-alert-close .nova-icon { width: 14px; height: 14px; }
+
+/* 사이트 공지: 본문 상단 고정 배너 */
+.Nova .nova-notice {
+    --notice-color: #b7791f;
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr) 32px;
+    gap: 12px;
+    align-items: start;
+    margin: 0 0 16px;
+    padding: 12px 12px 12px 14px;
+    border: 1px solid color-mix(in srgb, var(--notice-color) 30%, var(--border));
+    border-radius: var(--radius);
+    background:
+        linear-gradient(90deg, color-mix(in srgb, var(--notice-color) 10%, var(--surface)), var(--surface) 70%);
+    color: var(--text);
+}
+.Nova .nova-notice-badge {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, var(--notice-color) 16%, var(--surface));
+    color: var(--notice-color);
+}
+.Nova .nova-notice-badge .nova-icon { width: 18px; height: 18px; }
+.Nova .nova-notice-body {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    min-width: 0;
+    padding-top: 6px;
+}
+.Nova .nova-notice-label {
+    flex: none;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: var(--notice-color);
+    color: #fff;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+}
+.Nova .nova-notice-content {
+    min-width: 0;
+    font-size: 13.5px;
+    line-height: 1.6;
+    word-break: break-word;
+}
+.Nova .nova-notice-content > :first-child { margin-top: 0; }
+.Nova .nova-notice-content > :last-child { margin-bottom: 0; }
+.Nova .nova-notice-close {
+    width: 32px;
+    height: 32px;
+    margin-top: 1px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.Nova .nova-notice-close:hover { background: color-mix(in srgb, var(--notice-color) 12%, var(--surface)); color: var(--notice-color); }
+.Nova .nova-notice-close .nova-icon { width: 15px; height: 15px; }
+
+/* 편집 권한 안내 팝업 */
+.Nova .nova-acl-popup {
+    --acl-color: #c2414b;
+    position: fixed;
+    top: calc(var(--nav-height) + 76px);
+    right: 24px;
+    z-index: 370;
+    width: min(400px, calc(100vw - 32px));
+    max-height: calc(100vh - var(--nav-height) - 100px);
+    overflow: auto;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06), 0 22px 48px rgba(15, 23, 42, 0.18);
+}
+.Nova .nova-acl-popup::before {
+    content: "";
+    display: block;
+    height: 4px;
+    background: linear-gradient(90deg, var(--acl-color), color-mix(in srgb, var(--acl-color) 40%, #f59e0b));
+}
+.Nova .nova-acl-head {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr) 28px;
+    gap: 12px;
+    align-items: center;
+    padding: 16px 16px 12px;
+}
+.Nova .nova-acl-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, var(--acl-color) 12%, var(--surface));
+    color: var(--acl-color);
+}
+.Nova .nova-acl-badge .nova-icon { width: 20px; height: 20px; }
+.Nova .nova-acl-heading { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.Nova .nova-acl-eyebrow {
+    color: var(--acl-color);
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+.Nova .nova-acl-heading strong { font-size: 15px; font-weight: 800; line-height: 1.35; }
+.Nova .nova-acl-close {
+    width: 28px;
+    height: 28px;
+    align-self: start;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.Nova .nova-acl-close:hover { background: var(--surface-2); color: var(--text); }
+.Nova .nova-acl-close .nova-icon { width: 15px; height: 15px; }
+.Nova .nova-acl-message {
+    margin: 0 16px;
+    padding: 12px 14px;
+    border: 1px solid color-mix(in srgb, var(--acl-color) 22%, var(--border));
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--acl-color) 5%, var(--surface));
+    font-size: 13px;
+    line-height: 1.65;
+    word-break: break-word;
+}
+.Nova .nova-acl-message ul,
+.Nova .nova-acl-message ol { margin: 6px 0 0; padding-left: 18px; }
+.Nova .nova-acl-message > :first-child { margin-top: 0; }
+.Nova .nova-acl-message > :last-child { margin-bottom: 0; }
+.Nova .nova-acl-hint {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    margin: 10px 16px 0;
+    color: var(--text-muted);
+    font-size: 12.5px;
+    line-height: 1.5;
+}
+.Nova .nova-acl-hint .nova-icon { flex: none; width: 14px; height: 14px; margin-top: 2px; }
+.Nova .nova-acl-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 14px 16px 16px;
+}
+.Nova .nova-acl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+.Nova .nova-acl-btn:hover { background: var(--surface-2); text-decoration: none; }
+.Nova .nova-acl-btn.is-primary {
+    border-color: var(--brand);
+    background: var(--brand);
+    color: #fff;
+}
+.Nova .nova-acl-btn.is-primary:hover { background: var(--brand-dark); border-color: var(--brand-dark); color: #fff; }
+.Nova .nova-acl-btn .nova-icon { width: 15px; height: 15px; }
+.Nova .nova-acl-enter-active,
+.Nova .nova-acl-leave-active { transition: opacity 0.18s ease, transform 0.18s ease; }
+.Nova .nova-acl-enter-from,
+.Nova .nova-acl-leave-to { opacity: 0; transform: translateY(-8px) scale(0.98); }
+.Nova.nova-dark .nova-notice,
+body.theseed-dark-mode .Nova .nova-notice { --notice-color: #e0a84a; }
+.Nova.nova-dark .nova-notice-label,
+body.theseed-dark-mode .Nova .nova-notice-label { color: #1a1206; }
+.Nova.nova-dark .nova-acl-popup,
+body.theseed-dark-mode .Nova .nova-acl-popup {
+    --acl-color: #ff8e98;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 22px 48px rgba(0, 0, 0, 0.45);
+}
 
 .Nova .notification {
     margin: 20px 0 0;
@@ -2713,6 +2914,16 @@ body.theseed-dark-mode .Nova .account-switch-item:hover {
 @media (max-width: 1023px) {
     .Nova { --page-gutter: 12px; --doc-frame-pad: 28px; }
     .Nova .nova-alert-stack { top: auto; right: 16px; bottom: 16px; }
+    .Nova .nova-acl-popup {
+        top: auto;
+        right: 16px;
+        bottom: 16px;
+        max-height: calc(100vh - 32px);
+    }
+    .Nova .nova-acl-enter-from,
+    .Nova .nova-acl-leave-to { transform: translateY(12px); }
+    .Nova .nova-notice-body { flex-direction: column; gap: 4px; }
+    .Nova .nova-acl-actions .nova-acl-btn { flex: 1; justify-content: center; }
     .Nova .navbar-inner {
         display: grid;
         grid-template-columns: 40px minmax(0, 1fr) 40px;
